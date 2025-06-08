@@ -1255,6 +1255,21 @@
                 </div>
               </div>
             </div>
+
+            <!-- Credit -->
+            <div class="mt-8 text-center">
+              <div
+                class="inline-block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 px-4 py-2 text-xs text-gray-400 dark:text-gray-500"
+              >
+                Made with ❤️ by
+                <a
+                  href="https://www.instagram.com/aryaaafaisal/"
+                  target="_blank"
+                  class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors font-medium"
+                  >Arya Faisal Pasha</a
+                >
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -1873,32 +1888,36 @@
       function loadTopicsForQuiz() {
         const topicsGrid = document.getElementById("topicsGrid");
         topicsGrid.innerHTML = "";
-
         if (questionData[currentSubject]) {
           Object.keys(questionData[currentSubject]).forEach((topic) => {
             const progress = getTopicProgress(currentSubject, topic);
             const isSelected = selectedTopics.includes(topic);
+            const isCompleted = progress.percentage === 100;
 
             let statusClass =
               "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800";
             let statusIcon = "fa-clock text-gray-400";
 
-            if (progress.percentage === 100) {
-              statusClass = "border-green-400 bg-green-50 dark:bg-green-900/20";
-              statusIcon = "fa-check-circle text-green-500";
+            if (isCompleted) {
+              statusClass =
+                "border-green-400 bg-green-50 dark:bg-green-900/20 opacity-60 cursor-not-allowed";
+              statusIcon = "fa-trophy text-green-500";
             } else if (progress.completed > 0) {
               statusClass =
                 "border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20";
               statusIcon = "fa-clock text-yellow-500";
             }
 
-            if (isSelected) {
+            if (isSelected && !isCompleted) {
               statusClass =
                 "border-blue-500 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-300 dark:ring-blue-600";
             }
 
             const topicCard = document.createElement("div");
-            topicCard.className = `cursor-pointer p-4 rounded-lg border-2 ${statusClass} transition-all duration-200 hover:shadow-md`;
+            topicCard.className = `p-4 rounded-lg border-2 ${statusClass} transition-all duration-200 ${
+              isCompleted ? "" : "cursor-pointer hover:shadow-md"
+            }`;
+
             topicCard.innerHTML = `
                         <div class="flex items-center justify-between mb-2">
                             <h4 class="font-medium text-gray-900 dark:text-white">${topic}</h4>
@@ -1913,13 +1932,17 @@
                             }%</span>
                         </div>
                         ${
-                          isSelected
+                          isCompleted
+                            ? '<div class="mt-2 text-xs text-green-600 dark:text-green-400 font-medium"><i class="fas fa-trophy mr-1"></i>Selesai 100%</div>'
+                            : isSelected
                             ? '<div class="mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium"><i class="fas fa-check-circle mr-1"></i>Dipilih</div>'
                             : ""
                         }
                     `;
 
-            topicCard.onclick = () => toggleTopic(topic);
+            if (!isCompleted) {
+              topicCard.onclick = () => toggleTopic(topic);
+            }
             topicsGrid.appendChild(topicCard);
           });
         }
@@ -1927,6 +1950,16 @@
         updateStartQuizButton();
       }
       function toggleTopic(topic) {
+        // Check if topic is already 100% completed
+        const progress = getTopicProgress(currentSubject, topic);
+        if (progress.percentage === 100) {
+          alertToast.warning(
+            `🏆 Topik "${topic}" sudah diselesaikan 100%! Pilih topik lain untuk melanjutkan pembelajaran.`,
+            "Topik Sudah Selesai"
+          );
+          return;
+        }
+
         const index = selectedTopics.indexOf(topic);
         if (index === -1) {
           selectedTopics.push(topic);
@@ -1980,12 +2013,19 @@
         // Show encouraging message
         setTimeout(() => {
           alertToast.showEncouragement("start");
-        }, 1000);
-        // Reset quiz state
+        }, 1000); // Reset quiz state
         currentQuestionIndex = 0;
-        userAnswers = [];
+        userAnswers = new Array(currentQuestions.length).fill(undefined);
         correctCount = 0;
         showingSolution = false;
+
+        // Reset question mappings for answer shuffling
+        currentQuestionMappings = {};
+
+        // Reset quiz stats display
+        document.getElementById("correctCount").textContent = "0";
+        document.getElementById("incorrectCount").textContent = "0";
+        document.getElementById("scorePercentage").textContent = "0%";
 
         // Record quiz start time for analytics
         quizStartTime = Date.now();
@@ -2054,20 +2094,49 @@
           }
         }
         return "Unknown";
-      }
-
+      } // Store question mappings globally to avoid reference issues
+      let currentQuestionMappings = {};
       function displayMultipleChoice(question, container) {
         const choices = question.choices;
+        const questionIndex = currentQuestionIndex;
+
+        // Simple approach: create array of [key, value] pairs and shuffle
+        const originalPairs = [
+          ["A", choices.A],
+          ["B", choices.B],
+          ["C", choices.C],
+          ["D", choices.D],
+        ].filter(([key, value]) => value !== undefined); // Filter out undefined choices
+
+        // Shuffle the pairs
+        shuffleArray(originalPairs);
+
+        // Create new choices and mapping
+        const newChoices = {};
+        const keyMapping = {}; // Maps new position to original key
+        const displayKeys = ["A", "B", "C", "D"];
+
+        originalPairs.forEach(([originalKey, value], index) => {
+          const displayKey = displayKeys[index];
+          newChoices[displayKey] = value;
+          keyMapping[displayKey] = originalKey;
+        });
+
+        // Store mapping
+        currentQuestionMappings[questionIndex] = {
+          keyMapping: keyMapping,
+          correctAnswer: question.correctAnswer,
+        };
         let html = '<div class="space-y-3">';
 
-        Object.keys(choices).forEach((key) => {
+        Object.keys(newChoices).forEach((key) => {
           html += `
                     <div class="choice cursor-pointer p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-white dark:bg-gray-700" data-choice="${key}" onclick="selectChoice('${key}')">
                         <div class="flex items-center">
                             <div class="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center mr-4 choice-indicator">
                                 <span class="font-bold text-gray-600 dark:text-gray-400">${key}</span>
                             </div>
-                            <span class="text-gray-900 dark:text-white">${choices[key]}</span>
+                            <span class="text-gray-900 dark:text-white">${newChoices[key]}</span>
                         </div>
                     </div>
                 `;
@@ -2111,7 +2180,6 @@
 
         userAnswers[currentQuestionIndex] = choice;
       }
-
       function checkAnswer() {
         const question = currentQuestions[currentQuestionIndex];
         let userAnswer = "";
@@ -2123,14 +2191,28 @@
               "Pilih Jawaban"
             );
             return;
-          }
+          } // Get mapping for current question
+          const questionMapping = currentQuestionMappings[currentQuestionIndex];
+          if (!questionMapping) {
+            console.error(
+              "No mapping found for question index:",
+              currentQuestionIndex
+            );
+            return;
+          } // Convert shuffled answer back to original key for checking
+          const originalUserAnswer =
+            questionMapping.keyMapping[userAnswer] || userAnswer;
+          const isCorrect =
+            originalUserAnswer === questionMapping.correctAnswer;
 
           // Show correct/incorrect choices
           document.querySelectorAll(".choice").forEach((choice) => {
             const choiceKey = choice.getAttribute("data-choice");
+            const originalChoiceKey =
+              questionMapping.keyMapping[choiceKey] || choiceKey;
             const indicator = choice.querySelector(".choice-indicator");
 
-            if (choiceKey === question.correctAnswer) {
+            if (originalChoiceKey === questionMapping.correctAnswer) {
               choice.classList.add(
                 "border-green-500",
                 "bg-green-50",
@@ -2142,10 +2224,7 @@
                 "text-white"
               );
               indicator.innerHTML = '<i class="fas fa-check text-white"></i>';
-            } else if (
-              choiceKey === userAnswer &&
-              choiceKey !== question.correctAnswer
-            ) {
+            } else if (choiceKey === userAnswer && !isCorrect) {
               choice.classList.add(
                 "border-red-500",
                 "bg-red-50",
@@ -2161,7 +2240,8 @@
 
             choice.classList.add("pointer-events-none");
           });
-          if (userAnswer === question.correctAnswer) {
+
+          if (isCorrect) {
             correctCount++;
             // Show encouraging toast for correct answer
             alertToast.showEncouragement("correct");
@@ -2224,24 +2304,31 @@
           }
         }
       }
-
       function updateQuizStats() {
+        // Count how many questions have been answered (not just viewed)
+        const answeredCount = userAnswers.filter(
+          (answer) => answer !== undefined
+        ).length;
+        const incorrectCount = answeredCount - correctCount;
+
         document.getElementById("correctCount").textContent = correctCount;
-        document.getElementById("incorrectCount").textContent =
-          currentQuestionIndex + 1 - correctCount;
-        const percentage = Math.round(
-          (correctCount / (currentQuestionIndex + 1)) * 100
-        );
+        document.getElementById("incorrectCount").textContent = incorrectCount;
+
+        // Calculate percentage based on answered questions only
+        const percentage =
+          answeredCount > 0
+            ? Math.round((correctCount / answeredCount) * 100)
+            : 0;
         document.getElementById("scorePercentage").textContent =
           percentage + "%";
       }
-
       function updateQuizButtons() {
         const prevBtn = document.getElementById("prevBtn");
         const checkBtn = document.getElementById("checkBtn");
         const nextBtn = document.getElementById("nextBtn");
         const finishBtn = document.getElementById("finishBtn");
 
+        // Always allow going to previous questions
         prevBtn.disabled = currentQuestionIndex === 0;
 
         if (showingSolution) {
@@ -2259,7 +2346,6 @@
           finishBtn.classList.add("hidden");
         }
       }
-
       function previousQuestion() {
         if (currentQuestionIndex > 0) {
           currentQuestionIndex--;
@@ -2304,9 +2390,14 @@
         showResults();
       }
       function showResults() {
-        const percentage = Math.round(
-          (correctCount / currentQuestions.length) * 100
-        );
+        // Calculate percentage based on answered questions
+        const answeredCount = userAnswers.filter(
+          (answer) => answer !== undefined
+        ).length;
+        const percentage =
+          answeredCount > 0
+            ? Math.round((correctCount / answeredCount) * 100)
+            : 0;
 
         // Show completion celebration toast with special perfect score handling
         if (percentage === 100) {
@@ -2345,11 +2436,13 @@
         // Track quiz completion for analytics
         trackQuizCompletion(currentSubject, selectedTopics, percentage);
 
+        // Calculate incorrect count properly
+        const incorrectCount = answeredCount - correctCount;
+
         // Update results display
         document.getElementById("finalScore").textContent = percentage + "%";
         document.getElementById("finalCorrect").textContent = correctCount;
-        document.getElementById("finalIncorrect").textContent =
-          currentQuestions.length - correctCount;
+        document.getElementById("finalIncorrect").textContent = incorrectCount;
 
         // Set result message and icon
         const resultIcon = document.getElementById("resultIcon");
@@ -2596,15 +2689,32 @@
         });
         return completed;
       }
-
       function getCorrectAnswers() {
-        // This would need to be tracked during quiz sessions
-        return Math.floor(getCompletedProblems() * 0.75); // Placeholder
+        // Calculate correct answers from actual quiz sessions
+        const sessions = JSON.parse(
+          localStorage.getItem("qlern_sessions") || "[]"
+        );
+        if (sessions.length === 0) {
+          return 0; // Return 0 if no sessions completed yet
+        }
+        return sessions.reduce(
+          (sum, session) => sum + session.correctAnswers,
+          0
+        );
       }
-
       function getAverageScore() {
-        // This would need to be tracked during quiz sessions
-        return Math.floor(Math.random() * 20) + 70; // Placeholder
+        // Calculate average score from actual quiz sessions
+        const sessions = JSON.parse(
+          localStorage.getItem("qlern_sessions") || "[]"
+        );
+        if (sessions.length === 0) {
+          return 0; // Return 0 if no sessions completed yet
+        }
+        const totalScore = sessions.reduce(
+          (sum, session) => sum + session.score,
+          0
+        );
+        return Math.round(totalScore / sessions.length);
       }
 
       function getCompletedTopics() {
@@ -2621,11 +2731,27 @@
         });
         return completed;
       }
-
       function getAccuracy() {
-        const completed = getCompletedProblems();
-        const correct = getCorrectAnswers();
-        return completed > 0 ? Math.round((correct / completed) * 100) : 0;
+        // Calculate accuracy from quiz sessions data, not individual problem tracking
+        const sessions = JSON.parse(
+          localStorage.getItem("qlern_sessions") || "[]"
+        );
+        if (sessions.length === 0) {
+          return 0; // Return 0 if no sessions completed yet
+        }
+
+        const totalQuestions = sessions.reduce(
+          (sum, session) => sum + session.questionsCount,
+          0
+        );
+        const totalCorrect = sessions.reduce(
+          (sum, session) => sum + session.correctAnswers,
+          0
+        );
+
+        return totalQuestions > 0
+          ? Math.round((totalCorrect / totalQuestions) * 100)
+          : 0;
       }
       function getTopicProgress(subject, topic) {
         const total =
@@ -2692,20 +2818,37 @@
         // Show progress saved toast
         alertToast.toastSuccess("💾 Progress tersimpan!");
       }
-
       async function resetProgress() {
         const confirmed = await alertToast.confirm(
           "Apakah Anda yakin ingin mereset semua progress? Tindakan ini tidak dapat dibatalkan.",
           "Reset Progress"
         );
         if (confirmed) {
+          // Clear all progress data
           completedProblems = { matematika: {}, fisika: {} };
           localStorage.setItem(
             "qlern_completed",
             JSON.stringify(completedProblems)
           );
+
+          // Clear quiz sessions data
+          localStorage.removeItem("qlern_sessions");
+
+          // Clear learning streak data
+          localStorage.removeItem("qlern_streak");
+
+          // Update all UI components
           updateDashboardStats();
           updateProgressSection();
+
+          // If currently in quiz, return to dashboard
+          const currentSection = document.querySelector(
+            ".section:not(.hidden)"
+          );
+          if (currentSection && currentSection.id === "quiz") {
+            showSection("dashboard");
+          }
+
           alertToast.toastSuccess(
             "✅ Progress berhasil direset! Semua data pembelajaran telah dihapus."
           );
@@ -2814,21 +2957,5 @@
         }
       });
     </script>
-    <!-- Credit -->
-    <div
-      class="fixed bottom-2 right-2 lg:right-2 lg:bottom-2 text-xs text-gray-400/50 dark:text-gray-500/40 z-10 max-lg:left-1/2 max-lg:transform max-lg:-translate-x-1/2 max-lg:right-auto max-lg:relative max-lg:mt-8 max-lg:mb-4"
-    >
-      <div
-        class="bg-transparent backdrop-blur-none rounded-lg px-3 py-1 transition-all duration-300 hover:text-gray-500 dark:hover:text-gray-400"
-      >
-        Made with ❤️ by
-        <a
-          href="https://www.instagram.com/aryaaafaisal/"
-          target="_blank"
-          class="text-blue-400/60 hover:text-blue-500 dark:text-blue-400/50 dark:hover:text-blue-300 transition-colors"
-          >Arya Faisal Pasha</a
-        >
-      </div>
-    </div>
   </body>
 </html>

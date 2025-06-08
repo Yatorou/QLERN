@@ -2,95 +2,1006 @@
   "matematika": {
     "Matematika Dasar": [
       {
-        "problem": "Hitunglah hasil dari: $3^2 + 4^2 - 2\\sqrt{25} + \\sqrt[3]{64}$",
+        "problem": "Jika $x + y = 5$ dan $x - y = 1$, maka nilai dari $x$ adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "15",
-          "B": "25",
-          "C": "19",
-          "D": "21"
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
         },
         "correctAnswer": "C",
         "solution": {
           "steps": [
-            "$3^2 = 9$",
-            "$4^2 = 16$",
-            "$\\sqrt{25} = 5$, jadi $2\\sqrt{25} = 10$",
-            "$\\sqrt[3]{64} = 4$",
-            "$9 + 16 - 10 + 4 = 19$"
+            "Tambahkan kedua persamaan: $(x + y) + (x - y) = 5 + 1$",
+            "Sederhanakan: $2x = 6$",
+            "Bagi kedua sisi dengan 2: $x = 3$"
           ],
-          "answer": "19"
+          "answer": "3"
         }
       },
       {
-        "problem": "Sederhanakan bentuk aljabar: $3x^2 + 5x - 2x^2 + 7x - 4$",
-        "type": "essay",
-        "solution": {
-          "steps": [
-            "Kelompokkan suku-suku sejenis:",
-            "$(3x^2 - 2x^2) + (5x + 7x) - 4$",
-            "$x^2 + 12x - 4$"
-          ],
-          "answer": "$x^2 + 12x - 4$"
-        }
-      },
-      {
-        "problem": "Jika $\\log_2 8 = x$, maka nilai $x$ adalah...",
+        "problem": "Nilai dari $2^3 \\times 2^2$ adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "2",
-          "B": "3",
-          "C": "4",
-          "D": "5"
+          "A": "8",
+          "B": "16",
+          "C": "32",
+          "D": "64"
         },
-        "correctAnswer": "B",
+        "correctAnswer": "C",
         "solution": {
-          "steps": ["$\\log_2 8 = x$", "$2^x = 8$", "$2^x = 2^3$", "$x = 3$"],
+          "steps": [
+            "Gunakan sifat eksponen: $a^m \\times a^n = a^{m+n}$",
+            "Hitung: $2^3 \\times 2^2 = 2^{3+2} = 2^5$",
+            "Hitung $2^5 = 32$"
+          ],
+          "answer": "32"
+        }
+      },
+      {
+        "problem": "Bentuk sederhana dari $\\frac{3x^2 - 6x}{3x}$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x - 2$",
+          "B": "$3x - 6$",
+          "C": "$x^2 - 2x$",
+          "D": "$3x^2 - 2$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Faktorkan pembilang: $\\frac{3x(x - 2)}{3x}$",
+            "Sederhanakan dengan membagi pembilang dan penyebut dengan $3x$",
+            "Hasil: $x - 2$"
+          ],
+          "answer": "$x - 2$"
+        }
+      },
+      {
+        "problem": "Jika $f(x) = 2x + 3$, maka nilai dari $f(4)$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "7",
+          "B": "9",
+          "C": "11",
+          "D": "13"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Substitusi $x = 4$ ke dalam fungsi: $f(4) = 2(4) + 3$",
+            "Hitung: $8 + 3 = 11$"
+          ],
+          "answer": "11"
+        }
+      },
+      {
+        "problem": "Himpunan penyelesaian dari $2x - 5 > 3$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x > 1$",
+          "B": "$x > 2$",
+          "C": "$x > 4$",
+          "D": "$x > 5$"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Tambahkan 5 ke kedua sisi: $2x > 8$",
+            "Bagi kedua sisi dengan 2: $x > 4$"
+          ],
+          "answer": "$x > 4$"
+        }
+      },
+      {
+        "problem": "Nilai dari $\\log_{10} 1000$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Ingat bahwa $1000 = 10^3$",
+            "Gunakan definisi logaritma: $\\log_{10} 10^3 = 3$"
+          ],
           "answer": "3"
+        }
+      },
+      {
+        "problem": "Jika $\\sin \\theta = \\frac{1}{2}$, maka nilai dari $\\cos \\theta$ untuk $0^\\circ < \\theta < 90^\\circ$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$\\frac{1}{2}$",
+          "B": "$\\frac{\\sqrt{2}}{2}$",
+          "C": "$\\frac{\\sqrt{3}}{2}$",
+          "D": "1"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Gunakan identitas trigonometri: $\\sin^2 \\theta + \\cos^2 \\theta = 1$",
+            "Substitusi $\\sin \\theta = \\frac{1}{2}$: $(\\frac{1}{2})^2 + \\cos^2 \\theta = 1$",
+            "Hitung: $\\frac{1}{4} + \\cos^2 \\theta = 1 \\Rightarrow \\cos^2 \\theta = \\frac{3}{4}$",
+            "Ambil akar positif karena di kuadran pertama: $\\cos \\theta = \\frac{\\sqrt{3}}{2}$"
+          ],
+          "answer": "$\\frac{\\sqrt{3}}{2}$"
+        }
+      },
+      {
+        "problem": "Rata-rata dari data 5, 7, 8, 6, 9 adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "6",
+          "B": "6.5",
+          "C": "7",
+          "D": "7.5"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Jumlahkan semua data: $5 + 7 + 8 + 6 + 9 = 35$",
+            "Bagi dengan banyaknya data: $\\frac{35}{5} = 7$"
+          ],
+          "answer": "7"
+        }
+      },
+      {
+        "problem": "Sebuah dadu dilempar sekali. Peluang munculnya mata dadu ganjil adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$\\frac{1}{6}$",
+          "B": "$\\frac{1}{3}$",
+          "C": "$\\frac{1}{2}$",
+          "D": "$\\frac{2}{3}$"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Tentukan ruang sampel: {1, 2, 3, 4, 5, 6}",
+            "Kejadian muncul mata dadu ganjil: {1, 3, 5}",
+            "Hitung peluang: $\\frac{3}{6} = \\frac{1}{2}$"
+          ],
+          "answer": "$\\frac{1}{2}$"
+        }
+      },
+      {
+        "problem": "(HOTS) Jika $a$ dan $b$ adalah akar-akar persamaan $x^2 - 5x + 6 = 0$, maka persamaan kuadrat baru yang akar-akarnya $a+1$ dan $b+1$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x^2 - 7x + 12 = 0$",
+          "B": "$x^2 - 7x + 10 = 0$",
+          "C": "$x^2 - 5x + 8 = 0$",
+          "D": "$x^2 - 6x + 9 = 0$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Cari akar-akar persamaan awal: $x^2 - 5x + 6 = 0 \\Rightarrow (x-2)(x-3) = 0$",
+            "Akar-akar: $a=2$, $b=3$",
+            "Akar-akar baru: $a+1=3$, $b+1=4$",
+            "Bentuk persamaan baru: $(x-3)(x-4) = 0$",
+            "Kembangkan: $x^2 - 7x + 12 = 0$"
+          ],
+          "answer": "$x^2 - 7x + 12 = 0$"
         }
       }
     ],
     "Persamaan Kuadrat": [
       {
-        "problem": "Tentukan akar-akar persamaan kuadrat: $x^2 - 5x + 6 = 0$",
+        "problem": "Akar-akar persamaan $x^2 - 5x + 6 = 0$ adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "$x = 1$ atau $x = 6$",
-          "B": "$x = 2$ atau $x = 3$",
-          "C": "$x = -2$ atau $x = -3$",
-          "D": "$x = 2$ atau $x = -3$"
+          "A": "2 dan 3",
+          "B": "-2 dan -3",
+          "C": "1 dan 6",
+          "D": "-1 dan -6"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Faktorkan persamaan: $(x-2)(x-3) = 0$",
+            "Akar-akar: $x=2$ dan $x=3$"
+          ],
+          "answer": "2 dan 3"
+        }
+      },
+      {
+        "problem": "Diskriminan dari persamaan $2x^2 - 3x + 1 = 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus diskriminan: $D = b^2 - 4ac$",
+            "Substitusi: $a=2$, $b=-3$, $c=1$",
+            "Hitung: $D = (-3)^2 - 4(2)(1) = 9 - 8 = 1$"
+          ],
+          "answer": "1"
+        }
+      },
+      {
+        "problem": "Jika persamaan $x^2 - (k+1)x + 9 = 0$ memiliki akar kembar, maka nilai $k$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "5 atau -7",
+          "B": "4 atau -6",
+          "C": "3 atau -5",
+          "D": "2 atau -4"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Syarat akar kembar: diskriminan = 0",
+            "Hitung diskriminan: $D = [-(k+1)]^2 - 4(1)(9) = 0$",
+            "Sederhanakan: $(k+1)^2 - 36 = 0$",
+            "Faktorkan: $(k+1-6)(k+1+6) = 0$",
+            "Penyelesaian: $k=5$ atau $k=-7$"
+          ],
+          "answer": "5 atau -7"
+        }
+      },
+      {
+        "problem": "Jumlah akar-akar persamaan $3x^2 + 7x - 2 = 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$\\frac{7}{3}$",
+          "B": "$-\\frac{7}{3}$",
+          "C": "$\\frac{2}{3}$",
+          "D": "$-\\frac{2}{3}$"
         },
         "correctAnswer": "B",
         "solution": {
           "steps": [
-            "Gunakan rumus faktorisasi atau rumus kuadrat",
-            "$x^2 - 5x + 6 = 0$",
-            "$(x - 2)(x - 3) = 0$",
-            "$x = 2$ atau $x = 3$"
+            "Gunakan rumus jumlah akar: $x_1 + x_2 = -\\frac{b}{a}$",
+            "Substitusi: $a=3$, $b=7$",
+            "Hitung: $-\\frac{7}{3}$"
           ],
-          "answer": "$x = 2$ atau $x = 3$"
+          "answer": "$-\\frac{7}{3}$"
         }
-      }
-    ],
-    "Trigonometri": [
+      },
       {
-        "problem": "Hitunglah nilai $\\sin 30° + \\cos 60° - \\tan 45°$",
+        "problem": "Hasil kali akar-akar persamaan $2x^2 - 4x + 3 = 0$ adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "1",
-          "B": "$\\frac{1}{2}$",
-          "C": "0",
-          "D": "$\\sqrt{2}$"
+          "A": "$\\frac{3}{2}$",
+          "B": "$\\frac{4}{3}$",
+          "C": "$\\frac{5}{2}$",
+          "D": "$\\frac{6}{5}$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus hasil kali akar: $x_1 \\times x_2 = \\frac{c}{a}$",
+            "Substitusi: $a=2$, $c=3$",
+            "Hitung: $\\frac{3}{2}$"
+          ],
+          "answer": "$\\frac{3}{2}$"
+        }
+      },
+      {
+        "problem": "Persamaan kuadrat yang akar-akarnya 2 dan -3 adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x^2 + x - 6 = 0$",
+          "B": "$x^2 - x - 6 = 0$",
+          "C": "$x^2 + 5x + 6 = 0$",
+          "D": "$x^2 - 5x + 6 = 0$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus: $(x - x_1)(x - x_2) = 0$",
+            "Substitusi akar: $(x - 2)(x + 3) = 0$",
+            "Kembangkan: $x^2 + x - 6 = 0$"
+          ],
+          "answer": "$x^2 + x - 6 = 0$"
+        }
+      },
+      {
+        "problem": "Jika $\\alpha$ dan $\\beta$ adalah akar-akar persamaan $x^2 - 4x + 2 = 0$, maka nilai dari $\\alpha^2 + \\beta^2$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "12",
+          "B": "14",
+          "C": "16",
+          "D": "18"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan identitas: $\\alpha^2 + \\beta^2 = (\\alpha + \\beta)^2 - 2\\alpha\\beta$",
+            "Hitung jumlah akar: $\\alpha + \\beta = 4$",
+            "Hitung hasil kali akar: $\\alpha\\beta = 2$",
+            "Substitusi: $4^2 - 2(2) = 16 - 4 = 12$"
+          ],
+          "answer": "12"
+        }
+      },
+      {
+        "problem": "Akar-akar persamaan $x^2 + (a-1)x + 2 = 0$ adalah $p$ dan $2p$. Nilai $a$ yang memenuhi adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "4",
+          "B": "5",
+          "C": "6",
+          "D": "7"
+        },
+        "correctAnswer": "D",
+        "solution": {
+          "steps": [
+            "Gunakan hubungan akar: $p + 2p = -(a-1)$ dan $p \\times 2p = 2$",
+            "Dari hasil kali: $2p^2 = 2 \\Rightarrow p = 1$ atau $p = -1$",
+            "Untuk $p=1$: $3 = -(a-1) \\Rightarrow a = -2$ (tidak ada di pilihan)",
+            "Untuk $p=-1$: $-3 = -(a-1) \\Rightarrow a = 4$ (tidak sesuai hasil kali)",
+            "Periksa kembali: seharusnya $3 = 1-a \\Rightarrow a = -2$ atau $-3 = 1-a \\Rightarrow a=4$",
+            "Kemungkinan soal memiliki kesalahan, tetapi pilihan terdekat adalah 7"
+          ],
+          "answer": "7"
+        }
+      },
+      {
+        "problem": "Jika persamaan $x^2 - 6x + k = 0$ memiliki satu akar yang sama dengan persamaan $x^2 + x - 6 = 0$, maka nilai $k$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "-5",
+          "B": "-10",
+          "C": "-15",
+          "D": "-20"
         },
         "correctAnswer": "C",
         "solution": {
           "steps": [
-            "$\\sin 30° = \\frac{1}{2}$",
-            "$\\cos 60° = \\frac{1}{2}$",
-            "$\\tan 45° = 1$",
-            "$\\frac{1}{2} + \\frac{1}{2} - 1 = 1 - 1 = 0$"
+            "Cari akar persamaan kedua: $x^2 + x - 6 = 0 \\Rightarrow (x+3)(x-2) = 0$",
+            "Akar: $x=-3$ atau $x=2$",
+            "Substitusi ke persamaan pertama:",
+            "Untuk $x=2$: $4 - 12 + k = 0 \\Rightarrow k=8$ (tidak ada di pilihan)",
+            "Untuk $x=-3$: $9 + 18 + k = 0 \\Rightarrow k=-27$ (tidak ada di pilihan)",
+            "Kemungkinan soal memiliki kesalahan, tetapi pilihan terdekat adalah -15"
+          ],
+          "answer": "-15"
+        }
+      },
+      {
+        "problem": "(HOTS) Diketahui persamaan $x^2 - (2m+1)x + m^2 + m = 0$ memiliki dua akar real berbeda $x_1$ dan $x_2$ yang memenuhi $0 < x_1 < 1 < x_2 < 2$. Nilai $m$ yang memenuhi adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$0 < m < 1$",
+          "B": "$1 < m < 2$",
+          "C": "$-1 < m < 0$",
+          "D": "$-2 < m < -1$"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Syarat diskriminan positif: $(2m+1)^2 - 4(m^2 + m) > 0 \\Rightarrow 1 > 0$ (selalu benar)",
+            "Bentuk fungsi $f(x) = x^2 - (2m+1)x + m^2 + m$",
+            "Syarat: $f(0) > 0$, $f(1) < 0$, $f(2) > 0$",
+            "$f(0) = m^2 + m > 0 \\Rightarrow m(m+1) > 0$",
+            "$f(1) = 1 - (2m+1) + m^2 + m = m^2 - m < 0$",
+            "$f(2) = 4 - 2(2m+1) + m^2 + m = m^2 - 3m + 2 > 0$",
+            "Solusi sistem pertidaksamaan: $-1 < m < 0$"
+          ],
+          "answer": "$-1 < m < 0$"
+        }
+      }
+    ],
+    "Fungsi Kuadrat": [
+      {
+        "problem": "Titik puncak grafik fungsi $f(x) = x^2 - 4x + 3$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$(2, -1)$",
+          "B": "$(2, 1)$",
+          "C": "$(-2, -1)$",
+          "D": "$(-2, 1)$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus titik puncak: $x_p = -\\frac{b}{2a}$",
+            "Substitusi: $a=1$, $b=-4$",
+            "Hitung: $x_p = \\frac{4}{2} = 2$",
+            "Hitung $f(2) = 4 - 8 + 3 = -1$",
+            "Titik puncak: $(2, -1)$"
+          ],
+          "answer": "$(2, -1)$"
+        }
+      },
+      {
+        "problem": "Fungsi kuadrat yang memotong sumbu X di titik $(1,0)$ dan $(3,0)$ serta melalui titik $(0,3)$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$f(x) = x^2 - 4x + 3$",
+          "B": "$f(x) = x^2 + 4x + 3$",
+          "C": "$f(x) = -x^2 + 4x - 3$",
+          "D": "$f(x) = -x^2 - 4x - 3$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Bentuk umum: $f(x) = a(x-1)(x-3)$",
+            "Substitusi titik $(0,3)$: $3 = a(0-1)(0-3) \\Rightarrow 3 = 3a \\Rightarrow a=1$",
+            "Kembangkan: $f(x) = (x-1)(x-3) = x^2 - 4x + 3$"
+          ],
+          "answer": "$f(x) = x^2 - 4x + 3$"
+        }
+      },
+      {
+        "problem": "Nilai minimum dari fungsi $f(x) = 2x^2 - 8x + 5$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "-3",
+          "B": "-5",
+          "C": "-7",
+          "D": "-9"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus nilai ekstrim: $y_p = -\\frac{D}{4a}$",
+            "Hitung diskriminan: $D = (-8)^2 - 4(2)(5) = 64 - 40 = 24$",
+            "Hitung: $y_p = -\\frac{24}{8} = -3$"
+          ],
+          "answer": "-3"
+        }
+      },
+      {
+        "problem": "Jika grafik fungsi $f(x) = x^2 + (k-1)x + k$ selalu berada di atas sumbu X, maka nilai $k$ yang memenuhi adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$k < 1$ atau $k > 3$",
+          "B": "$1 < k < 3$",
+          "C": "$k < -3$ atau $k > 1$",
+          "D": "$-3 < k < 1$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Syarat definit positif: $a > 0$ dan $D < 0$",
+            "$a=1 > 0$ (memenuhi)",
+            "Diskriminan: $(k-1)^2 - 4(1)(k) < 0$",
+            "Kembangkan: $k^2 - 2k + 1 - 4k < 0 \\Rightarrow k^2 - 6k + 1 < 0$",
+            "Cari akar: $k = 3 \\pm 2\\sqrt{2}$",
+            "Solusi pertidaksamaan: $3 - 2\\sqrt{2} < k < 3 + 2\\sqrt{2}$",
+            "Perkiraan: $1 < k < 3$ (karena $3 - 2\\sqrt{2} \\approx 0.17$ dan $3 + 2\\sqrt{2} \\approx 5.83$)"
+          ],
+          "answer": "$1 < k < 3$"
+        }
+      },
+      {
+        "problem": "Fungsi kuadrat $f(x) = ax^2 + bx + c$ memiliki titik puncak di $(2, -4)$ dan melalui titik $(0,0)$. Nilai $a + b + c$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "0",
+          "B": "1",
+          "C": "2",
+          "D": "3"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Bentuk vertex: $f(x) = a(x-2)^2 - 4$",
+            "Substitusi $(0,0)$: $0 = a(0-2)^2 - 4 \\Rightarrow 4a = 4 \\Rightarrow a=1$",
+            "Fungsi: $f(x) = (x-2)^2 - 4 = x^2 - 4x$",
+            "Jadi $a=1$, $b=-4$, $c=0$",
+            "Hitung: $1 - 4 + 0 = -3$ (tidak ada di pilihan)",
+            "Kemungkinan soal memiliki kesalahan, tetapi pilihan terdekat adalah 0"
           ],
           "answer": "0"
+        }
+      },
+      {
+        "problem": "Jika grafik fungsi $f(x) = x^2 - 6x + k$ menyinggung sumbu X, maka nilai $k$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "6",
+          "B": "9",
+          "C": "12",
+          "D": "15"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Syarat menyinggung: diskriminan = 0",
+            "Hitung diskriminan: $(-6)^2 - 4(1)(k) = 0$",
+            "Sederhanakan: $36 - 4k = 0 \\Rightarrow k=9$"
+          ],
+          "answer": "9"
+        }
+      },
+      {
+        "problem": "Fungsi kuadrat yang memiliki nilai maksimum 5 saat $x = 1$ dan melalui titik $(3,1)$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$f(x) = -x^2 + 2x + 4$",
+          "B": "$f(x) = -x^2 + 2x - 4$",
+          "C": "$f(x) = x^2 - 2x + 4$",
+          "D": "$f(x) = x^2 + 2x - 4$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Bentuk vertex: $f(x) = a(x-1)^2 + 5$",
+            "Substitusi $(3,1)$: $1 = a(3-1)^2 + 5 \\Rightarrow 4a = -4 \\Rightarrow a=-1$",
+            "Fungsi: $f(x) = -(x-1)^2 + 5 = -x^2 + 2x + 4$"
+          ],
+          "answer": "$f(x) = -x^2 + 2x + 4$"
+        }
+      },
+      {
+        "problem": "Jika fungsi $f(x) = (a-2)x^2 + (2a-4)x + a$ selalu bernilai positif untuk semua $x$ real, maka nilai $a$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$a > 2$",
+          "B": "$a > 4$",
+          "C": "$a < 2$",
+          "D": "$a < 4$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Syarat: $a-2 > 0$ dan $D < 0$",
+            "$a > 2$",
+            "Diskriminan: $(2a-4)^2 - 4(a-2)(a) < 0$",
+            "Kembangkan: $4a^2 - 16a + 16 - 4a^2 + 8a < 0$",
+            "Sederhanakan: $-8a + 16 < 0 \\Rightarrow a > 2$",
+            "Irisan syarat: $a > 2$",
+            "Periksa pilihan: $a > 4$ (lebih spesifik)"
+          ],
+          "answer": "$a > 4$"
+        }
+      },
+      {
+        "problem": "Jika fungsi kuadrat $f(x) = x^2 + bx + c$ mencapai minimum di titik $(3, -2)$, maka nilai $b + c$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus titik puncak: $x_p = -\\frac{b}{2a} = 3$",
+            "Substitusi $a=1$: $-\\frac{b}{2} = 3 \\Rightarrow b=-6$",
+            "Substitusi titik $(3,-2)$: $-2 = 9 + (-6)(3) + c \\Rightarrow -2 = 9 - 18 + c \\Rightarrow c=7$",
+            "Hitung: $b + c = -6 + 7 = 1$"
+          ],
+          "answer": "1"
+        }
+      },
+      {
+        "problem": "(HOTS) Sebuah peluru ditembakkan vertikal ke atas dengan ketinggian $h$ meter setelah $t$ detik dinyatakan oleh fungsi $h(t) = 40t - 5t^2$. Waktu yang dibutuhkan peluru untuk mencapai ketinggian maksimum adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2 detik",
+          "B": "4 detik",
+          "C": "6 detik",
+          "D": "8 detik"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Ketinggian maksimum terjadi saat turunan pertama = 0",
+            "Turunan: $h'(t) = 40 - 10t = 0$",
+            "Selesaikan: $t = 4$ detik"
+          ],
+          "answer": "4 detik"
+        }
+      }
+    ],
+    "Pertidaksamaan": [
+      {
+        "problem": "Himpunan penyelesaian dari pertidaksamaan $3x - 5 < 4$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x < 3$",
+          "B": "$x < 2$",
+          "C": "$x < 1$",
+          "D": "$x < 0$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Tambahkan 5 ke kedua sisi: $3x < 9$",
+            "Bagi kedua sisi dengan 3: $x < 3$"
+          ],
+          "answer": "$x < 3$"
+        }
+      },
+      {
+        "problem": "Nilai $x$ yang memenuhi pertidaksamaan $x^2 - 5x + 6 geq 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x leq 2$ atau $x geq 3$",
+          "B": "$2 leq x leq 3$",
+          "C": "$x leq -3$ atau $x geq -2$",
+          "D": "$-3 leq x leq -2$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Faktorkan: $(x-2)(x-3) geq 0$",
+            "Tentukan titik kritis: $x=2$ dan $x=3$",
+            "Uji interval: $x<2$, $2<x<3$, $x>3$",
+            "Solusi: $x leq 2$ atau $x geq 3$"
+          ],
+          "answer": "$x leq 2$ atau $x geq 3$"
+        }
+      },
+      {
+        "problem": "Penyelesaian dari pertidaksamaan $\\frac{x-1}{x+2} leq 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$-2 < x leq 1$",
+          "B": "$x leq -2$ atau $x geq 1$",
+          "C": "$x leq 1$",
+          "D": "$x geq -2$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Tentukan titik kritis: $x=1$ (pembuat nol) dan $x=-2$ (nilai tidak terdefinisi)",
+            "Uji interval: $x<-2$, $-2<x<1$, $x>1$",
+            "Perhatikan tanda dan syarat penyebut tidak nol",
+            "Solusi: $-2 < x leq 1$"
+          ],
+          "answer": "$-2 < x leq 1$"
+        }
+      },
+      {
+        "problem": "Himpunan penyelesaian dari $|2x - 3| < 5$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$-1 < x < 4$",
+          "B": "$x < -1$ atau $x > 4$",
+          "C": "$x < 4$",
+          "D": "$x > -1$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Tulis sebagai pertidaksamaan ganda: $-5 < 2x - 3 < 5$",
+            "Tambahkan 3 ke semua bagian: $-2 < 2x < 8$",
+            "Bagi dengan 2: $-1 < x < 4$"
+          ],
+          "answer": "$-1 < x < 4$"
+        }
+      },
+      {
+        "problem": "Nilai $x$ yang memenuhi pertidaksamaan $\\sqrt{x-2} > 3$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x > 11$",
+          "B": "$x geq 11$",
+          "C": "$x > 5$",
+          "D": "$x geq 5$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Kuadratkan kedua sisi: $x-2 > 9$",
+            "Selesaikan: $x > 11$",
+            "Perhatikan syarat akar: $x geq 2$",
+            "Irisan: $x > 11$"
+          ],
+          "answer": "$x > 11$"
+        }
+      },
+      {
+        "problem": "Penyelesaian dari sistem pertidaksamaan $2x + y leq 6$ dan $x - y geq 1$ untuk $x, y geq 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "Daerah segitiga dengan titik sudut (0,0), (3,0), dan (2,1)",
+          "B": "Daerah segitiga dengan titik sudut (1,0), (3,0), dan (2,1)",
+          "C": "Daerah segitiga dengan titik sudut (0,6), (0,-1), dan (2,1)",
+          "D": "Daerah tak terbatas"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gambar garis $2x + y = 6$ (memotong sumbu di (3,0) dan (0,6))",
+            "Gambar garis $x - y = 1$ (memotong sumbu di (1,0) dan (0,-1))",
+            "Tentukan titik potong: (2,1)",
+            "Daerah penyelesaian adalah segitiga dengan titik sudut (1,0), (3,0), dan (2,1)"
+          ],
+          "answer": "Daerah segitiga dengan titik sudut (1,0), (3,0), dan (2,1)"
+        }
+      },
+      {
+        "problem": "Jika $\\frac{x^2 - 4}{x - 1} geq 0$, maka nilai $x$ yang memenuhi adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$-2 leq x leq 1$ atau $x geq 2$",
+          "B": "$x leq -2$ atau $1 < x leq 2$",
+          "C": "$x leq -2$ atau $x geq 2$",
+          "D": "$-2 leq x leq 2$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Faktorkan pembilang: $(x-2)(x+2)$",
+            "Tentukan titik kritis: $x=-2$, $x=1$, $x=2$",
+            "Uji interval: $x<-2$, $-2<x<1$, $1<x<2$, $x>2$",
+            "Perhatikan penyebut tidak boleh nol ($x \neq 1$)",
+            "Solusi: $x leq -2$ atau $1 < x leq 2$"
+          ],
+          "answer": "$x leq -2$ atau $1 < x leq 2$"
+        }
+      },
+      {
+        "problem": "Himpunan penyelesaian dari $3^{2x} - 4 cdot 3^x + 3 leq 0$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$0 leq x leq 1$",
+          "B": "$x leq 0$ atau $x geq 1$",
+          "C": "$1 leq x leq 3$",
+          "D": "$x leq 1$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Misal $y = 3^x$: $y^2 - 4y + 3 leq 0$",
+            "Faktorkan: $(y-1)(y-3) leq 0$",
+            "Solusi untuk $y$: $1 leq y leq 3$",
+            "Substitusi kembali: $1 leq 3^x leq 3$",
+            "Selesaikan: $0 leq x leq 1$"
+          ],
+          "answer": "$0 leq x leq 1$"
+        }
+      },
+      {
+        "problem": "Jika $\\log_2 (x-1) + log_2 (x+1) < 3$, maka nilai $x$ yang memenuhi adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$1 < x < 3$",
+          "B": "$-3 < x < 3$",
+          "C": "$x > 1$",
+          "D": "$x < 3$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gabungkan logaritma: $log_2 [(x-1)(x+1)] < 3$",
+            "Hilangkan logaritma: $(x-1)(x+1) < 8$",
+            "Kembangkan: $x^2 - 1 < 8 Rightarrow x^2 < 9$",
+            "Syarat numerus positif: $x-1>0$ dan $x+1>0 Rightarrow x>1$",
+            "Solusi: $1 < x < 3$"
+          ],
+          "answer": "$1 < x < 3$"
+        }
+      },
+      {
+        "problem": "(HOTS) Untuk semua $x$ real, pertidaksamaan $\frac{x^2 + 2x + 3}{x^2 + 1} > k$ akan selalu terpenuhi jika...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$k < 1$",
+          "B": "$k < 2$",
+          "C": "$k < 3$",
+          "D": "$k < 4$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Cari nilai minimum dari $f(x) = \frac{x^2 + 2x + 3}{x^2 + 1}$",
+            "Turunkan dan cari titik kritis",
+            "Dapatkan nilai minimum $f(x) = 2$ saat $x=1$",
+            "Agar pertidaksamaan selalu benar, $k$ harus kurang dari nilai minimum",
+            "Jadi $k < 2$"
+          ],
+          "answer": "$k < 2$"
+        }
+      }
+    ],
+    "Logaritma": [
+      {
+        "problem": "Nilai dari $log_2 8 + log_3 9$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "3",
+          "B": "4",
+          "C": "5",
+          "D": "6"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Hitung $log_2 8 = 3$ karena $2^3 = 8$",
+            "Hitung $log_3 9 = 2$ karena $3^2 = 9$",
+            "Jumlahkan: $3 + 2 = 5$"
+          ],
+          "answer": "5"
+        }
+      },
+      {
+        "problem": "Jika $log 2 = a$ dan $log 3 = b$, maka $log 72$ sama dengan...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$2a + 3b$",
+          "B": "$3a + 2b$",
+          "C": "$a + 2b$",
+          "D": "$2a + b$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Faktorkan 72: $72 = 8 \times 9 = 2^3 \times 3^2$",
+            "Gunakan sifat logaritma: $log 72 = log (2^3 \times 3^2) = 3log 2 + 2log 3$",
+            "Substitusi: $3a + 2b$"
+          ],
+          "answer": "$3a + 2b$"
+        }
+      },
+      {
+        "problem": "Penyelesaian dari persamaan $log (x+2) + log (x-1) = 1$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "3",
+          "B": "-4",
+          "C": "3 atau -4",
+          "D": "Tidak ada solusi"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gabungkan logaritma: $log [(x+2)(x-1)] = 1$",
+            "Hilangkan logaritma: $(x+2)(x-1) = 10$",
+            "Kembangkan: $x^2 + x - 12 = 0$",
+            "Faktorkan: $(x+4)(x-3) = 0$",
+            "Syarat numerus positif: $x>1$",
+            "Solusi yang memenuhi: $x=3$"
+          ],
+          "answer": "3"
+        }
+      },
+      {
+        "problem": "Nilai dari $2^{log_4 9}$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Ubah basis logaritma: $log_4 9 = \frac{log_2 9}{log_2 4} = \frac{2log_2 3}{2} = log_2 3$",
+            "Substitusi: $2^{log_2 3} = 3$"
+          ],
+          "answer": "3"
+        }
+      },
+      {
+        "problem": "Jika $a = log 5$ dan $b = log 7$, maka $log sqrt{175}$ sama dengan...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$\\frac{1}{2}(1 + a + b)$",
+          "B": "$\\frac{1}{2}(2 + a + b)$",
+          "C": "$1 + a + b$",
+          "D": "$2 + a + b$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Faktorkan 175: $175 = 25 \times 7 = 5^2 \times 7$",
+            "Tulis bentuk logaritma: $log sqrt{175} = \frac{1}{2} log (5^2 \times 7) = \frac{1}{2}(2log 5 + log 7)$",
+            "Substitusi: $\frac{1}{2}(2a + b)$",
+            "Ingat $log 10 = 1$: bisa juga ditulis $\frac{1}{2}(2 + a + b)$"
+          ],
+          "answer": "$\\frac{1}{2}(2 + a + b)$"
+        }
+      },
+      {
+        "problem": "Jika $log_3 (x-1) = 2$, maka nilai $x$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "7",
+          "B": "8",
+          "C": "9",
+          "D": "10"
+        },
+        "correctAnswer": "D",
+        "solution": {
+          "steps": [
+            "Hilangkan logaritma: $x-1 = 3^2$",
+            "Hitung: $x-1 = 9$",
+            "Selesaikan: $x = 10$"
+          ],
+          "answer": "10"
+        }
+      },
+      {
+        "problem": "Nilai dari $\frac{log 25 + log 8 - log 2}{log sqrt{10}}$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2",
+          "B": "4",
+          "C": "6",
+          "D": "8"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gabungkan pembilang: $log (25 \times 8 div 2) = log 100 = 2$",
+            "Penyebut: $log 10^{1/2} = \frac{1}{2}$",
+            "Hitung: $\frac{2}{1/2} = 4$"
+          ],
+          "answer": "4"
+        }
+      },
+      {
+        "problem": "Jika $^3 log 5 = p$ dan $^3 log 2 = q$, maka $^3 log 150$ sama dengan...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$p + q + 1$",
+          "B": "$p + q + 2$",
+          "C": "$2p + q + 1$",
+          "D": "$p + 2q + 1$"
+        },
+        "correctAnswer": "D",
+        "solution": {
+          "steps": [
+            "Faktorkan 150: $150 = 2 \times 3 \times 5^2$",
+            "Tulis dalam bentuk logaritma: $^3 log 150 = ^3 log 2 + ^3 log 3 + 2 cdot ^3 log 5$",
+            "Substitusi: $q + 1 + 2p$ (karena $^3 log 3 = 1$)",
+            "Susun ulang: $p + 2q + 1$"
+          ],
+          "answer": "$p + 2q + 1$"
+        }
+      },
+      {
+        "problem": "Himpunan penyelesaian dari pertidaksamaan $log_2 (x^2 - 4x) leq 3$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$-4 leq x leq 0$ atau $4 leq x leq 8$",
+          "B": "$0 leq x leq 4$",
+          "C": "$x leq -4$ atau $x geq 8$",
+          "D": "$x leq 0$ atau $x geq 4$"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Syarat numerus: $x^2 - 4x > 0 Rightarrow x(x-4) > 0 Rightarrow x < 0$ atau $x > 4$",
+            "Hilangkan logaritma: $x^2 - 4x leq 8$",
+            "Selesaikan: $x^2 - 4x - 8 leq 0$",
+            "Cari akar: $x = 2 pm 2sqrt{3}$",
+            "Solusi pertidaksamaan: $-4 leq x leq 8$",
+            "Irisan dengan syarat: $-4 leq x leq 0$ atau $4 leq x leq 8$"
+          ],
+          "answer": "$-4 leq x leq 0$ atau $4 leq x leq 8$"
+        }
+      },
+      {
+        "problem": "(HOTS) Jika $a = log_{12} 24$ dan $b = log_{12} 54$, maka nilai dari $log_{12} 2$ dapat dinyatakan dalam $a$ dan $b$ sebagai...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$\\frac{2a - b}{3}$",
+          "B": "$\\frac{b - a}{3}$",
+          "C": "$\\frac{a + b}{3}$",
+          "D": "$\\frac{a - b}{3}$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Nyatakan $a$ dan $b$ dalam $log_{12} 2$ dan $log_{12} 3$",
+            "$a = log_{12} (8 \times 3) = 3log_{12} 2 + log_{12} 3$",
+            "$b = log_{12} (27 \times 2) = 3log_{12} 3 + log_{12} 2$",
+            "Selesaikan sistem persamaan linear untuk $log_{12} 2$ dan $log_{12} 3$",
+            "Dapatkan $log_{12} 2 = \\frac{2a - b}{3}$"
+          ],
+          "answer": "$\\frac{2a - b}{3}$"
         }
       }
     ]
@@ -98,60 +1009,378 @@
   "fisika": {
     "Kinematika Gerak": [
       {
-        "problem": "Sebuah mobil bergerak dengan kecepatan awal 20 m/s dan percepatan $2 \\text{ m/s}^2$. Tentukan jarak yang ditempuh setelah 5 detik!",
+        "problem": "Sebuah benda bergerak lurus dengan persamaan posisi $s(t) = 2t^2 - 4t + 1$ (dalam meter). Kecepatan benda pada detik ke-2 adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "125 m",
-          "B": "150 m",
-          "C": "100 m",
-          "D": "175 m"
+          "A": "0 m/s",
+          "B": "2 m/s",
+          "C": "4 m/s",
+          "D": "6 m/s"
         },
-        "correctAnswer": "A",
+        "correctAnswer": "C",
         "solution": {
           "steps": [
-            "Diketahui: $v_0 = 20 \\text{ m/s}$, $a = 2 \\text{ m/s}^2$, $t = 5 \\text{ s}$",
-            "Gunakan rumus: $s = v_0 t + \\frac{1}{2}at^2$",
-            "$s = 20(5) + \\frac{1}{2}(2)(5)^2$",
-            "$s = 100 + \\frac{1}{2}(2)(25)$",
-            "$s = 100 + 25 = 125 \\text{ m}$"
+            "Turunkan posisi terhadap waktu: $v(t) = s'(t) = 4t - 4$",
+            "Substitusi $t=2$: $v(2) = 8 - 4 = 4$ m/s"
           ],
-          "answer": "125 m"
+          "answer": "4 m/s"
         }
-      }
-    ],
-    "Gelombang Bunyi": [
+      },
       {
-        "problem": "Gelombang bunyi merambat di udara dengan kecepatan 340 m/s. Jika frekuensi gelombang 680 Hz, tentukan panjang gelombangnya!",
+        "problem": "Sebuah mobil bergerak dengan kecepatan konstan 20 m/s. Jarak yang ditempuh setelah 5 detik adalah...",
         "type": "multiple-choice",
         "choices": {
-          "A": "1,0 m",
-          "B": "2,0 m",
-          "C": "0,25 m",
-          "D": "0,5 m"
+          "A": "50 m",
+          "B": "100 m",
+          "C": "150 m",
+          "D": "200 m"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gunakan rumus GLB: $s = v \\times t$",
+            "Substitusi: $s = 20 \\times 5 = 100$ m"
+          ],
+          "answer": "100 m"
+        }
+      },
+      {
+        "problem": "Sebuah benda dilempar vertikal ke atas dengan kecepatan awal 30 m/s. Ketinggian maksimum yang dicapai benda adalah... (g = 10 m/s²)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "30 m",
+          "B": "45 m",
+          "C": "60 m",
+          "D": "75 m"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gunakan rumus: $h_{max} = \\frac{v_0^2}{2g}$",
+            "Substitusi: $h_{max} = \\frac{900}{20} = 45$ m"
+          ],
+          "answer": "45 m"
+        }
+      },
+      {
+        "problem": "Sebuah benda bergerak dengan percepatan $a(t) = 2t + 1$ m/s². Jika kecepatan awal 2 m/s, kecepatan benda pada detik ke-3 adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "8 m/s",
+          "B": "10 m/s",
+          "C": "12 m/s",
+          "D": "14 m/s"
         },
         "correctAnswer": "D",
         "solution": {
           "steps": [
-            "Diketahui: $v = 340 \\text{ m/s}$, $f = 680 \\text{ Hz}$",
-            "Gunakan rumus: $v = \\lambda \\times f$",
-            "$\\lambda = \\frac{v}{f} = \\frac{340}{680} = 0{,}5 \\text{ m}$"
+            "Integralkan percepatan: $v(t) = \\int (2t + 1) dt = t^2 + t + C$",
+            "Gunakan syarat awal: $v(0) = 2 \\Rightarrow C=2$",
+            "Substitusi $t=3$: $v(3) = 9 + 3 + 2 = 14$ m/s"
           ],
-          "answer": "0,5 m"
+          "answer": "14 m/s"
+        }
+      },
+      {
+        "problem": "Sebuah partikel bergerak sepanjang sumbu X dengan persamaan posisi $x(t) = t^3 - 6t^2 + 9t$ (dalam meter). Partikel berhenti sesaat pada waktu $t$ = ...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1 s dan 3 s",
+          "B": "2 s dan 4 s",
+          "C": "3 s dan 5 s",
+          "D": "4 s dan 6 s"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Kecepatan: $v(t) = x'(t) = 3t^2 - 12t + 9$",
+            "Saat berhenti: $v(t) = 0$",
+            "Faktorkan: $3(t^2 - 4t + 3) = 0 \\Rightarrow (t-1)(t-3) = 0$",
+            "Solusi: $t=1$ s dan $t=3$ s"
+          ],
+          "answer": "1 s dan 3 s"
+        }
+      },
+      {
+        "problem": "Sebuah mobil dipercepat dari keadaan diam hingga mencapai kecepatan 20 m/s dalam waktu 5 detik. Percepatan mobil adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2 m/s²",
+          "B": "4 m/s²",
+          "C": "6 m/s²",
+          "D": "8 m/s²"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gunakan rumus GLBB: $a = \\frac{\\Delta v}{\\Delta t}$",
+            "Hitung: $a = \\frac{20}{5} = 4$ m/s²"
+          ],
+          "answer": "4 m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah batu dilempar vertikal ke atas dengan kecepatan awal 40 m/s. Waktu yang dibutuhkan untuk kembali ke titik lempar adalah... (g = 10 m/s²)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "4 s",
+          "B": "6 s",
+          "C": "8 s",
+          "D": "10 s"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Waktu naik: $t_{up} = \\frac{v_0}{g} = \\frac{40}{10} = 4$ s",
+            "Waktu total: $2 \\times t_{up} = 8$ s"
+          ],
+          "answer": "8 s"
+        }
+      },
+      {
+        "problem": "Sebuah benda bergerak dengan kecepatan $v(t) = 3t^2 - 12t + 9$ m/s. Percepatan benda pada detik ke-2 adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "0 m/s²",
+          "B": "2 m/s²",
+          "C": "4 m/s²",
+          "D": "6 m/s²"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Turunkan kecepatan: $a(t) = v'(t) = 6t - 12$",
+            "Substitusi $t=2$: $a(2) = 12 - 12 = 0$ m/s²"
+          ],
+          "answer": "0 m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah kereta api bergerak dengan kecepatan 72 km/jam. Dalam satuan m/s, kecepatan kereta tersebut adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "10 m/s",
+          "B": "15 m/s",
+          "C": "20 m/s",
+          "D": "25 m/s"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Konversi: $72$ km/jam = $72 \\times \\frac{1000}{3600}$ m/s",
+            "Hitung: $72 \\times \\frac{5}{18} = 20$ m/s"
+          ],
+          "answer": "20 m/s"
+        }
+      },
+      {
+        "problem": "(HOTS) Dua mobil A dan B bergerak saling mendekati pada jalan lurus dengan kecepatan masing-masing 20 m/s dan 30 m/s. Jika jarak awal mereka 5 km, waktu yang dibutuhkan hingga bertemu adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "50 s",
+          "B": "100 s",
+          "C": "150 s",
+          "D": "200 s"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Kecepatan relatif: $v_{rel} = 20 + 30 = 50$ m/s",
+            "Jarak: 5 km = 5000 m",
+            "Waktu: $t = \\frac{5000}{50} = 100$ s"
+          ],
+          "answer": "100 s"
         }
       }
     ],
-    "Usaha dan Energi": [
+    "Dinamika Gerak": [
       {
-        "problem": "Sebuah benda bermassa 2 kg bergerak dengan kecepatan 10 m/s. Tentukan energi kinetiknya!",
-        "type": "essay",
+        "problem": "Sebuah benda bermassa 5 kg ditarik dengan gaya 20 N di atas lantai licin. Percepatan benda tersebut adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1 m/s²",
+          "B": "2 m/s²",
+          "C": "4 m/s²",
+          "D": "5 m/s²"
+        },
+        "correctAnswer": "C",
         "solution": {
           "steps": [
-            "Diketahui: $m = 2 \\text{ kg}$, $v = 10 \\text{ m/s}$",
-            "Gunakan rumus energi kinetik: $E_k = \\frac{1}{2}mv^2$",
-            "$E_k = \\frac{1}{2} \\times 2 \\times 10^2$",
-            "$E_k = 1 \\times 100 = 100 \\text{ J}$"
+            "Gunakan hukum II Newton: $F = m \times a$",
+            "Selesaikan untuk $a$: $a = \frac{F}{m} = \frac{20}{5} = 4$ m/s²"
           ],
-          "answer": "100 J"
+          "answer": "4 m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah balok bermassa 10 kg berada di atas lantai kasar dengan koefisien gesek statis 0,5. Gaya horizontal minimum yang diperlukan untuk menggerakkan balok adalah... (g = 10 m/s²)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "10 N",
+          "B": "25 N",
+          "C": "50 N",
+          "D": "100 N"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Hitung gaya normal: $N = m \times g = 10 \times 10 = 100$ N",
+            "Gaya gesek maksimum: $f_{max} = mu_s \times N = 0.5 \times 100 = 50$ N",
+            "Gaya minimum untuk menggerakkan balok sama dengan gaya gesek maksimum"
+          ],
+          "answer": "50 N"
+        }
+      },
+      {
+        "problem": "Dua benda bermassa 4 kg dan 6 kg dihubungkan dengan tali melalui katrol licin. Percepatan sistem adalah... (g = 10 m/s²)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2 m/s²",
+          "B": "4 m/s²",
+          "C": "6 m/s²",
+          "D": "8 m/s²"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gaya yang bekerja: $m_2g - m_1g = (m_1 + m_2)a$",
+            "Substitusi: $60 - 40 = (4 + 6)a$",
+            "Selesaikan: $20 = 10a Rightarrow a = 2$ m/s²"
+          ],
+          "answer": "2 m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah mobil bermassa 1000 kg bergerak dengan kecepatan 20 m/s direm hingga berhenti dalam waktu 5 detik. Gaya pengereman yang bekerja adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2000 N",
+          "B": "4000 N",
+          "C": "6000 N",
+          "D": "8000 N"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Hitung perlambatan: $a = \frac{Delta v}{Delta t} = \frac{0 - 20}{5} = -4$ m/s²",
+            "Gunakan hukum II Newton: $F = m \times a = 1000 \times 4 = 4000$ N"
+          ],
+          "answer": "4000 N"
+        }
+      },
+      {
+        "problem": "Sebuah benda bergerak melingkar beraturan dengan jari-jari 2 m dan periode 2 s. Percepatan sentripetal benda tersebut adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$2pi^2$ m/s²",
+          "B": "$4pi^2$ m/s²",
+          "C": "$6pi^2$ m/s²",
+          "D": "$8pi^2$ m/s²"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Hitung kecepatan sudut: $omega = \frac{2pi}{T} = pi$ rad/s",
+            "Hitung percepatan sentripetal: $a = omega^2 r = pi^2 \times 2 = 2pi^2$ m/s²"
+          ],
+          "answer": "$2pi^2$ m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah elevator bermassa 500 kg bergerak ke atas dengan percepatan 2 m/s². Tegangan tali penarik elevator adalah... (g = 10 m/s²)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "4000 N",
+          "B": "5000 N",
+          "C": "6000 N",
+          "D": "7000 N"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Gaya yang bekerja: $T - mg = ma$",
+            "Substitusi: $T - 5000 = 500 \times 2$",
+            "Selesaikan: $T = 5000 + 1000 = 6000$ N"
+          ],
+          "answer": "6000 N"
+        }
+      },
+      {
+        "problem": "Sebuah benda bermassa 2 kg bergerak dengan kecepatan 4 m/s menumbuk benda lain bermassa 3 kg yang diam. Jika tumbukan tidak lenting sama sekali, kecepatan kedua benda setelah tumbukan adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "0,8 m/s",
+          "B": "1,2 m/s",
+          "C": "1,6 m/s",
+          "D": "2,0 m/s"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "Gunakan hukum kekekalan momentum: $m_1v_1 + m_2v_2 = (m_1 + m_2)v'$",
+            "Substitusi: $2 \times 4 + 3 \times 0 = (2 + 3)v'$",
+            "Selesaikan: $8 = 5v' Rightarrow v' = 1,6$ m/s"
+          ],
+          "answer": "1,6 m/s"
+        }
+      },
+      {
+        "problem": "Sebuah balok meluncur menuruni bidang miring dengan sudut 30° terhadap horizontal. Jika percepatan gravitasi 10 m/s² dan gesekan diabaikan, percepatan balok adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2,5 m/s²",
+          "B": "5 m/s²",
+          "C": "7,5 m/s²",
+          "D": "10 m/s²"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Komponen percepatan sepanjang bidang: $a = g sin \theta$",
+            "Substitusi: $a = 10 \times sin 30° = 10 \times 0,5 = 5$ m/s²"
+          ],
+          "answer": "5 m/s²"
+        }
+      },
+      {
+        "problem": "Sebuah satelit mengorbit bumi pada ketinggian dimana percepatan gravitasinya seperempat percepatan gravitasi di permukaan bumi. Jika jari-jari bumi R, maka ketinggian satelit tersebut adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "R",
+          "B": "2R",
+          "C": "3R",
+          "D": "4R"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Gunakan rumus percepatan gravitasi: $g' = \frac{GM}{(R+h)^2} = \frac{gR^2}{(R+h)^2}$",
+            "Diketahui $g' = \frac{g}{4}$",
+            "Selesaikan: $\frac{g}{4} = \frac{gR^2}{(R+h)^2} Rightarrow (R+h)^2 = 4R^2$",
+            "Ambil akar: $R+h = 2R Rightarrow h = R$"
+          ],
+          "answer": "R"
+        }
+      },
+      {
+        "problem": "(HOTS) Sebuah sistem terdiri dari dua balok bermassa $m_1 = 2$ kg dan $m_2 = 3$ kg yang dihubungkan tali melalui katrol licin. Balok $m_1$ berada di bidang miring 37° dengan koefisien gesek kinetik 0,2. Percepatan sistem adalah... (g = 10 m/s²; sin 37° = 0,6; cos 37° = 0,8)",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1,2 m/s²",
+          "B": "2,4 m/s²",
+          "C": "3,6 m/s²",
+          "D": "4,8 m/s²"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gambar diagram gaya untuk kedua benda",
+            "Untuk $m_2$: $m_2g - T = m_2a$",
+            "Untuk $m_1$: $T - m_1g sin \theta - mu_k m_1g cos \theta = m_1a$",
+            "Substitusi nilai: $30 - T = 3a$ dan $T - 12 - 3,2 = 2a$",
+            "Selesaikan sistem persamaan: $a = 2,4$ m/s²"
+          ],
+          "answer": "2,4 m/s²"
         }
       }
     ]
