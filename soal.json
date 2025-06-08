@@ -1,0 +1,159 @@
+{
+  "matematika": {
+    "Matematika Dasar": [
+      {
+        "problem": "Hitunglah hasil dari: $3^2 + 4^2 - 2\\sqrt{25} + \\sqrt[3]{64}$",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "15",
+          "B": "25",
+          "C": "19",
+          "D": "21"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "$3^2 = 9$",
+            "$4^2 = 16$",
+            "$\\sqrt{25} = 5$, jadi $2\\sqrt{25} = 10$",
+            "$\\sqrt[3]{64} = 4$",
+            "$9 + 16 - 10 + 4 = 19$"
+          ],
+          "answer": "19"
+        }
+      },
+      {
+        "problem": "Sederhanakan bentuk aljabar: $3x^2 + 5x - 2x^2 + 7x - 4$",
+        "type": "essay",
+        "solution": {
+          "steps": [
+            "Kelompokkan suku-suku sejenis:",
+            "$(3x^2 - 2x^2) + (5x + 7x) - 4$",
+            "$x^2 + 12x - 4$"
+          ],
+          "answer": "$x^2 + 12x - 4$"
+        }
+      },
+      {
+        "problem": "Jika $\\log_2 8 = x$, maka nilai $x$ adalah...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "2",
+          "B": "3",
+          "C": "4",
+          "D": "5"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": ["$\\log_2 8 = x$", "$2^x = 8$", "$2^x = 2^3$", "$x = 3$"],
+          "answer": "3"
+        }
+      }
+    ],
+    "Persamaan Kuadrat": [
+      {
+        "problem": "Tentukan akar-akar persamaan kuadrat: $x^2 - 5x + 6 = 0$",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "$x = 1$ atau $x = 6$",
+          "B": "$x = 2$ atau $x = 3$",
+          "C": "$x = -2$ atau $x = -3$",
+          "D": "$x = 2$ atau $x = -3$"
+        },
+        "correctAnswer": "B",
+        "solution": {
+          "steps": [
+            "Gunakan rumus faktorisasi atau rumus kuadrat",
+            "$x^2 - 5x + 6 = 0$",
+            "$(x - 2)(x - 3) = 0$",
+            "$x = 2$ atau $x = 3$"
+          ],
+          "answer": "$x = 2$ atau $x = 3$"
+        }
+      }
+    ],
+    "Trigonometri": [
+      {
+        "problem": "Hitunglah nilai $\\sin 30° + \\cos 60° - \\tan 45°$",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1",
+          "B": "$\\frac{1}{2}$",
+          "C": "0",
+          "D": "$\\sqrt{2}$"
+        },
+        "correctAnswer": "C",
+        "solution": {
+          "steps": [
+            "$\\sin 30° = \\frac{1}{2}$",
+            "$\\cos 60° = \\frac{1}{2}$",
+            "$\\tan 45° = 1$",
+            "$\\frac{1}{2} + \\frac{1}{2} - 1 = 1 - 1 = 0$"
+          ],
+          "answer": "0"
+        }
+      }
+    ]
+  },
+  "fisika": {
+    "Kinematika Gerak": [
+      {
+        "problem": "Sebuah mobil bergerak dengan kecepatan awal 20 m/s dan percepatan $2 \\text{ m/s}^2$. Tentukan jarak yang ditempuh setelah 5 detik!",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "125 m",
+          "B": "150 m",
+          "C": "100 m",
+          "D": "175 m"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Diketahui: $v_0 = 20 \\text{ m/s}$, $a = 2 \\text{ m/s}^2$, $t = 5 \\text{ s}$",
+            "Gunakan rumus: $s = v_0 t + \\frac{1}{2}at^2$",
+            "$s = 20(5) + \\frac{1}{2}(2)(5)^2$",
+            "$s = 100 + \\frac{1}{2}(2)(25)$",
+            "$s = 100 + 25 = 125 \\text{ m}$"
+          ],
+          "answer": "125 m"
+        }
+      }
+    ],
+    "Gelombang Bunyi": [
+      {
+        "problem": "Gelombang bunyi merambat di udara dengan kecepatan 340 m/s. Jika frekuensi gelombang 680 Hz, tentukan panjang gelombangnya!",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "1,0 m",
+          "B": "2,0 m",
+          "C": "0,25 m",
+          "D": "0,5 m"
+        },
+        "correctAnswer": "D",
+        "solution": {
+          "steps": [
+            "Diketahui: $v = 340 \\text{ m/s}$, $f = 680 \\text{ Hz}$",
+            "Gunakan rumus: $v = \\lambda \\times f$",
+            "$\\lambda = \\frac{v}{f} = \\frac{340}{680} = 0{,}5 \\text{ m}$"
+          ],
+          "answer": "0,5 m"
+        }
+      }
+    ],
+    "Usaha dan Energi": [
+      {
+        "problem": "Sebuah benda bermassa 2 kg bergerak dengan kecepatan 10 m/s. Tentukan energi kinetiknya!",
+        "type": "essay",
+        "solution": {
+          "steps": [
+            "Diketahui: $m = 2 \\text{ kg}$, $v = 10 \\text{ m/s}$",
+            "Gunakan rumus energi kinetik: $E_k = \\frac{1}{2}mv^2$",
+            "$E_k = \\frac{1}{2} \\times 2 \\times 10^2$",
+            "$E_k = 1 \\times 100 = 100 \\text{ J}$"
+          ],
+          "answer": "100 J"
+        }
+      }
+    ]
+  }
+}

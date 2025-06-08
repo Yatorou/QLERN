@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="id" class="transition-colors duration-300">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QLERN - Quiz Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+          ],
+          displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"],
+          ],
+        },
+        chtml: {
+          displayAlign: "left",
+        },
+      };
+
+      // Configure Tailwind for dark mode
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+
+      .dark ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+
+      /* Custom Alert Modal */
+      .custom-alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .custom-alert-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .custom-alert {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        max-width: 400px;
+        width: 90%;
+        margin: 20px;
+        transform: scale(0.9) translateY(20px);
+        transition: all 0.3s ease;
+      }
+
+      .dark .custom-alert {
+        background: #1f2937;
+        border: 1px solid #374151;
+      }
+
+      .custom-alert-overlay.show .custom-alert {
+        transform: scale(1) translateY(0);
+      }
+
+      /* Toast Notifications */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 400px;
+      }
+
+      .toast {
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: translateX(400px);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        opacity: 0;
+        max-width: 100%;
+        word-wrap: break-word;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .toast.success {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+      }
+
+      .toast.error {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+      }
+
+      .toast.info {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+      }
+
+      .toast.warning {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+      }
+
+      /* Encouraging animations */
+      .encouraging {
+        animation: encouragingPulse 0.6s ease-in-out;
+      }
+
+      @keyframes encouragingPulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Mobile responsive toasts */
+      @media (max-width: 640px) {
+        .toast-container {
+          top: 10px;
+          right: 10px;
+          left: 10px;
+          max-width: none;
+        }
+
+        .toast {
+          transform: translateY(-100px);
+        }
+
+        .toast.show {
+          transform: translateY(0);
+        }
+      }
+
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Custom animations */
+      @keyframes slideInFromLeft {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInFromRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .animate-slide-in-left {
+        animation: slideInFromLeft 0.3s ease-out;
+      }
+
+      .animate-slide-in-right {
+        animation: slideInFromRight 0.3s ease-out;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.4s ease-out;
+      }
+
+      .animate-pulse-gentle {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      /* Focus styles */
+      .focus-ring:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+      }
+
+      /* Glass effect */
+      .glass {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .dark .glass {
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Floating action button */
+      .fab {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      /* Mobile bubble navigation */
+      .bubble-nav {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+      }
+
+      /* Sidebar transition */
+      .sidebar-transition {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      /* Mobile-specific enhancements */
+      @media (max-width: 768px) {
+        /* Improve touch targets */
+        .bubble-nav-btn {
+          min-width: 48px;
+          min-height: 48px;
+        }
+
+        .mobile-settings-btn {
+          min-width: 56px;
+          min-height: 56px;
+        }
+
+        /* Mobile FAB positioning adjustments */
+        .fab {
+          bottom: 100px; /* Space for bubble nav */
+        }
+
+        /* Improve mobile readability */
+        .quiz-question {
+          font-size: 1.1rem;
+          line-height: 1.6;
+        }
+
+        /* Mobile-optimized card spacing */
+        .mobile-card {
+          margin-bottom: 1rem;
+          padding: 1rem;
+        }
+
+        /* Enhanced mobile menu animations */
+        #mobileSettingsMenu {
+          transform-origin: bottom right;
+          transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      }
+
+      /* Mobile landscape optimizations */
+      @media (max-width: 768px) and (orientation: landscape) {
+        .bubble-nav {
+          bottom: 10px;
+        }
+
+        .fab {
+          bottom: 60px;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300"
+  >
+    <!-- Desktop Sidebar -->
+    <div class="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 z-50">
+      <div
+        class="flex flex-col flex-grow bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg"
+      >
+        <!-- Logo -->
+        <div
+          class="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+            >
+              Q
+            </div>
+            <span
+              class="ml-3 text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            >
+              QLERN
+            </span>
+          </div>
+          <button
+            onclick="toggleTheme()"
+            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus-ring"
+          >
+            <i class="fas fa-sun dark:hidden text-yellow-500"></i>
+            <i class="fas fa-moon hidden dark:inline text-blue-400"></i>
+          </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-6 space-y-2">
+          <a
+            href="#"
+            onclick="showSection('dashboard')"
+            class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            data-section="dashboard"
+          >
+            <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
+            Dashboard
+          </a>
+          <a
+            href="#"
+            onclick="showSection('subjects')"
+            class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            data-section="subjects"
+          >
+            <i class="fas fa-book w-5 h-5 mr-3"></i>
+            Mata Pelajaran
+          </a>
+          <a
+            href="#"
+            onclick="showSection('quiz')"
+            class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            data-section="quiz"
+          >
+            <i class="fas fa-play-circle w-5 h-5 mr-3"></i>
+            Quiz
+          </a>
+          <a
+            href="#"
+            onclick="showSection('progress')"
+            class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            data-section="progress"
+          >
+            <i class="fas fa-chart-pie w-5 h-5 mr-3"></i>
+            Progress
+          </a>
+
+          <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+            <div
+              class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+            >
+              Mata Pelajaran
+            </div>
+            <a
+              href="#"
+              onclick="selectSubjectFromSidebar('matematika')"
+              class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            >
+              <i class="fas fa-calculator w-5 h-5 mr-3 text-blue-500"></i>
+              Matematika
+            </a>
+            <a
+              href="#"
+              onclick="selectSubjectFromSidebar('fisika')"
+              class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
+            >
+              <i class="fas fa-atom w-5 h-5 mr-3 text-purple-500"></i>
+              Fisika
+            </a>
+          </div>
+        </nav>
+
+        <!-- Reset Progress -->
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onclick="resetProgress()"
+            class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors focus-ring"
+          >
+            <i class="fas fa-refresh w-4 h-4 mr-2"></i>
+            Reset Progress
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Header -->
+    <div
+      class="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between"
+    >
+      <div class="flex items-center">
+        <div
+          class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+        >
+          Q
+        </div>
+        <span
+          class="ml-3 text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+        >
+          QLERN
+        </span>
+      </div>
+      <button
+        onclick="toggleTheme()"
+        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus-ring"
+      >
+        <i class="fas fa-sun dark:hidden text-yellow-500"></i>
+        <i class="fas fa-moon hidden dark:inline text-blue-400"></i>
+      </button>
+    </div>
+    <!-- Mobile Bubble Navigation -->
+    <div class="lg:hidden bubble-nav">
+      <div
+        class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 px-4 py-2"
+      >
+        <button
+          onclick="showSection('dashboard')"
+          class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
+          data-section="dashboard"
+        >
+          <i class="fas fa-chart-line w-5 h-5"></i>
+        </button>
+        <button
+          onclick="showSection('subjects')"
+          class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
+          data-section="subjects"
+        >
+          <i class="fas fa-book w-5 h-5"></i>
+        </button>
+        <button
+          onclick="showSection('quiz')"
+          class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
+          data-section="quiz"
+        >
+          <i class="fas fa-play-circle w-5 h-5"></i>
+        </button>
+        <button
+          onclick="showSection('progress')"
+          class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
+          data-section="progress"
+        >
+          <i class="fas fa-chart-pie w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Settings FAB -->
+    <div class="lg:hidden fixed bottom-24 right-4 z-40">
+      <div class="relative">
+        <button
+          id="mobileSettingsBtn"
+          onclick="toggleMobileSettings()"
+          class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center focus-ring"
+        >
+          <i class="fas fa-cog text-xl"></i>
+        </button>
+
+        <!-- Settings Menu -->
+        <div
+          id="mobileSettingsMenu"
+          class="absolute bottom-16 right-0 mb-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 opacity-0 scale-95 pointer-events-none transition-all duration-200 transform origin-bottom-right"
+        >
+          <button
+            onclick="resetProgress(); toggleMobileSettings();"
+            class="w-full flex items-center px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
+            <i class="fas fa-refresh w-4 h-4 mr-3"></i>
+            Reset Progress
+          </button>
+          <button
+            onclick="toggleTheme(); toggleMobileSettings();"
+            class="w-full flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          >
+            <i class="fas fa-palette w-4 h-4 mr-3"></i>
+            Toggle Theme
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:pl-64 min-h-screen">
+      <main class="flex-1 pb-20">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section hidden">
+          <div class="p-6 lg:p-8">
+            <div class="mb-8 animate-fade-in-up">
+              <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Dashboard
+              </h1>
+              <p class="text-gray-600 dark:text-gray-400">
+                Selamat datang di QLERN - Platform Pembelajaran Quiz Interaktif
+              </p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+            >
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >
+                      Total Soal
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-gray-900 dark:text-white"
+                      id="totalProblemsCount"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-question-circle text-blue-600 dark:text-blue-400 text-xl"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >
+                      Selesai
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-gray-900 dark:text-white"
+                      id="completedProblemsCount"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-check-circle text-green-600 dark:text-green-400 text-xl"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >
+                      Akurasi
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-gray-900 dark:text-white"
+                      id="accuracyPercentage"
+                    >
+                      0%
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-target text-purple-600 dark:text-purple-400 text-xl"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >
+                      Mata Pelajaran
+                    </p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                      2
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-book text-orange-600 dark:text-orange-400 text-xl"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <h3
+                  class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+                >
+                  Mulai Quiz
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                  Pilih mata pelajaran dan mulai berlatih soal
+                </p>
+                <div class="space-y-3">
+                  <button
+                    onclick="selectSubjectFromSidebar('matematika')"
+                    class="w-full flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors focus-ring"
+                  >
+                    <div class="flex items-center">
+                      <i
+                        class="fas fa-calculator text-blue-600 dark:text-blue-400 mr-3"
+                      ></i>
+                      <span class="font-medium text-gray-900 dark:text-white"
+                        >Matematika</span
+                      >
+                    </div>
+                    <i
+                      class="fas fa-arrow-right text-blue-600 dark:text-blue-400"
+                    ></i>
+                  </button>
+                  <button
+                    onclick="selectSubjectFromSidebar('fisika')"
+                    class="w-full flex items-center justify-between p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors focus-ring"
+                  >
+                    <div class="flex items-center">
+                      <i
+                        class="fas fa-atom text-purple-600 dark:text-purple-400 mr-3"
+                      ></i>
+                      <span class="font-medium text-gray-900 dark:text-white"
+                        >Fisika</span
+                      >
+                    </div>
+                    <i
+                      class="fas fa-arrow-right text-purple-600 dark:text-purple-400"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <h3
+                  class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+                >
+                  Progress Terbaru
+                </h3>
+                <div class="space-y-4" id="recentProgressContainer">
+                  <!-- Progress items will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subjects Section -->
+        <div id="subjects" class="section hidden">
+          <div class="p-6 lg:p-8">
+            <div class="mb-8 animate-fade-in-up">
+              <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Mata Pelajaran
+              </h1>
+              <p class="text-gray-600 dark:text-gray-400">
+                Pilih mata pelajaran yang ingin Anda pelajari
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Matematika Card -->
+              <div
+                class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="selectSubject('matematika')"
+              >
+                <div class="flex items-center justify-between mb-6">
+                  <div
+                    class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center"
+                  >
+                    <i class="fas fa-calculator text-3xl"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm opacity-90">Total Topik</p>
+                    <p class="text-2xl font-bold" id="mathTopicsCount">0</p>
+                  </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Matematika</h3>
+                <p class="opacity-90 mb-4">
+                  Pelajari konsep matematika dengan soal-soal interaktif dan
+                  pembahasan lengkap
+                </p>
+                <div class="flex items-center text-sm opacity-75">
+                  <i class="fas fa-clock mr-2"></i>
+                  <span>Update terbaru: Hari ini</span>
+                </div>
+              </div>
+
+              <!-- Fisika Card -->
+              <div
+                class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="selectSubject('fisika')"
+              >
+                <div class="flex items-center justify-between mb-6">
+                  <div
+                    class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center"
+                  >
+                    <i class="fas fa-atom text-3xl"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm opacity-90">Total Topik</p>
+                    <p class="text-2xl font-bold" id="physicsTopicsCount">0</p>
+                  </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Fisika</h3>
+                <p class="opacity-90 mb-4">
+                  Eksplorasi fenomena fisika melalui latihan soal dan eksperimen
+                  virtual
+                </p>
+                <div class="flex items-center text-sm opacity-75">
+                  <i class="fas fa-clock mr-2"></i>
+                  <span>Update terbaru: Hari ini</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="section hidden">
+          <div class="p-6 lg:p-8">
+            <!-- Subject Selection -->
+            <div id="subjectSelection" class="animate-fade-in-up">
+              <div class="mb-8">
+                <h1
+                  class="text-3xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Quiz
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Pilih mata pelajaran dan topik untuk memulai quiz
+                </p>
+              </div>
+
+              <!-- Subject Buttons -->
+              <div class="flex space-x-4 mb-8">
+                <button
+                  onclick="switchSubject('matematika')"
+                  class="subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring"
+                  data-subject="matematika"
+                >
+                  <i class="fas fa-calculator mr-2"></i>
+                  Matematika
+                </button>
+                <button
+                  onclick="switchSubject('fisika')"
+                  class="subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring"
+                  data-subject="fisika"
+                >
+                  <i class="fas fa-atom mr-2"></i>
+                  Fisika
+                </button>
+              </div>
+
+              <!-- Topics Grid -->
+              <div class="mb-8">
+                <h3
+                  class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+                >
+                  Pilih Topik
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                  id="topicsGrid"
+                >
+                  <!-- Topics will be populated here -->
+                </div>
+              </div>
+
+              <!-- Start Quiz Button -->
+              <div class="text-center">
+                <button
+                  id="startQuizBtn"
+                  onclick="startQuiz()"
+                  class="px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors focus-ring disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  <i class="fas fa-play mr-2"></i>
+                  Mulai Quiz
+                </button>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Pilih topik terlebih dahulu untuk memulai quiz
+                </p>
+              </div>
+            </div>
+
+            <!-- Quiz Interface -->
+            <div id="quizInterface" class="hidden animate-fade-in-up">
+              <!-- Progress Bar -->
+              <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >Progress Quiz</span
+                  >
+                  <span
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                    id="questionProgress"
+                    >1 / 10</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2"
+                >
+                  <div
+                    class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300 encouraging-target"
+                    id="progressBar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Quiz Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
+                >
+                  <p
+                    class="text-2xl font-bold text-blue-600 dark:text-blue-400"
+                    id="currentQuestionNum"
+                  >
+                    1
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Soal</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
+                >
+                  <p
+                    class="text-2xl font-bold text-green-600 dark:text-green-400 encouraging-target"
+                    id="correctCount"
+                  >
+                    0
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Benar</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
+                >
+                  <p
+                    class="text-2xl font-bold text-red-600 dark:text-red-400 encouraging-target"
+                    id="incorrectCount"
+                  >
+                    0
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Salah</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
+                >
+                  <p
+                    class="text-2xl font-bold text-purple-600 dark:text-purple-400 encouraging-target"
+                    id="scorePercentage"
+                  >
+                    0%
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Skor</p>
+                </div>
+              </div>
+
+              <!-- Question Container -->
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6"
+              >
+                <div class="mb-4">
+                  <span
+                    class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium"
+                    id="questionTopic"
+                  >
+                    Topik
+                  </span>
+                </div>
+                <div
+                  class="text-lg leading-relaxed text-gray-900 dark:text-white mb-6"
+                  id="questionText"
+                >
+                  <!-- Question will be loaded here -->
+                </div>
+                <div id="answerArea">
+                  <!-- Answer choices or essay area will be loaded here -->
+                </div>
+                <div id="solutionArea" class="hidden">
+                  <!-- Solution will be shown here -->
+                </div>
+              </div>
+
+              <!-- Control Buttons -->
+              <div class="flex justify-between items-center">
+                <button
+                  id="prevBtn"
+                  onclick="previousQuestion()"
+                  class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors focus-ring disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  disabled
+                >
+                  <i class="fas fa-arrow-left mr-2"></i>
+                  Sebelumnya
+                </button>
+
+                <div class="space-x-3">
+                  <button
+                    id="checkBtn"
+                    onclick="checkAnswer()"
+                    class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors focus-ring"
+                  >
+                    <i class="fas fa-check mr-2"></i>
+                    Periksa Jawaban
+                  </button>
+                  <button
+                    id="nextBtn"
+                    onclick="nextQuestion()"
+                    class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors focus-ring hidden"
+                  >
+                    Selanjutnya
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </button>
+                  <button
+                    id="finishBtn"
+                    onclick="finishQuiz()"
+                    class="px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors focus-ring hidden"
+                  >
+                    <i class="fas fa-flag-checkered mr-2"></i>
+                    Selesai
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden animate-fade-in-up">
+              <div class="text-center mb-8">
+                <div
+                  class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center text-white text-4xl"
+                  id="resultIcon"
+                >
+                  🎉
+                </div>
+                <h2
+                  class="text-3xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Quiz Selesai!
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400" id="resultMessage">
+                  Selamat! Anda telah menyelesaikan quiz.
+                </p>
+              </div>
+
+              <!-- Final Stats -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
+                >
+                  <div
+                    class="w-16 h-16 mx-auto mb-4 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-percentage text-blue-600 dark:text-blue-400 text-2xl"
+                    ></i>
+                  </div>
+                  <p
+                    class="text-3xl font-bold text-gray-900 dark:text-white"
+                    id="finalScore"
+                  >
+                    0%
+                  </p>
+                  <p class="text-gray-600 dark:text-gray-400">Skor Akhir</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
+                >
+                  <div
+                    class="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-check text-green-600 dark:text-green-400 text-2xl"
+                    ></i>
+                  </div>
+                  <p
+                    class="text-3xl font-bold text-gray-900 dark:text-white"
+                    id="finalCorrect"
+                  >
+                    0
+                  </p>
+                  <p class="text-gray-600 dark:text-gray-400">Jawaban Benar</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
+                >
+                  <div
+                    class="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-times text-red-600 dark:text-red-400 text-2xl"
+                    ></i>
+                  </div>
+                  <p
+                    class="text-3xl font-bold text-gray-900 dark:text-white"
+                    id="finalIncorrect"
+                  >
+                    0
+                  </p>
+                  <p class="text-gray-600 dark:text-gray-400">Jawaban Salah</p>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex justify-center space-x-4">
+                <button
+                  onclick="startNewQuiz()"
+                  class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors focus-ring"
+                >
+                  <i class="fas fa-redo mr-2"></i>
+                  Quiz Baru
+                </button>
+                <button
+                  onclick="showSection('dashboard')"
+                  class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors focus-ring"
+                >
+                  <i class="fas fa-home mr-2"></i>
+                  Dashboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progress" class="section hidden">
+          <div class="p-6 lg:p-8">
+            <div class="mb-8 animate-fade-in-up">
+              <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Progress Belajar
+              </h1>
+              <p class="text-gray-600 dark:text-gray-400">
+                Lihat kemajuan belajar Anda dalam setiap mata pelajaran
+              </p>
+            </div>
+
+            <!-- Overall Progress -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-8 animate-fade-in-up"
+            >
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+              >
+                Progress Keseluruhan
+              </h3>
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                    >Penyelesaian Soal</span
+                  >
+                  <span
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                    id="overallProgressText"
+                    >0%</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3"
+                >
+                  <div
+                    class="bg-gradient-to-r from-green-400 to-green-500 h-3 rounded-full transition-all duration-300"
+                    id="overallProgressBar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                  <p
+                    class="text-2xl font-bold text-blue-600 dark:text-blue-400"
+                    id="totalSolved"
+                  >
+                    0
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Soal Diselesaikan
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p
+                    class="text-2xl font-bold text-green-600 dark:text-green-400"
+                    id="totalCorrect"
+                  >
+                    0
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Jawaban Benar
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p
+                    class="text-2xl font-bold text-purple-600 dark:text-purple-400"
+                    id="averageScore"
+                  >
+                    0%
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Rata-rata Skor
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p
+                    class="text-2xl font-bold text-orange-600 dark:text-orange-400"
+                    id="topicsCompleted"
+                  >
+                    0
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Topik Selesai
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject Progress -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center mb-4">
+                  <div
+                    class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3"
+                  >
+                    <i
+                      class="fas fa-calculator text-blue-600 dark:text-blue-400"
+                    ></i>
+                  </div>
+                  <h3
+                    class="text-lg font-semibold text-gray-900 dark:text-white"
+                  >
+                    Matematika
+                  </h3>
+                </div>
+                <div class="space-y-4" id="mathProgressTopics">
+                  <!-- Math topics progress will be populated here -->
+                </div>
+              </div>
+
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
+              >
+                <div class="flex items-center mb-4">
+                  <div
+                    class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3"
+                  >
+                    <i
+                      class="fas fa-atom text-purple-600 dark:text-purple-400"
+                    ></i>
+                  </div>
+                  <h3
+                    class="text-lg font-semibold text-gray-900 dark:text-white"
+                  >
+                    Fisika
+                  </h3>
+                </div>
+                <div class="space-y-4" id="physicsProgressTopics">
+                  <!-- Physics topics progress will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="customAlertOverlay" class="custom-alert-overlay">
+      <div class="custom-alert">
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div
+              id="alertIcon"
+              class="w-12 h-12 rounded-full flex items-center justify-center mr-4"
+            >
+              <i class="fas fa-info-circle text-xl"></i>
+            </div>
+            <h3
+              id="alertTitle"
+              class="text-lg font-semibold text-gray-900 dark:text-white"
+            >
+              Informasi
+            </h3>
+          </div>
+          <p id="alertMessage" class="text-gray-600 dark:text-gray-300 mb-6">
+            Pesan akan ditampilkan di sini
+          </p>
+          <div class="flex justify-end space-x-3">
+            <button
+              id="alertCancelBtn"
+              class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors hidden"
+            >
+              Batal
+            </button>
+            <button
+              id="alertOkBtn"
+              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    <script>
+      // Custom Alert and Toast System
+      class AlertToastSystem {
+        constructor() {
+          this.toastContainer = document.getElementById("toastContainer");
+          this.alertOverlay = document.getElementById("customAlertOverlay");
+          this.alertIcon = document.getElementById("alertIcon");
+          this.alertTitle = document.getElementById("alertTitle");
+          this.alertMessage = document.getElementById("alertMessage");
+          this.alertOkBtn = document.getElementById("alertOkBtn");
+          this.alertCancelBtn = document.getElementById("alertCancelBtn");
+
+          this.setupEventListeners();
+          this.toastQueue = [];
+          this.isProcessingToast = false;
+        }
+
+        setupEventListeners() {
+          // Close alert on background click
+          this.alertOverlay.addEventListener("click", (e) => {
+            if (e.target === this.alertOverlay) {
+              this.closeAlert();
+            }
+          });
+
+          // Escape key to close alert
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              this.alertOverlay.classList.contains("show")
+            ) {
+              this.closeAlert();
+            }
+          });
+        }
+
+        // Custom Alert Function
+        showAlert(message, type = "info", title = null) {
+          return new Promise((resolve) => {
+            // Set title
+            this.alertTitle.textContent = title || this.getDefaultTitle(type);
+
+            // Set message
+            this.alertMessage.textContent = message;
+
+            // Set icon and colors
+            this.setAlertStyle(type);
+
+            // Setup buttons
+            this.alertCancelBtn.classList.add("hidden");
+            this.alertOkBtn.onclick = () => {
+              this.closeAlert();
+              resolve(true);
+            };
+
+            // Show alert
+            this.alertOverlay.classList.add("show");
+          });
+        }
+
+        // Custom Confirm Function
+        showConfirm(message, title = "Konfirmasi") {
+          return new Promise((resolve) => {
+            // Set title and message
+            this.alertTitle.textContent = title;
+            this.alertMessage.textContent = message;
+
+            // Set warning style
+            this.setAlertStyle("warning");
+
+            // Setup buttons
+            this.alertCancelBtn.classList.remove("hidden");
+            this.alertCancelBtn.onclick = () => {
+              this.closeAlert();
+              resolve(false);
+            };
+
+            this.alertOkBtn.textContent = "Ya";
+            this.alertOkBtn.className =
+              "px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800";
+            this.alertOkBtn.onclick = () => {
+              this.closeAlert();
+              resolve(true);
+            };
+
+            // Show alert
+            this.alertOverlay.classList.add("show");
+          });
+        }
+
+        closeAlert() {
+          this.alertOverlay.classList.remove("show");
+          // Reset button text and style
+          setTimeout(() => {
+            this.alertOkBtn.textContent = "OK";
+            this.alertOkBtn.className =
+              "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800";
+          }, 300);
+        }
+
+        setAlertStyle(type) {
+          const iconClasses = {
+            info: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 fa-info-circle",
+            success:
+              "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 fa-check-circle",
+            warning:
+              "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 fa-exclamation-triangle",
+            error:
+              "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 fa-times-circle",
+          };
+
+          const iconClass = iconClasses[type] || iconClasses["info"];
+          this.alertIcon.className = `w-12 h-12 rounded-full flex items-center justify-center mr-4 ${iconClass}`;
+          this.alertIcon.innerHTML = `<i class="fas ${iconClass
+            .split(" ")
+            .pop()} text-xl"></i>`;
+        }
+
+        getDefaultTitle(type) {
+          const titles = {
+            info: "Informasi",
+            success: "Berhasil",
+            warning: "Peringatan",
+            error: "Error",
+          };
+          return titles[type] || "Informasi";
+        }
+
+        // Toast Functions
+        showToast(message, type = "info", duration = 4000) {
+          this.toastQueue.push({ message, type, duration });
+          if (!this.isProcessingToast) {
+            this.processToastQueue();
+          }
+        }
+
+        async processToastQueue() {
+          if (this.toastQueue.length === 0) {
+            this.isProcessingToast = false;
+            return;
+          }
+
+          this.isProcessingToast = true;
+          const { message, type, duration } = this.toastQueue.shift();
+
+          const toast = this.createToastElement(message, type);
+          this.toastContainer.appendChild(toast);
+
+          // Animate in
+          setTimeout(() => {
+            toast.classList.add("show");
+          }, 100);
+
+          // Auto remove
+          setTimeout(() => {
+            this.removeToast(toast);
+            // Process next toast after current one starts removing
+            setTimeout(() => this.processToastQueue(), 200);
+          }, duration);
+        }
+
+        createToastElement(message, type) {
+          const toast = document.createElement("div");
+          toast.className = `toast ${type}`;
+
+          const icons = {
+            success: "fa-check-circle",
+            error: "fa-times-circle",
+            warning: "fa-exclamation-triangle",
+            info: "fa-info-circle",
+          };
+
+          const icon = icons[type] || icons["info"];
+
+          toast.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas ${icon} mr-3 text-lg"></i>
+                        <span class="flex-1">${message}</span>
+                        <button onclick="alertToast.removeToast(this.parentElement.parentElement)" class="ml-3 text-white/80 hover:text-white transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+          return toast;
+        }
+
+        removeToast(toast) {
+          toast.classList.remove("show");
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.parentNode.removeChild(toast);
+            }
+          }, 400);
+        }
+        // Encouraging messages
+        showEncouragement(type = "random") {
+          const encouragements = {
+            correct: [
+              "Mantap! Jawaban Anda benar! 🎉",
+              "Hebat! Anda menguasai materi ini! 👏",
+              "Luar biasa! Terus pertahankan! ⭐",
+              "Sempurna! Anda memahami konsepnya! 💯",
+            ],
+            wrong: [
+              "Jangan menyerah! Coba lagi dengan lebih teliti 💪",
+              "Hampir benar! Pelajari kembali materinya 📚",
+              "Tidak apa-apa! Setiap kesalahan adalah pembelajaran 🌟",
+              "Tetap semangat! Latihan membuat sempurna! 🚀",
+            ],
+            essay: [
+              "Bagus! Jawaban essay telah ditulis! ✍️",
+              "Hebat! Pemikiran yang detail! 🧠",
+              "Luar biasa! Ekspresikan ide dengan baik! 💡",
+              "Mantap! Kreativitas yang bagus! 🎨",
+            ],
+            completion: [
+              "Selamat! Anda telah menyelesaikan quiz! 🏆",
+              "Luar biasa! Quiz completed dengan sukses! 🎊",
+              "Fantastic! Anda hebat! 🌟",
+              "Kerja bagus! Saatnya istirahat sejenak! ☕",
+            ],
+            start: [
+              "Semangat! Mari mulai petualangan belajar! 🚀",
+              "Siap belajar? Let's go! 📚",
+              "Waktunya menguji kemampuan Anda! 💪",
+              "Fokus dan berikan yang terbaik! ⭐",
+            ],
+          };
+
+          const messages = encouragements[type] || encouragements["start"];
+          const randomMessage =
+            messages[Math.floor(Math.random() * messages.length)];
+
+          this.showToast(randomMessage, "success", 3000);
+
+          // Add encouraging animation to relevant elements
+          const elements = document.querySelectorAll(".encouraging-target");
+          elements.forEach((el) => {
+            el.classList.add("encouraging");
+            setTimeout(() => el.classList.remove("encouraging"), 600);
+          });
+        }
+
+        // Quick methods
+        success(message, title) {
+          return this.showAlert(message, "success", title);
+        }
+        error(message, title) {
+          return this.showAlert(message, "error", title);
+        }
+        warning(message, title) {
+          return this.showAlert(message, "warning", title);
+        }
+        info(message, title) {
+          return this.showAlert(message, "info", title);
+        }
+        confirm(message, title) {
+          return this.showConfirm(message, title);
+        }
+
+        toastSuccess(message) {
+          this.showToast(message, "success");
+        }
+        toastError(message) {
+          this.showToast(message, "error");
+        }
+        toastWarning(message) {
+          this.showToast(message, "warning");
+        }
+        toastInfo(message) {
+          this.showToast(message, "info");
+        }
+      }
+
+      // Initialize the system
+      const alertToast = new AlertToastSystem();
+
+      // Override default alert and confirm
+      window.alert = (message) => alertToast.showAlert(message);
+      window.confirm = (message) => alertToast.showConfirm(message);
+
+      // Global variables
+      let questionData = {};
+      let currentSubject = "matematika";
+      let currentTopic = "";
+      let selectedTopics = [];
+      let currentQuestions = [];
+      let currentQuestionIndex = 0;
+      let userAnswers = [];
+      let correctCount = 0;
+      let showingSolution = false;
+      let quizStartTime = 0; // Track quiz start time for analytics
+      let completedProblems = JSON.parse(
+        localStorage.getItem("qlern_completed") ||
+          '{"matematika": {}, "fisika": {}}'
+      );
+
+      // Theme management
+      function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle("dark");
+        localStorage.setItem("qlern_theme", isDark ? "dark" : "light");
+      }
+
+      function initTheme() {
+        const savedTheme = localStorage.getItem("qlern_theme") || "light";
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      }
+
+      // Mobile settings menu management
+      function toggleMobileSettings() {
+        const menu = document.getElementById("mobileSettingsMenu");
+        const isVisible = !menu.classList.contains("opacity-0");
+
+        if (isVisible) {
+          // Hide menu
+          menu.classList.add("opacity-0", "scale-95", "pointer-events-none");
+          menu.classList.remove("opacity-100", "scale-100");
+        } else {
+          // Show menu
+          menu.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+          menu.classList.add("opacity-100", "scale-100");
+        }
+      }
+
+      // Section management
+      function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll(".section").forEach((section) => {
+          section.classList.add("hidden");
+        });
+
+        // Show target section
+        document.getElementById(sectionId).classList.remove("hidden");
+
+        // Update navigation states
+        updateNavigationStates(sectionId);
+
+        // Section-specific initialization
+        if (sectionId === "dashboard") {
+          updateDashboardStats();
+        } else if (sectionId === "subjects") {
+          updateSubjectsStats();
+        } else if (sectionId === "quiz") {
+          initQuizSection();
+        } else if (sectionId === "progress") {
+          updateProgressSection();
+        }
+      }
+
+      function updateNavigationStates(activeSection) {
+        // Update desktop navigation
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove(
+            "bg-blue-100",
+            "dark:bg-blue-900",
+            "text-blue-600",
+            "dark:text-blue-400"
+          );
+          link.classList.add("text-gray-600", "dark:text-gray-300");
+
+          if (link.dataset.section === activeSection) {
+            link.classList.remove("text-gray-600", "dark:text-gray-300");
+            link.classList.add(
+              "bg-blue-100",
+              "dark:bg-blue-900",
+              "text-blue-600",
+              "dark:text-blue-400"
+            );
+          }
+        });
+
+        // Update mobile bubble navigation
+        document.querySelectorAll(".bubble-nav-btn").forEach((btn) => {
+          btn.classList.remove(
+            "bg-blue-100",
+            "dark:bg-blue-900",
+            "text-blue-600",
+            "dark:text-blue-400"
+          );
+          btn.classList.add("text-gray-400", "dark:text-gray-500");
+
+          if (btn.dataset.section === activeSection) {
+            btn.classList.remove("text-gray-400", "dark:text-gray-500");
+            btn.classList.add(
+              "bg-blue-100",
+              "dark:bg-blue-900",
+              "text-blue-600",
+              "dark:text-blue-400"
+            );
+          }
+        });
+      } // Load question data from soal.json
+      async function loadQuestionData() {
+        try {
+          const response = await fetch("soal.json");
+          questionData = await response.json();
+          console.log("Data loaded successfully:", questionData);
+          updateDashboardStats();
+          updateSubjectsStats();
+
+          // Show success toast when data is loaded
+          alertToast.toastSuccess("📚 Data soal berhasil dimuat!");
+        } catch (error) {
+          console.error("Error loading question data:", error);
+          alertToast.error(
+            "Gagal memuat data soal. Pastikan file soal.json tersedia.",
+            "Error Memuat Data"
+          );
+        }
+      }
+
+      // Dashboard functions
+      function updateDashboardStats() {
+        const totalProblems = getTotalProblems();
+        const completedCount = getCompletedProblems();
+        const accuracy = getAccuracy();
+
+        document.getElementById("totalProblemsCount").textContent =
+          totalProblems;
+        document.getElementById("completedProblemsCount").textContent =
+          completedCount;
+        document.getElementById("accuracyPercentage").textContent =
+          accuracy + "%";
+
+        // Update recent progress
+        updateRecentProgress();
+      }
+
+      function updateRecentProgress() {
+        const container = document.getElementById("recentProgressContainer");
+        const recentTopics = getRecentTopics();
+
+        if (recentTopics.length === 0) {
+          container.innerHTML =
+            '<p class="text-gray-500 dark:text-gray-400 text-center py-4">Belum ada progress terbaru</p>';
+          return;
+        }
+
+        container.innerHTML = recentTopics
+          .map(
+            (topic) => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas ${
+                          topic.subject === "matematika"
+                            ? "fa-calculator text-blue-500"
+                            : "fa-atom text-purple-500"
+                        } mr-3"></i>
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">${
+                              topic.name
+                            }</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">${
+                              topic.subject === "matematika"
+                                ? "Matematika"
+                                : "Fisika"
+                            }</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-green-600 dark:text-green-400">${
+                          topic.progress
+                        }%</p>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function getRecentTopics() {
+        const topics = [];
+        ["matematika", "fisika"].forEach((subject) => {
+          if (questionData[subject]) {
+            Object.keys(questionData[subject]).forEach((topicName) => {
+              const progress = getTopicProgress(subject, topicName);
+              if (progress.completed > 0) {
+                topics.push({
+                  subject,
+                  name: topicName,
+                  progress: progress.percentage,
+                });
+              }
+            });
+          }
+        });
+        return topics.sort((a, b) => b.progress - a.progress).slice(0, 4);
+      }
+
+      // Subjects functions
+      function updateSubjectsStats() {
+        if (questionData.matematika) {
+          document.getElementById("mathTopicsCount").textContent = Object.keys(
+            questionData.matematika
+          ).length;
+        }
+        if (questionData.fisika) {
+          document.getElementById("physicsTopicsCount").textContent =
+            Object.keys(questionData.fisika).length;
+        }
+      }
+      function selectSubject(subject) {
+        currentSubject = subject;
+        showSection("quiz");
+
+        // Show toast for subject selection
+        const subjectName = subject === "matematika" ? "Matematika" : "Fisika";
+        alertToast.toastSuccess(`📖 ${subjectName} dipilih! Siap belajar!`);
+      }
+
+      function selectSubjectFromSidebar(subject) {
+        currentSubject = subject;
+        showSection("quiz");
+
+        // Show toast for subject selection
+        const subjectName = subject === "matematika" ? "Matematika" : "Fisika";
+        alertToast.toastInfo(`📚 Beralih ke ${subjectName}`);
+      }
+
+      // Quiz functions
+      function initQuizSection() {
+        // Reset quiz interface
+        document.getElementById("subjectSelection").classList.remove("hidden");
+        document.getElementById("quizInterface").classList.add("hidden");
+        document.getElementById("resultsSection").classList.add("hidden");
+
+        // Update subject buttons
+        updateSubjectButtons();
+
+        // Load topics for current subject
+        loadTopicsForQuiz();
+      }
+
+      function updateSubjectButtons() {
+        document.querySelectorAll(".subject-btn").forEach((btn) => {
+          btn.classList.remove("bg-blue-500", "text-white", "bg-purple-500");
+          btn.classList.add(
+            "bg-gray-200",
+            "dark:bg-gray-700",
+            "text-gray-700",
+            "dark:text-gray-300"
+          );
+
+          if (btn.dataset.subject === currentSubject) {
+            btn.classList.remove(
+              "bg-gray-200",
+              "dark:bg-gray-700",
+              "text-gray-700",
+              "dark:text-gray-300"
+            );
+            if (currentSubject === "matematika") {
+              btn.classList.add("bg-blue-500", "text-white");
+            } else {
+              btn.classList.add("bg-purple-500", "text-white");
+            }
+          }
+        });
+      }
+
+      function switchSubject(subject) {
+        currentSubject = subject;
+        selectedTopics = [];
+        updateSubjectButtons();
+        loadTopicsForQuiz();
+      }
+      function loadTopicsForQuiz() {
+        const topicsGrid = document.getElementById("topicsGrid");
+        topicsGrid.innerHTML = "";
+
+        if (questionData[currentSubject]) {
+          Object.keys(questionData[currentSubject]).forEach((topic) => {
+            const progress = getTopicProgress(currentSubject, topic);
+            const isSelected = selectedTopics.includes(topic);
+
+            let statusClass =
+              "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800";
+            let statusIcon = "fa-clock text-gray-400";
+
+            if (progress.percentage === 100) {
+              statusClass = "border-green-400 bg-green-50 dark:bg-green-900/20";
+              statusIcon = "fa-check-circle text-green-500";
+            } else if (progress.completed > 0) {
+              statusClass =
+                "border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20";
+              statusIcon = "fa-clock text-yellow-500";
+            }
+
+            if (isSelected) {
+              statusClass =
+                "border-blue-500 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-300 dark:ring-blue-600";
+            }
+
+            const topicCard = document.createElement("div");
+            topicCard.className = `cursor-pointer p-4 rounded-lg border-2 ${statusClass} transition-all duration-200 hover:shadow-md`;
+            topicCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900 dark:text-white">${topic}</h4>
+                            <i class="fas ${statusIcon}"></i>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">${
+                              questionData[currentSubject][topic].length
+                            } soal</span>
+                            <span class="text-gray-600 dark:text-gray-400">${
+                              progress.percentage
+                            }%</span>
+                        </div>
+                        ${
+                          isSelected
+                            ? '<div class="mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium"><i class="fas fa-check-circle mr-1"></i>Dipilih</div>'
+                            : ""
+                        }
+                    `;
+
+            topicCard.onclick = () => toggleTopic(topic);
+            topicsGrid.appendChild(topicCard);
+          });
+        }
+
+        updateStartQuizButton();
+      }
+      function toggleTopic(topic) {
+        const index = selectedTopics.indexOf(topic);
+        if (index === -1) {
+          selectedTopics.push(topic);
+          alertToast.toastSuccess(`✅ ${topic} telah dipilih!`);
+        } else {
+          selectedTopics.splice(index, 1);
+          alertToast.toastInfo(`➖ ${topic} telah dihapus dari pilihan`);
+        }
+        loadTopicsForQuiz();
+      }
+
+      function updateStartQuizButton() {
+        const startBtn = document.getElementById("startQuizBtn");
+        startBtn.disabled = selectedTopics.length === 0;
+
+        if (selectedTopics.length === 0) {
+          startBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+          startBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+        } else {
+          startBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
+          startBtn.classList.add("bg-green-500", "hover:bg-green-600");
+        }
+      }
+      function startQuiz() {
+        if (selectedTopics.length === 0) {
+          alertToast.warning(
+            "Pilih minimal satu topik untuk memulai quiz!",
+            "Pilih Topik"
+          );
+          return;
+        }
+
+        // Collect questions from selected topics
+        currentQuestions = [];
+        selectedTopics.forEach((topic) => {
+          currentQuestions = currentQuestions.concat(
+            questionData[currentSubject][topic]
+          );
+        });
+
+        // Shuffle questions
+        shuffleArray(currentQuestions);
+
+        // Show detailed quiz start information
+        const topicCount = selectedTopics.length;
+        const questionCount = currentQuestions.length;
+        alertToast.toastSuccess(
+          `🚀 Quiz dimulai! ${questionCount} soal dari ${topicCount} topik siap!`
+        );
+
+        // Show encouraging message
+        setTimeout(() => {
+          alertToast.showEncouragement("start");
+        }, 1000);
+        // Reset quiz state
+        currentQuestionIndex = 0;
+        userAnswers = [];
+        correctCount = 0;
+        showingSolution = false;
+
+        // Record quiz start time for analytics
+        quizStartTime = Date.now();
+
+        // Show quiz interface
+        document.getElementById("subjectSelection").classList.add("hidden");
+        document.getElementById("quizInterface").classList.remove("hidden");
+
+        // Display first question
+        displayQuestion();
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function displayQuestion() {
+        const question = currentQuestions[currentQuestionIndex];
+        const questionNum = currentQuestionIndex + 1;
+
+        // Update progress
+        const progress = (questionNum / currentQuestions.length) * 100;
+        document.getElementById("progressBar").style.width = progress + "%";
+        document.getElementById(
+          "questionProgress"
+        ).textContent = `${questionNum} / ${currentQuestions.length}`;
+
+        // Update stats
+        document.getElementById("currentQuestionNum").textContent = questionNum;
+        updateQuizStats();
+
+        // Display question
+        document.getElementById("questionTopic").textContent =
+          getQuestionTopic(question);
+        document.getElementById("questionText").innerHTML = question.problem;
+
+        // Clear solution area
+        document.getElementById("solutionArea").classList.add("hidden");
+        showingSolution = false;
+
+        // Display answer area
+        const answerArea = document.getElementById("answerArea");
+        if (question.type === "multiple-choice") {
+          displayMultipleChoice(question, answerArea);
+        } else if (question.type === "essay") {
+          displayEssayQuestion(answerArea);
+        }
+
+        // Update button states
+        updateQuizButtons();
+
+        // Re-render MathJax
+        if (window.MathJax) {
+          MathJax.typesetPromise();
+        }
+      }
+
+      function getQuestionTopic(question) {
+        // Find which topic this question belongs to
+        for (const topic of selectedTopics) {
+          if (questionData[currentSubject][topic].includes(question)) {
+            return topic;
+          }
+        }
+        return "Unknown";
+      }
+
+      function displayMultipleChoice(question, container) {
+        const choices = question.choices;
+        let html = '<div class="space-y-3">';
+
+        Object.keys(choices).forEach((key) => {
+          html += `
+                    <div class="choice cursor-pointer p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-white dark:bg-gray-700" data-choice="${key}" onclick="selectChoice('${key}')">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center mr-4 choice-indicator">
+                                <span class="font-bold text-gray-600 dark:text-gray-400">${key}</span>
+                            </div>
+                            <span class="text-gray-900 dark:text-white">${choices[key]}</span>
+                        </div>
+                    </div>
+                `;
+        });
+
+        html += "</div>";
+        container.innerHTML = html;
+      }
+
+      function displayEssayQuestion(container) {
+        container.innerHTML = `
+                <textarea id="essayAnswer" class="w-full h-32 p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none focus-ring" placeholder="Tuliskan jawaban Anda di sini..."></textarea>
+            `;
+      }
+
+      function selectChoice(choice) {
+        if (showingSolution) return;
+
+        document.querySelectorAll(".choice").forEach((c) => {
+          c.classList.remove(
+            "border-blue-500",
+            "bg-blue-50",
+            "dark:bg-blue-900/20"
+          );
+          c.querySelector(".choice-indicator").classList.remove(
+            "border-blue-500",
+            "bg-blue-500",
+            "text-white"
+          );
+        });
+
+        const selected = document.querySelector(`[data-choice="${choice}"]`);
+        selected.classList.add(
+          "border-blue-500",
+          "bg-blue-50",
+          "dark:bg-blue-900/20"
+        );
+        selected
+          .querySelector(".choice-indicator")
+          .classList.add("border-blue-500", "bg-blue-500", "text-white");
+
+        userAnswers[currentQuestionIndex] = choice;
+      }
+
+      function checkAnswer() {
+        const question = currentQuestions[currentQuestionIndex];
+        let userAnswer = "";
+        if (question.type === "multiple-choice") {
+          userAnswer = userAnswers[currentQuestionIndex];
+          if (!userAnswer) {
+            alertToast.warning(
+              "Silakan pilih jawaban terlebih dahulu!",
+              "Pilih Jawaban"
+            );
+            return;
+          }
+
+          // Show correct/incorrect choices
+          document.querySelectorAll(".choice").forEach((choice) => {
+            const choiceKey = choice.getAttribute("data-choice");
+            const indicator = choice.querySelector(".choice-indicator");
+
+            if (choiceKey === question.correctAnswer) {
+              choice.classList.add(
+                "border-green-500",
+                "bg-green-50",
+                "dark:bg-green-900/20"
+              );
+              indicator.classList.add(
+                "border-green-500",
+                "bg-green-500",
+                "text-white"
+              );
+              indicator.innerHTML = '<i class="fas fa-check text-white"></i>';
+            } else if (
+              choiceKey === userAnswer &&
+              choiceKey !== question.correctAnswer
+            ) {
+              choice.classList.add(
+                "border-red-500",
+                "bg-red-50",
+                "dark:bg-red-900/20"
+              );
+              indicator.classList.add(
+                "border-red-500",
+                "bg-red-500",
+                "text-white"
+              );
+              indicator.innerHTML = '<i class="fas fa-times text-white"></i>';
+            }
+
+            choice.classList.add("pointer-events-none");
+          });
+          if (userAnswer === question.correctAnswer) {
+            correctCount++;
+            // Show encouraging toast for correct answer
+            alertToast.showEncouragement("correct");
+          } else {
+            // Show encouraging toast for wrong answer
+            alertToast.showEncouragement("wrong");
+          }
+        } else if (question.type === "essay") {
+          userAnswer = document.getElementById("essayAnswer").value.trim();
+          if (!userAnswer) {
+            alertToast.warning(
+              "Silakan tulis jawaban terlebih dahulu!",
+              "Jawaban Kosong"
+            );
+            return;
+          }
+          userAnswers[currentQuestionIndex] = userAnswer;
+          // For essay questions, we'll count them as correct for now
+          correctCount++;
+          // Show encouraging toast for essay completion
+          alertToast.showEncouragement("essay");
+        }
+
+        // Show solution
+        displaySolution(question);
+        showingSolution = true;
+
+        // Update stats and buttons
+        updateQuizStats();
+        updateQuizButtons();
+      }
+
+      function displaySolution(question) {
+        const solutionArea = document.getElementById("solutionArea");
+        if (question.solution) {
+          let html =
+            '<div class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">';
+          html +=
+            '<h4 class="font-semibold text-green-800 dark:text-green-300 mb-3"><i class="fas fa-lightbulb mr-2"></i>Pembahasan</h4>';
+
+          if (question.solution.steps) {
+            html += '<div class="space-y-2">';
+            question.solution.steps.forEach((step) => {
+              html += `<div class="p-3 bg-white dark:bg-gray-700 rounded text-gray-900 dark:text-white">${step}</div>`;
+            });
+            html += "</div>";
+          }
+
+          if (question.solution.answer) {
+            html += `<div class="mt-3 p-3 bg-green-100 dark:bg-green-800 rounded"><strong class="text-green-800 dark:text-green-200">Jawaban: ${question.solution.answer}</strong></div>`;
+          }
+
+          html += "</div>";
+          solutionArea.innerHTML = html;
+          solutionArea.classList.remove("hidden");
+
+          // Re-render MathJax
+          if (window.MathJax) {
+            MathJax.typesetPromise();
+          }
+        }
+      }
+
+      function updateQuizStats() {
+        document.getElementById("correctCount").textContent = correctCount;
+        document.getElementById("incorrectCount").textContent =
+          currentQuestionIndex + 1 - correctCount;
+        const percentage = Math.round(
+          (correctCount / (currentQuestionIndex + 1)) * 100
+        );
+        document.getElementById("scorePercentage").textContent =
+          percentage + "%";
+      }
+
+      function updateQuizButtons() {
+        const prevBtn = document.getElementById("prevBtn");
+        const checkBtn = document.getElementById("checkBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const finishBtn = document.getElementById("finishBtn");
+
+        prevBtn.disabled = currentQuestionIndex === 0;
+
+        if (showingSolution) {
+          checkBtn.classList.add("hidden");
+          if (currentQuestionIndex < currentQuestions.length - 1) {
+            nextBtn.classList.remove("hidden");
+            finishBtn.classList.add("hidden");
+          } else {
+            nextBtn.classList.add("hidden");
+            finishBtn.classList.remove("hidden");
+          }
+        } else {
+          checkBtn.classList.remove("hidden");
+          nextBtn.classList.add("hidden");
+          finishBtn.classList.add("hidden");
+        }
+      }
+
+      function previousQuestion() {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          showingSolution = false;
+          displayQuestion();
+        }
+      }
+      function nextQuestion() {
+        if (currentQuestionIndex < currentQuestions.length - 1) {
+          currentQuestionIndex++;
+          showingSolution = false;
+
+          // Show progress milestone toasts
+          const progress = currentQuestionIndex + 1;
+          const total = currentQuestions.length;
+          const percentage = Math.round((progress / total) * 100);
+
+          if (progress === Math.floor(total * 0.25) && total >= 4) {
+            alertToast.info(
+              "🚀 25% perjalanan selesai! Terus semangat!",
+              "Progres"
+            );
+          } else if (progress === Math.floor(total * 0.5) && total >= 4) {
+            alertToast.info(
+              "⭐ Setengah perjalanan terlewati! Luar biasa!",
+              "Progres"
+            );
+          } else if (progress === Math.floor(total * 0.75) && total >= 4) {
+            alertToast.info("🔥 75% selesai! Hampir sampai finish!", "Progres");
+          } else if (progress === total - 1 && total > 1) {
+            alertToast.info(
+              "🏁 Soal terakhir! Berikan yang terbaik!",
+              "Progres"
+            );
+          }
+
+          displayQuestion();
+        }
+      }
+
+      function finishQuiz() {
+        showResults();
+      }
+      function showResults() {
+        const percentage = Math.round(
+          (correctCount / currentQuestions.length) * 100
+        );
+
+        // Show completion celebration toast with special perfect score handling
+        if (percentage === 100) {
+          alertToast.success(
+            "🌟 SEMPURNA! Skor 100%! Anda adalah juara sejati! 🌟",
+            "Quiz Selesai"
+          );
+          // Add extra celebration after a delay
+          setTimeout(() => {
+            alertToast.toastSuccess(
+              "🎊 Prestasi luar biasa! Semua jawaban benar! 🎊"
+            );
+          }, 2000);
+        } else if (percentage >= 90) {
+          alertToast.success(
+            "🏆 Prestasi Luar Biasa! Anda berhasil menguasai materi dengan sempurna!",
+            "Quiz Selesai"
+          );
+        } else if (percentage >= 70) {
+          alertToast.success(
+            "🎉 Selamat! Anda berhasil menyelesaikan quiz dengan baik!",
+            "Quiz Selesai"
+          );
+        } else if (percentage >= 50) {
+          alertToast.info(
+            "👍 Quiz selesai! Terus berlatih untuk hasil yang lebih baik!",
+            "Quiz Selesai"
+          );
+        } else {
+          alertToast.info(
+            "💪 Quiz selesai! Jangan menyerah, terus belajar!",
+            "Quiz Selesai"
+          );
+        }
+
+        // Track quiz completion for analytics
+        trackQuizCompletion(currentSubject, selectedTopics, percentage);
+
+        // Update results display
+        document.getElementById("finalScore").textContent = percentage + "%";
+        document.getElementById("finalCorrect").textContent = correctCount;
+        document.getElementById("finalIncorrect").textContent =
+          currentQuestions.length - correctCount;
+
+        // Set result message and icon
+        const resultIcon = document.getElementById("resultIcon");
+        const resultMessage = document.getElementById("resultMessage");
+
+        if (percentage >= 90) {
+          resultIcon.textContent = "🏆";
+          resultMessage.textContent =
+            "Luar biasa! Anda menguasai materi ini dengan sangat baik!";
+        } else if (percentage >= 70) {
+          resultIcon.textContent = "🎉";
+          resultMessage.textContent =
+            "Bagus! Anda sudah memahami sebagian besar materi.";
+        } else if (percentage >= 50) {
+          resultIcon.textContent = "👍";
+          resultMessage.textContent =
+            "Cukup baik! Terus berlatih untuk hasil yang lebih baik.";
+        } else {
+          resultIcon.textContent = "💪";
+          resultMessage.textContent =
+            "Jangan menyerah! Pelajari lagi materinya dan coba sekali lagi.";
+        }
+
+        // Save progress
+        saveProgress();
+
+        // Show results section
+        document.getElementById("quizInterface").classList.add("hidden");
+        document.getElementById("resultsSection").classList.remove("hidden");
+      }
+      function startNewQuiz() {
+        selectedTopics = [];
+        document.getElementById("resultsSection").classList.add("hidden");
+        document.getElementById("subjectSelection").classList.remove("hidden");
+        loadTopicsForQuiz();
+
+        // Show encouraging toast for starting new quiz
+        alertToast.toastInfo(
+          "🎯 Siap untuk tantangan baru? Pilih topik dan mulai!"
+        );
+      }
+
+      // Progress functions
+      function updateProgressSection() {
+        updateOverallProgress();
+        updateSubjectProgress();
+      }
+
+      function updateOverallProgress() {
+        const totalProblems = getTotalProblems();
+        const completedCount = getCompletedProblems();
+        const percentage =
+          totalProblems > 0
+            ? Math.round((completedCount / totalProblems) * 100)
+            : 0;
+
+        document.getElementById("overallProgressBar").style.width =
+          percentage + "%";
+        document.getElementById("overallProgressText").textContent =
+          percentage + "%";
+        document.getElementById("totalSolved").textContent = completedCount;
+        document.getElementById("totalCorrect").textContent =
+          getCorrectAnswers();
+        document.getElementById("averageScore").textContent =
+          getAverageScore() + "%";
+        document.getElementById("topicsCompleted").textContent =
+          getCompletedTopics();
+      }
+
+      function updateSubjectProgress() {
+        updateSubjectProgressTopics("matematika", "mathProgressTopics");
+        updateSubjectProgressTopics("fisika", "physicsProgressTopics");
+      }
+      function updateSubjectProgressTopics(subject, containerId) {
+        const container = document.getElementById(containerId);
+        if (!questionData[subject]) return;
+
+        const html = Object.keys(questionData[subject])
+          .map((topic) => {
+            const progress = getTopicProgress(subject, topic);
+            let statusColorClass = "";
+            let progressBarClass = "";
+
+            if (progress.percentage === 100) {
+              statusColorClass = "bg-green-400";
+              progressBarClass = "bg-green-400";
+            } else if (progress.completed > 0) {
+              statusColorClass = "bg-yellow-400";
+              progressBarClass = "bg-yellow-400";
+            } else {
+              statusColorClass = "bg-gray-400";
+              progressBarClass = "bg-gray-400";
+            }
+
+            return `
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center flex-1">
+                            <div class="w-3 h-3 ${statusColorClass} rounded-full mr-3 flex-shrink-0"></div>
+                            <span class="font-medium text-gray-900 dark:text-white text-sm">${topic}</span>
+                        </div>
+                        <div class="text-right ml-4 flex-shrink-0">
+                            <span class="text-xs font-medium text-gray-900 dark:text-white">${
+                              progress.completed
+                            }/${progress.total}</span>
+                            <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-1">
+                                <div class="${progressBarClass} h-1.5 rounded-full transition-all duration-300" style="width: ${Math.min(
+              progress.percentage,
+              100
+            )}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+          })
+          .join("");
+
+        container.innerHTML = html;
+      }
+
+      // Enhanced progress tracking and analytics
+      function trackQuizCompletion(subject, topics, score) {
+        const sessionData = {
+          subject,
+          topics,
+          score,
+          questionsCount: currentQuestions.length,
+          correctAnswers: correctCount,
+          completionTime: Date.now() - quizStartTime,
+          timestamp: Date.now(),
+        };
+
+        // Save session to localStorage
+        const sessions = JSON.parse(
+          localStorage.getItem("qlern_sessions") || "[]"
+        );
+        sessions.push(sessionData);
+
+        // Keep only last 50 sessions
+        if (sessions.length > 50) {
+          sessions.splice(0, sessions.length - 50);
+        }
+
+        localStorage.setItem("qlern_sessions", JSON.stringify(sessions));
+
+        // Update learning streak
+        updateLearningStreak();
+      }
+
+      function updateLearningStreak() {
+        const today = new Date().toDateString();
+        const streakData = JSON.parse(
+          localStorage.getItem("qlern_streak") ||
+            '{"current": 0, "lastDate": ""}'
+        );
+
+        if (streakData.lastDate !== today) {
+          const lastDate = new Date(streakData.lastDate);
+          const todayDate = new Date(today);
+          const diffTime = Math.abs(todayDate - lastDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+          if (diffDays === 1) {
+            // Consecutive day
+            streakData.current += 1;
+          } else if (diffDays > 1) {
+            // Streak broken
+            streakData.current = 1;
+          }
+
+          streakData.lastDate = today;
+          localStorage.setItem("qlern_streak", JSON.stringify(streakData));
+
+          // Show streak achievement
+          if (streakData.current > 1) {
+            setTimeout(() => {
+              alertToast.toastSuccess(
+                `🔥 Streak ${streakData.current} hari! Konsistensi yang luar biasa!`,
+                "Learning Streak"
+              );
+            }, 2000);
+          }
+        }
+      }
+
+      function getLearningStats() {
+        const sessions = JSON.parse(
+          localStorage.getItem("qlern_sessions") || "[]"
+        );
+        const totalSessions = sessions.length;
+        const totalQuestions = sessions.reduce(
+          (sum, session) => sum + session.questionsCount,
+          0
+        );
+        const totalCorrect = sessions.reduce(
+          (sum, session) => sum + session.correctAnswers,
+          0
+        );
+        const averageScore =
+          totalSessions > 0
+            ? Math.round(
+                sessions.reduce((sum, session) => sum + session.score, 0) /
+                  totalSessions
+              )
+            : 0;
+        const totalTime = sessions.reduce(
+          (sum, session) => sum + (session.completionTime || 0),
+          0
+        );
+
+        return {
+          totalSessions,
+          totalQuestions,
+          totalCorrect,
+          averageScore,
+          totalTime,
+          accuracy:
+            totalQuestions > 0
+              ? Math.round((totalCorrect / totalQuestions) * 100)
+              : 0,
+        };
+      }
+
+      // Utility functions
+      function getTotalProblems() {
+        let total = 0;
+        ["matematika", "fisika"].forEach((subject) => {
+          if (questionData[subject]) {
+            Object.values(questionData[subject]).forEach((problems) => {
+              total += problems.length;
+            });
+          }
+        });
+        return total;
+      }
+
+      function getCompletedProblems() {
+        let completed = 0;
+        ["matematika", "fisika"].forEach((subject) => {
+          if (completedProblems[subject]) {
+            Object.values(completedProblems[subject]).forEach((topics) => {
+              completed += Object.keys(topics).length;
+            });
+          }
+        });
+        return completed;
+      }
+
+      function getCorrectAnswers() {
+        // This would need to be tracked during quiz sessions
+        return Math.floor(getCompletedProblems() * 0.75); // Placeholder
+      }
+
+      function getAverageScore() {
+        // This would need to be tracked during quiz sessions
+        return Math.floor(Math.random() * 20) + 70; // Placeholder
+      }
+
+      function getCompletedTopics() {
+        let completed = 0;
+        ["matematika", "fisika"].forEach((subject) => {
+          if (questionData[subject]) {
+            Object.keys(questionData[subject]).forEach((topic) => {
+              const progress = getTopicProgress(subject, topic);
+              if (progress.percentage === 100) {
+                completed++;
+              }
+            });
+          }
+        });
+        return completed;
+      }
+
+      function getAccuracy() {
+        const completed = getCompletedProblems();
+        const correct = getCorrectAnswers();
+        return completed > 0 ? Math.round((correct / completed) * 100) : 0;
+      }
+      function getTopicProgress(subject, topic) {
+        const total =
+          questionData[subject] && questionData[subject][topic]
+            ? questionData[subject][topic].length
+            : 0;
+
+        // Count completed problems for this topic
+        let completed = 0;
+        if (completedProblems[subject] && completedProblems[subject][topic]) {
+          // Count unique problems that have been answered
+          const answeredProblems = new Set();
+          questionData[subject][topic].forEach((problem, index) => {
+            // Check if this problem has been answered (using problem text as identifier)
+            const problemId =
+              problem.problem +
+              (problem.choices ? JSON.stringify(problem.choices) : "");
+            Object.values(completedProblems[subject]).forEach((topicData) => {
+              Object.values(topicData).forEach((answer) => {
+                if (answer.problemId === problemId) {
+                  answeredProblems.add(problemId);
+                }
+              });
+            });
+          });
+          completed = answeredProblems.size;
+        }
+
+        const percentage =
+          total > 0 ? Math.round((completed / total) * 100) : 0;
+        return { completed, total, percentage };
+      }
+
+      function saveProgress() {
+        // Save completed problems to localStorage
+        selectedTopics.forEach((topic) => {
+          if (!completedProblems[currentSubject][topic]) {
+            completedProblems[currentSubject][topic] = {};
+          }
+          currentQuestions.forEach((question, index) => {
+            if (userAnswers[index] !== undefined) {
+              // Create unique problem identifier
+              const problemId =
+                question.problem +
+                (question.choices ? JSON.stringify(question.choices) : "");
+              const answerId = `${currentSubject}-${topic}-${Date.now()}-${index}`;
+
+              completedProblems[currentSubject][topic][answerId] = {
+                problemId: problemId,
+                answer: userAnswers[index],
+                correct:
+                  question.type === "multiple-choice"
+                    ? userAnswers[index] === question.correctAnswer
+                    : true,
+                timestamp: Date.now(),
+              };
+            }
+          });
+        });
+        localStorage.setItem(
+          "qlern_completed",
+          JSON.stringify(completedProblems)
+        );
+        // Show progress saved toast
+        alertToast.toastSuccess("💾 Progress tersimpan!");
+      }
+
+      async function resetProgress() {
+        const confirmed = await alertToast.confirm(
+          "Apakah Anda yakin ingin mereset semua progress? Tindakan ini tidak dapat dibatalkan.",
+          "Reset Progress"
+        );
+        if (confirmed) {
+          completedProblems = { matematika: {}, fisika: {} };
+          localStorage.setItem(
+            "qlern_completed",
+            JSON.stringify(completedProblems)
+          );
+          updateDashboardStats();
+          updateProgressSection();
+          alertToast.toastSuccess(
+            "✅ Progress berhasil direset! Semua data pembelajaran telah dihapus."
+          );
+        }
+      }
+
+      // Performance optimizations
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      // Smooth scrolling utility
+      function smoothScrollTo(element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      // Local storage management
+      function safeLocalStorage() {
+        try {
+          const test = "test";
+          localStorage.setItem(test, test);
+          localStorage.removeItem(test);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      // Enhanced error handling
+      function handleError(error, context = "Unknown") {
+        console.error(`Error in ${context}:`, error);
+        alertToast.error(`Terjadi kesalahan: ${error.message}`, "Error");
+      }
+
+      // Preload critical resources
+      function preloadResources() {
+        // Preload MathJax if not already loaded
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          setTimeout(() => {
+            try {
+              MathJax.typesetPromise();
+            } catch (error) {
+              console.warn("MathJax preload failed:", error);
+            }
+          }, 100);
+        }
+      } // Initialize app
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          // Check localStorage availability
+          if (!safeLocalStorage()) {
+            alertToast.warning(
+              "Local storage tidak tersedia. Progress tidak akan tersimpan.",
+              "Peringatan"
+            );
+          }
+
+          // Initialize core functions
+          initTheme();
+          preloadResources();
+          loadQuestionData();
+          showSection("dashboard");
+
+          // Add touch feedback to interactive elements after DOM is ready
+          setTimeout(() => {
+            document
+              .querySelectorAll("button, .choice-option, .bubble-nav-btn")
+              .forEach(addTouchFeedback);
+          }, 100);
+
+          // Add click-outside handler for mobile settings menu
+          document.addEventListener("click", function (event) {
+            const settingsBtn = document.getElementById("mobileSettingsBtn");
+            const settingsMenu = document.getElementById("mobileSettingsMenu");
+
+            if (
+              settingsBtn &&
+              settingsMenu &&
+              !settingsBtn.contains(event.target) &&
+              !settingsMenu.contains(event.target) &&
+              !settingsMenu.classList.contains("opacity-0")
+            ) {
+              toggleMobileSettings();
+            }
+          });
+
+          // Show welcome toast with delay
+          setTimeout(() => {
+            alertToast.toastInfo(
+              "🎓 Selamat datang di QLERN! Siap untuk belajar? 📚"
+            );
+          }, 1000);
+        } catch (error) {
+          handleError(error, "App Initialization");
+        }
+      });
+    </script>
+    <!-- Credit -->
+    <div
+      class="fixed bottom-2 right-2 lg:right-2 lg:bottom-2 text-xs text-gray-400/50 dark:text-gray-500/40 z-10 max-lg:left-1/2 max-lg:transform max-lg:-translate-x-1/2 max-lg:right-auto max-lg:relative max-lg:mt-8 max-lg:mb-4"
+    >
+      <div
+        class="bg-transparent backdrop-blur-none rounded-lg px-3 py-1 transition-all duration-300 hover:text-gray-500 dark:hover:text-gray-400"
+      >
+        Made with ❤️ by
+        <a
+          href="https://www.instagram.com/aryaaafaisal/"
+          target="_blank"
+          class="text-blue-400/60 hover:text-blue-500 dark:text-blue-400/50 dark:hover:text-blue-300 transition-colors"
+          >Arya Faisal Pasha</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

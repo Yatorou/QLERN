@@ -1,0 +1,85 @@
+PANDUAN FORMAT SOAL QLERN
+========================
+
+File soal menggunakan format JSON dengan struktur sebagai berikut:
+
+## Struktur Utama:
+```json
+{
+  "mata_pelajaran": {
+    "Nama Topik": [
+      // Array soal-soal
+    ]
+  }
+}
+```
+
+## Format Soal Multiple Choice:
+```json
+{
+  "problem": "Teks soal di sini. Mendukung LaTeX: $x^2 + y^2 = r^2$",
+  "type": "multiple-choice",
+  "choices": {
+    "A": "Pilihan A",
+    "B": "Pilihan B", 
+    "C": "Pilihan C",
+    "D": "Pilihan D"
+  },
+  "correctAnswer": "C",
+  "solution": {
+    "steps": [
+      "Langkah 1: Penjelasan",
+      "Langkah 2: Perhitungan $2 + 2 = 4$",
+      "Langkah 3: Kesimpulan"
+    ],
+    "answer": "19"
+  }
+}
+```
+
+## Format Soal Essay:
+```json
+{
+  "problem": "Jelaskan konsep... dengan contoh",
+  "type": "essay",
+  "solution": {
+    "steps": [
+      "Poin utama yang harus dijelaskan",
+      "Contoh konkret",
+      "Kesimpulan"
+    ],
+    "answer": "Jawaban ideal atau rangkuman"
+  }
+}
+```
+
+## Fitur LaTeX:
+- Inline math: `$x^2$`
+- Display math: `$$\\frac{a}{b}$$`
+- Akar: `$\\sqrt{x}$` atau `$\\sqrt[3]{x}$`
+- Pecahan: `$\\frac{a}{b}$`
+- Pangkat: `$x^2$`
+- Subscript: `$x_1$`
+
+## Mata Pelajaran yang Didukung:
+- matematika
+- fisika
+
+## Contoh Topik:
+- Matematika: "Aljabar", "Geometri", "Trigonometri", "Kalkulus"
+- Fisika: "Mekanika", "Termodinamika", "Listrik Magnet", "Optik"
+
+## Tips:
+1. Gunakan double backslash `\\` untuk LaTeX escaping dalam JSON
+2. Setiap topik harus memiliki minimal 1 soal
+3. Pembahasan dalam `solution.steps` sebaiknya detail dan mudah dipahami
+4. Choices hanya untuk multiple-choice, tidak perlu untuk essay
+5. Field `correctAnswer` wajib untuk multiple-choice
+
+## Validasi:
+- File harus berupa JSON valid
+- Setiap soal harus memiliki `problem`, `type`, dan `solution`
+- Multiple choice harus memiliki `choices` dan `correctAnswer`
+- Pastikan LaTeX syntax benar
+
+Contoh lengkap dapat dilihat di file soal.json yang sudah ada.
