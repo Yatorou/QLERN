@@ -420,7 +420,24 @@
             Progress
           </a>
 
+          <!-- Desktop Question Package Selector -->
           <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+            <div class="mb-4">
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                <i class="fas fa-book-open mr-2 text-blue-500"></i>
+                Paket Soal
+              </label>
+              <select
+                id="desktopQuestionPackageSelector"
+                onchange="changeQuestionPackage(this.value)"
+                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="">Memuat paket soal...</option>
+              </select>
+            </div>
+
             <div
               class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
             >
@@ -583,6 +600,38 @@
               <p class="text-gray-600 dark:text-gray-400">
                 Selamat datang di QLERN - Platform Pembelajaran Quiz Interaktif
               </p>
+              <!-- Current Package Indicator -->
+              <div
+                class="mt-4 flex items-center justify-between bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-book-open text-blue-500 mr-3 text-lg"></i>
+                  <div>
+                    <span
+                      class="text-sm font-medium text-blue-700 dark:text-blue-300"
+                    >
+                      Paket Aktif:
+                      <span id="currentPackageDisplay" class="font-bold"
+                        >Memuat...</span
+                      >
+                    </span>
+                    <p
+                      class="text-xs text-blue-600 dark:text-blue-400 mt-1"
+                      id="currentPackageStats"
+                    >
+                      Menganalisis paket...
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="showCurrentPackageInfo()"
+                  class="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-300 text-xs rounded-md hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors focus-ring"
+                  title="Lihat informasi lengkap paket soal"
+                >
+                  <i class="fas fa-info-circle mr-1"></i>
+                  Info
+                </button>
+              </div>
             </div>
 
             <!-- Stats Cards -->
@@ -1761,21 +1810,422 @@
             );
           }
         });
-      } // Load question data from soal.json
-      async function loadQuestionData() {
+      } // Question Package Management System
+      async function detectQuestionPackages() {
         try {
-          const response = await fetch("soal.json");
-          questionData = await response.json();
-          console.log("Data loaded successfully:", questionData);
+          // Show loading indicator
+          const desktopSelector = document.getElementById(
+            "desktopQuestionPackageSelector"
+          );
+          const mobileSelector = document.getElementById(
+            "mobileQuestionPackageSelector"
+          );
+
+          desktopSelector.innerHTML =
+            "<option>🔍 Mencari paket soal...</option>";
+          mobileSelector.innerHTML =
+            "<option>🔍 Mencari paket soal...</option>";
+
+          packagesList = [];
+
+          // Load single soal.json file
+          try {
+            const response = await fetch("soal.json");
+            if (response.ok) {
+              const data = await response.json();
+
+              // Process each package in the unified file
+              Object.keys(data).forEach((packageName) => {
+                const packageData = data[packageName];
+
+                // Extract package data from array format
+                if (Array.isArray(packageData) && packageData.length > 0) {
+                  const packageContent = packageData[0]; // Get the first (and only) element
+
+                  // Extract info and description
+                  const info = packageContent.info || {};
+                  const description =
+                    info.deskripsi || `Paket soal ${packageName}`;
+
+                  // Create package object
+                  const packageObj = {
+                    name: packageName,
+                    filename: "soal.json",
+                    path: "soal.json",
+                    packageKey: packageName, // Store package key for reference
+                    data: packageContent, // Store the actual package content
+                    description: description,
+                    metadata: info,
+                    isDefault: false,
+                  };
+
+                  packagesList.push(packageObj);
+                  console.log(`✅ Package loaded: ${packageName}`, packageObj);
+                }
+              });
+            } else {
+              throw new Error("soal.json not found");
+            }
+          } catch (e) {
+            console.log(
+              "Single soal.json not found, fallback to individual files"
+            );
+
+            // Fallback: try to load from individual files in paket-soal/ folder
+            const knownPackages = [
+              "ayam.json",
+              "smp-matematika.json",
+              "sm-itb.json",
+              "tryout-utbk.json",
+            ];
+
+            for (const filename of knownPackages) {
+              try {
+                const response = await fetch(`paket-soal/${filename}`);
+                if (response.ok) {
+                  const data = await response.json();
+
+                  // Extract package name from filename or metadata
+                  let packageName = filename.replace(".json", "");
+                  packageName = packageName.replace(/-/g, " ");
+                  packageName = packageName.replace(/\b\w/g, (l) =>
+                    l.toUpperCase()
+                  );
+
+                  // Use metadata name if available
+                  if (data.info && data.info.nama) {
+                    packageName = data.info.nama;
+                  }
+
+                  // Get description from package metadata if available
+                  let description = `Paket soal ${packageName}`;
+                  if (data.info && data.info.deskripsi) {
+                    description = data.info.deskripsi;
+                  }
+
+                  packagesList.push({
+                    name: packageName,
+                    filename: filename,
+                    path: `paket-soal/${filename}`,
+                    data: data,
+                    description: description,
+                    metadata: data.info || {},
+                    isDefault: false,
+                  });
+                }
+              } catch (e) {
+                console.log(`Package ${filename} not found or invalid`);
+              }
+            }
+          }
+
+          // Update package selectors
+          updatePackageSelectors();
+
+          console.log("Detected packages:", packagesList);
+          if (packagesList.length === 0) {
+            alertToast.warning(
+              "Tidak ada paket soal yang ditemukan dalam folder paket-soal/. Pastikan ada file JSON yang valid di folder tersebut.",
+              "Paket Soal Tidak Ditemukan"
+            );
+          } else {
+            console.log(
+              `✅ ${packagesList.length} paket soal berhasil dideteksi`
+            );
+          }
+
+          return packagesList;
+        } catch (error) {
+          console.error("Error detecting question packages:", error);
+          alertToast.error(
+            "Gagal mendeteksi paket soal. Menggunakan data default.",
+            "Error Deteksi Paket"
+          );
+        }
+      }
+      function updatePackageSelectors() {
+        const desktopSelector = document.getElementById(
+          "desktopQuestionPackageSelector"
+        );
+        const mobileSelector = document.getElementById(
+          "mobileQuestionPackageSelector"
+        );
+
+        // Clear existing options
+        desktopSelector.innerHTML = "";
+        mobileSelector.innerHTML = "";
+
+        if (packagesList.length === 0) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = "❌ Tidak ada paket soal ditemukan";
+          option.disabled = true;
+          desktopSelector.appendChild(option);
+          mobileSelector.appendChild(option.cloneNode(true));
+          return;
+        } // Add packages to selectors
+        packagesList.forEach((pkg, index) => {
+          const option = document.createElement("option");
+
+          // Use packageKey for unified format, path for individual files
+          option.value = pkg.packageKey || pkg.path;
+
+          // Simple display text - just the package name
+          option.textContent = pkg.name;
+          option.setAttribute("data-description", pkg.description);
+          option.setAttribute("data-package-name", pkg.name);
+
+          desktopSelector.appendChild(option);
+          mobileSelector.appendChild(option.cloneNode(true));
+        });
+
+        // Set default selection if available
+        if (packagesList.length > 0) {
+          const defaultPkg = packagesList[0];
+          const defaultValue = defaultPkg.packageKey || defaultPkg.path;
+          desktopSelector.value = defaultValue;
+          mobileSelector.value = defaultValue;
+          currentPackageName = defaultPkg.name;
+
+          // Update UI to show current package
+          updateCurrentPackageDisplay();
+        }
+      }
+      function updateCurrentPackageDisplay() {
+        // Update any UI elements that show current package info
+        const packageDisplay = document.getElementById("currentPackageDisplay");
+        const packageStats = document.getElementById("currentPackageStats");
+
+        if (packageDisplay) {
+          packageDisplay.textContent = currentPackageName || "Tidak diketahui";
+        }
+
+        if (packageStats && questionData) {
+          const stats = getPackageStats(questionData);
+          packageStats.textContent = `${stats.subjects} mata pelajaran • ${stats.topics} topik • ${stats.questions} soal`;
+        }
+
+        console.log(`Current package: ${currentPackageName}`);
+      }
+      function showCurrentPackageInfo() {
+        if (!currentPackageName || !questionData) {
+          alertToast.warning("Tidak ada paket soal yang dimuat", "Info Paket");
+          return;
+        }
+
+        // Find current package in the list
+        const currentPkg = packagesList.find(
+          (pkg) => pkg.name === currentPackageName
+        );
+        if (currentPkg) {
+          // Show package info
+          const identifier = currentPkg.packageKey || currentPkg.path;
+          showPackageInfo(identifier);
+        } else {
+          // Fallback info for packages not in the list
+          const stats = getPackageStats(questionData);
+          let infoMessage = `📚 ${currentPackageName}\n\n`;
+          infoMessage += `📊 Statistik:\n`;
+          infoMessage += `• ${stats.subjects} mata pelajaran\n`;
+          infoMessage += `• ${stats.topics} topik\n`;
+          infoMessage += `• ${stats.questions} total soal\n\n`;
+
+          infoMessage += `Detail per mata pelajaran:\n`;
+          Object.keys(stats.subjectDetails).forEach((subject) => {
+            const detail = stats.subjectDetails[subject];
+            infoMessage += `• ${subject}: ${detail.topics} topik, ${detail.questions} soal\n`;
+          });
+
+          alertToast.info(infoMessage, "Informasi Paket Soal");
+        }
+      }
+      async function changeQuestionPackage(packagePath) {
+        if (!packagePath) return;
+
+        try {
+          // Show loading state
+          const desktopSelector = document.getElementById(
+            "desktopQuestionPackageSelector"
+          );
+          const mobileSelector = document.getElementById(
+            "mobileQuestionPackageSelector"
+          );
+
+          const originalDesktopHTML = desktopSelector.innerHTML;
+          const originalMobileHTML = mobileSelector.innerHTML;
+
+          desktopSelector.innerHTML =
+            "<option>⏳ Memuat paket soal...</option>";
+          mobileSelector.innerHTML = "<option>⏳ Memuat paket soal...</option>";
+          // Find package data
+          const selectedPackage = packagesList.find(
+            (pkg) => pkg.path === packagePath || pkg.packageKey === packagePath
+          );
+          let packageData, packageName;
+
+          if (selectedPackage) {
+            // Use cached data
+            packageData = selectedPackage.data;
+            packageName = selectedPackage.name;
+          } else {
+            // Fallback: Load from file if not in cache
+            if (packagePath.includes(".json") && !packagePath.includes("/")) {
+              // This might be a packageKey, try to load from soal.json
+              const response = await fetch("soal.json");
+              if (response.ok) {
+                const allData = await response.json();
+                if (allData[packagePath]) {
+                  packageData = allData[packagePath][0];
+                  packageName = packagePath;
+                } else {
+                  throw new Error(
+                    `Package "${packagePath}" not found in soal.json`
+                  );
+                }
+              } else {
+                throw new Error(
+                  `Failed to load soal.json: ${response.statusText}`
+                );
+              }
+            } else {
+              // Load individual file
+              const response = await fetch(packagePath);
+              if (!response.ok) {
+                throw new Error(
+                  `Failed to load package: ${response.statusText}`
+                );
+              }
+              packageData = await response.json();
+
+              // Update package name from path
+              const filename = packagePath.split("/").pop();
+              packageName = filename.replace(".json", "").replace(/-/g, " ");
+              packageName = packageName.replace(/\b\w/g, (l) =>
+                l.toUpperCase()
+              );
+            }
+          }
+
+          // Validate package structure
+          const validation = validatePackageStructure(packageData, packageName);
+          if (!validation.valid) {
+            throw new Error(`Paket tidak valid: ${validation.error}`);
+          }
+
+          // Update global data
+          questionData = packageData;
+          currentPackageName = packageName;
+
+          // Initialize completed problems for new subjects if needed
+          Object.keys(questionData).forEach((subject) => {
+            if (
+              subject !== "info" &&
+              subject !== "metadata" &&
+              !completedProblems[subject]
+            ) {
+              completedProblems[subject] = {};
+            }
+          });
+
+          // Restore selectors
+          desktopSelector.innerHTML = originalDesktopHTML;
+          mobileSelector.innerHTML = originalMobileHTML;
+          // Set selected values
+          const selectorValue = selectedPackage?.packageKey || packagePath;
+          desktopSelector.value = selectorValue;
+          mobileSelector.value = selectorValue;
+
+          // Reset quiz state and clear progress for new package
+          isQuizActive = false;
+          selectedTopics = [];
+          currentSubject = "";
+
+          // Update dashboard and UI
           updateDashboardStats();
           updateSubjectsStats();
+          updateCurrentPackageDisplay();
 
-          // Show success toast when data is loaded
-          alertToast.toastSuccess("📚 Data soal berhasil dimuat!");
+          // Reset to dashboard if currently in quiz
+          const currentSection = document.querySelector(
+            ".section:not(.hidden)"
+          );
+          if (currentSection && currentSection.id === "quiz") {
+            showSection("dashboard");
+          }
+
+          // Show success message with stats
+          const stats = getPackageStats(packageData);
+          alertToast.toastSuccess(
+            `✅ ${packageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
+          );
+
+          console.log(
+            "Package loaded successfully:",
+            packageName,
+            questionData
+          );
+        } catch (error) {
+          console.error("Error loading question package:", error);
+
+          // Restore original content on error
+          updatePackageSelectors();
+
+          alertToast.error(
+            `Gagal memuat paket soal: ${error.message}`,
+            "Error Memuat Paket"
+          );
+        }
+      }
+      // Load question data from paket-soal/ folder (package system)
+      async function loadQuestionData() {
+        try {
+          // First detect available packages
+          await detectQuestionPackages();
+
+          // Load default package if available
+          if (packagesList.length > 0) {
+            const defaultPackage = packagesList[0];
+
+            // Validate package structure
+            const validation = validatePackageStructure(
+              defaultPackage.data,
+              defaultPackage.name
+            );
+            if (!validation.valid) {
+              throw new Error(`Default package invalid: ${validation.error}`);
+            }
+
+            questionData = defaultPackage.data;
+            currentPackageName = defaultPackage.name;
+
+            // Initialize completed problems for all subjects
+            Object.keys(questionData).forEach((subject) => {
+              if (
+                subject !== "info" &&
+                subject !== "metadata" &&
+                !completedProblems[subject]
+              ) {
+                completedProblems[subject] = {};
+              }
+            });
+
+            console.log("Data loaded successfully:", questionData);
+            updateDashboardStats();
+            updateSubjectsStats();
+            updateCurrentPackageDisplay();
+
+            // Show success toast when data is loaded
+            const stats = getPackageStats(questionData);
+            alertToast.toastSuccess(
+              `📚 ${currentPackageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
+            );
+          } else {
+            throw new Error("Tidak ada paket soal yang tersedia");
+          }
         } catch (error) {
           console.error("Error loading question data:", error);
           alertToast.error(
-            "Gagal memuat data soal. Pastikan file soal.json tersedia.",
+            `Gagal memuat data soal: ${error.message}`,
             "Error Memuat Data"
           );
         }
@@ -1839,10 +2289,9 @@
           )
           .join("");
       }
-
       function getRecentTopics() {
         const topics = [];
-        ["matematika", "fisika"].forEach((subject) => {
+        Object.keys(questionData).forEach((subject) => {
           if (questionData[subject]) {
             Object.keys(questionData[subject]).forEach((topicName) => {
               const progress = getTopicProgress(subject, topicName);
@@ -1857,19 +2306,26 @@
           }
         });
         return topics.sort((a, b) => b.progress - a.progress).slice(0, 4);
-      }
-
-      // Subjects functions
+      } // Subjects functions
       function updateSubjectsStats() {
-        if (questionData.matematika) {
-          document.getElementById("mathTopicsCount").textContent = Object.keys(
-            questionData.matematika
-          ).length;
+        // Update stats for all available subjects dynamically
+        const mathElement = document.getElementById("mathTopicsCount");
+        const physicsElement = document.getElementById("physicsTopicsCount");
+
+        if (mathElement && questionData.matematika) {
+          mathElement.textContent = Object.keys(questionData.matematika).length;
+        } else if (mathElement) {
+          mathElement.textContent = "0";
         }
-        if (questionData.fisika) {
-          document.getElementById("physicsTopicsCount").textContent =
-            Object.keys(questionData.fisika).length;
+
+        if (physicsElement && questionData.fisika) {
+          physicsElement.textContent = Object.keys(questionData.fisika).length;
+        } else if (physicsElement) {
+          physicsElement.textContent = "0";
         }
+
+        // Update available subjects list for dynamic handling
+        availableSubjects = Object.keys(questionData);
       }
       function selectSubject(subject) {
         currentSubject = subject;
@@ -2675,7 +3131,7 @@
       // Utility functions
       function getTotalProblems() {
         let total = 0;
-        ["matematika", "fisika"].forEach((subject) => {
+        Object.keys(questionData).forEach((subject) => {
           if (questionData[subject]) {
             Object.values(questionData[subject]).forEach((problems) => {
               total += problems.length;
@@ -2687,7 +3143,7 @@
 
       function getCompletedProblems() {
         let completed = 0;
-        ["matematika", "fisika"].forEach((subject) => {
+        Object.keys(questionData).forEach((subject) => {
           if (completedProblems[subject]) {
             Object.values(completedProblems[subject]).forEach((topics) => {
               completed += Object.keys(topics).length;
@@ -2723,10 +3179,9 @@
         );
         return Math.round(totalScore / sessions.length);
       }
-
       function getCompletedTopics() {
         let completed = 0;
-        ["matematika", "fisika"].forEach((subject) => {
+        Object.keys(questionData).forEach((subject) => {
           if (questionData[subject]) {
             Object.keys(questionData[subject]).forEach((topic) => {
               const progress = getTopicProgress(subject, topic);
@@ -2956,6 +3411,120 @@
           handleError(error, "App Initialization");
         }
       });
+
+      function validatePackageStructure(data, packageName) {
+        try {
+          // Check if data is valid JSON object
+          if (typeof data !== "object" || data === null) {
+            throw new Error("Data paket tidak valid");
+          }
+
+          // Count valid subjects (excluding metadata)
+          const subjects = Object.keys(data).filter(
+            (key) =>
+              key !== "info" &&
+              key !== "metadata" &&
+              typeof data[key] === "object" &&
+              data[key] !== null
+          );
+
+          if (subjects.length === 0) {
+            throw new Error("Tidak ada mata pelajaran ditemukan dalam paket");
+          }
+
+          // Validate each subject has topics with questions
+          let totalQuestions = 0;
+          subjects.forEach((subject) => {
+            const topics = Object.keys(data[subject]);
+            if (topics.length === 0) {
+              throw new Error(`Mata pelajaran ${subject} tidak memiliki topik`);
+            }
+
+            topics.forEach((topic) => {
+              if (!Array.isArray(data[subject][topic])) {
+                throw new Error(`Topik ${topic} dalam ${subject} tidak valid`);
+              }
+              totalQuestions += data[subject][topic].length;
+            });
+          });
+
+          console.log(
+            `✅ Paket "${packageName}" valid: ${subjects.length} mata pelajaran, ${totalQuestions} total soal`
+          );
+          return {
+            valid: true,
+            subjects: subjects.length,
+            totalQuestions,
+            subjectsList: subjects,
+          };
+        } catch (error) {
+          console.error(
+            `❌ Paket "${packageName}" tidak valid:`,
+            error.message
+          );
+          return {
+            valid: false,
+            error: error.message,
+          };
+        }
+      }
+
+      function getPackageStats(packageData) {
+        const stats = {
+          subjects: 0,
+          topics: 0,
+          questions: 0,
+          subjectDetails: {},
+        };
+
+        Object.keys(packageData).forEach((subject) => {
+          if (subject === "info" || subject === "metadata") return;
+
+          stats.subjects++;
+          stats.subjectDetails[subject] = {
+            topics: 0,
+            questions: 0,
+          };
+
+          Object.keys(packageData[subject]).forEach((topic) => {
+            stats.topics++;
+            stats.subjectDetails[subject].topics++;
+
+            const questionCount = packageData[subject][topic].length;
+            stats.questions += questionCount;
+            stats.subjectDetails[subject].questions += questionCount;
+          });
+        });
+
+        return stats;
+      }
+      function showPackageInfo(packageIdentifier) {
+        const pkg = packagesList.find(
+          (p) =>
+            p.path === packageIdentifier || p.packageKey === packageIdentifier
+        );
+        if (!pkg) return;
+
+        const stats = getPackageStats(pkg.data);
+        let infoMessage = `📚 ${pkg.name}\n\n`;
+        infoMessage += `📋 ${pkg.description}\n\n`;
+        infoMessage += `📊 Statistik:\n`;
+        infoMessage += `• ${stats.subjects} mata pelajaran\n`;
+        infoMessage += `• ${stats.topics} topik\n`;
+        infoMessage += `• ${stats.questions} total soal\n\n`;
+
+        if (pkg.metadata.tingkat) {
+          infoMessage += `🎯 Tingkat: ${pkg.metadata.tingkat}\n\n`;
+        }
+
+        infoMessage += `Detail per mata pelajaran:\n`;
+        Object.keys(stats.subjectDetails).forEach((subject) => {
+          const detail = stats.subjectDetails[subject];
+          infoMessage += `• ${subject}: ${detail.topics} topik, ${detail.questions} soal\n`;
+        });
+
+        alertToast.info(infoMessage, "Informasi Paket Soal");
+      }
     </script>
   </body>
 </html>

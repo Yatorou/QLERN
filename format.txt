@@ -1,20 +1,70 @@
-PANDUAN FORMAT SOAL QLERN
-========================
+PANDUAN LENGKAP SISTEM PAKET SOAL QLERN
+=======================================
 
-File soal menggunakan format JSON dengan struktur sebagai berikut:
+## OVERVIEW SISTEM
 
-## Struktur Utama:
+Sistem QLERN menggunakan format file JSON terpadu dalam file `soal.json` tunggal yang berisi semua paket soal.
+
+## FORMAT UTAMA: soal.json
+
+### Struktur File Utama:
 ```json
 {
-  "mata_pelajaran": {
-    "Nama Topik": [
-      // Array soal-soal
-    ]
-  }
+  "Nama Paket 1": [
+    {
+      "info": {
+        "nama": "Nama Paket 1", 
+        "tingkat": "SD/SMP/SMA/Kuliah",
+        "deskripsi": "Deskripsi paket soal"
+      },
+      "mata_pelajaran_1": {
+        "Topik 1": [
+          // Array soal-soal
+        ],
+        "Topik 2": [
+          // Array soal-soal
+        ]
+      },
+      "mata_pelajaran_2": {
+        "Topik 1": [
+          // Array soal-soal  
+        ]
+      }
+    }
+  ],
+  "Nama Paket 2": [
+    {
+      "info": {...},
+      "mata_pelajaran": {...}
+    }
+  ]
 }
 ```
 
-## Format Soal Multiple Choice:
+### Cara Menambahkan Paket Soal Baru:
+
+1. **Edit file soal.json**
+2. **Tambahkan paket baru dengan format**:
+```json
+"Nama Paket Baru": [
+  {
+    "info": {
+      "nama": "Nama Paket Baru",
+      "tingkat": "SD/SMP/SMA/Kuliah", 
+      "deskripsi": "Deskripsi singkat paket soal"
+    },
+    "nama_mata_pelajaran": {
+      "Nama Topik": [
+        // Soal-soal di sini
+      ]
+    }
+  }
+]
+```
+
+## FORMAT SOAL
+
+### Format Soal Multiple Choice:
 ```json
 {
   "problem": "Teks soal di sini. Mendukung LaTeX: $x^2 + y^2 = r^2$",
@@ -37,7 +87,7 @@ File soal menggunakan format JSON dengan struktur sebagai berikut:
 }
 ```
 
-## Format Soal Essay:
+### Format Soal Essay:
 ```json
 {
   "problem": "Jelaskan konsep... dengan contoh",
@@ -53,33 +103,187 @@ File soal menggunakan format JSON dengan struktur sebagai berikut:
 }
 ```
 
-## Fitur LaTeX:
+## MATA PELAJARAN YANG DIDUKUNG
+
+Contoh mata pelajaran yang bisa ditambahkan:
+- `matematika`
+- `fisika` 
+- `kimia`
+- `biologi`
+- `ipa`
+- `ips`
+- `bahasa_indonesia`
+- `bahasa_inggris`
+- `sejarah`
+- `geografi`
+- `ekonomi`
+- `sosiologi`
+- `dan lainnya...`
+
+## FITUR LaTeX
+
+Untuk rumus matematika gunakan LaTeX:
 - Inline math: `$x^2$`
 - Display math: `$$\\frac{a}{b}$$`
 - Akar: `$\\sqrt{x}$` atau `$\\sqrt[3]{x}$`
 - Pecahan: `$\\frac{a}{b}$`
 - Pangkat: `$x^2$`
 - Subscript: `$x_1$`
+- Limit: `$\\lim_{x \\to \\infty}$`
+- Integral: `$\\int_a^b f(x)dx$`
+- Trigonometri: `$\\sin$, $\\cos$, $\\tan$`
 
-## Mata Pelajaran yang Didukung:
-- matematika
-- fisika
+## TIPS MEMBUAT SOAL BERKUALITAS
 
-## Contoh Topik:
-- Matematika: "Aljabar", "Geometri", "Trigonometri", "Kalkulus"
-- Fisika: "Mekanika", "Termodinamika", "Listrik Magnet", "Optik"
+### 1. Pilihan Ganda:
+- Buat 4 pilihan (A, B, C, D)
+- Pastikan hanya 1 jawaban yang benar
+- Buat distractor yang masuk akal dan menantang
+- Hindari pilihan yang terlalu mudah ditebak
 
-## Tips:
-1. Gunakan double backslash `\\` untuk LaTeX escaping dalam JSON
-2. Setiap topik harus memiliki minimal 1 soal
-3. Pembahasan dalam `solution.steps` sebaiknya detail dan mudah dipahami
-4. Choices hanya untuk multiple-choice, tidak perlu untuk essay
-5. Field `correctAnswer` wajib untuk multiple-choice
+### 2. Solusi yang Baik:
+- Berikan langkah-langkah yang jelas dan terstruktur
+- Gunakan LaTeX untuk rumus matematika
+- Jelaskan konsep yang digunakan
+- Akhiri dengan jawaban final yang jelas
 
-## Validasi:
+### 3. Organisasi Topik:
+- Kelompokkan soal berdasarkan topik yang relevan
+- Gunakan nama topik yang deskriptif dan mudah dipahami
+- Urutkan dari mudah ke sulit dalam setiap topik
+- Pastikan ada variasi tingkat kesulitan
+
+### 4. Kualitas Soal:
+- Pastikan soal tidak ambigu
+- Gunakan bahasa yang jelas dan mudah dipahami
+- Sesuaikan tingkat kesulitan dengan target audience
+- Test soal sebelum dipublikasikan
+
+## CONTOH LENGKAP PAKET SOAL
+
+```json
+{
+  "SMA Matematika": [
+    {
+      "info": {
+        "nama": "SMA Matematika",
+        "tingkat": "SMA",
+        "deskripsi": "Kumpulan soal matematika untuk tingkat SMA"
+      },
+      "matematika": {
+        "Aljabar": [
+          {
+            "problem": "Jika $x + y = 5$ dan $x - y = 1$, maka nilai dari $x$ adalah...",
+            "type": "multiple-choice",
+            "choices": {
+              "A": "1",
+              "B": "2", 
+              "C": "3",
+              "D": "4"
+            },
+            "correctAnswer": "C",
+            "solution": {
+              "steps": [
+                "Tambahkan kedua persamaan: $(x + y) + (x - y) = 5 + 1$",
+                "Sederhanakan: $2x = 6$",
+                "Bagi kedua sisi dengan 2: $x = 3$"
+              ],
+              "answer": "3"
+            }
+          }
+        ],
+        "Trigonometri": [
+          {
+            "problem": "Nilai dari $\\sin 30°$ adalah...",
+            "type": "multiple-choice",
+            "choices": {
+              "A": "$\\frac{1}{2}$",
+              "B": "$\\frac{\\sqrt{2}}{2}$",
+              "C": "$\\frac{\\sqrt{3}}{2}$",
+              "D": "1"
+            },
+            "correctAnswer": "A",
+            "solution": {
+              "steps": [
+                "Dari segitiga siku-siku 30-60-90",
+                "$\\sin 30° = \\frac{1}{2}$"
+              ],
+              "answer": "$\\frac{1}{2}$"
+            }
+          }
+        ]
+      },
+      "fisika": {
+        "Mekanika": [
+          {
+            "problem": "Sebuah benda bergerak dengan kecepatan konstan 10 m/s. Jarak yang ditempuh dalam 5 detik adalah...",
+            "type": "multiple-choice",
+            "choices": {
+              "A": "40 m",
+              "B": "45 m",
+              "C": "50 m",
+              "D": "55 m"
+            },
+            "correctAnswer": "C",
+            "solution": {
+              "steps": [
+                "Gunakan rumus jarak: $s = v \\times t$",
+                "$s = 10 \\times 5 = 50$ m"
+              ],
+              "answer": "50 m"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+## SISTEM AUTO-DETECTION
+
+Sistem akan otomatis:
+- Memuat semua paket dari file `soal.json`
+- Mendeteksi mata pelajaran dan topik yang tersedia
+- Menampilkan paket di dropdown selector
+- Menyediakan fallback ke file individual di folder `paket-soal/` jika diperlukan
+
+## VALIDASI DAN ERROR HANDLING
+
+### Struktur yang Harus Valid:
 - File harus berupa JSON valid
+- Setiap paket harus memiliki array dengan minimal 1 elemen
+- Elemen pertama harus memiliki property `info`
 - Setiap soal harus memiliki `problem`, `type`, dan `solution`
 - Multiple choice harus memiliki `choices` dan `correctAnswer`
-- Pastikan LaTeX syntax benar
+- LaTeX syntax harus benar
 
-Contoh lengkap dapat dilihat di file soal.json yang sudah ada.
+### Debugging:
+- Gunakan JSON validator untuk memeriksa sintaks
+- Pastikan semua kurung dan tanda kutip seimbang
+- Test paket soal setelah menambahkan
+- Periksa console browser untuk error
+
+## MIGRASI DARI FORMAT LAMA
+
+Jika memiliki file individual di folder `paket-soal/`, sistem akan:
+1. Mencoba memuat dari `soal.json` terlebih dahulu
+2. Fallback ke file individual jika `soal.json` tidak ditemukan
+3. Menggabungkan kedua sumber jika keduanya ada
+
+Format lama masih didukung untuk backward compatibility.
+
+## PENGEMBANGAN LEBIH LANJUT
+
+### Menambahkan Fitur Baru:
+- Soal dengan tipe baru (selain multiple-choice dan essay)
+- Media embed (gambar, video)
+- Tingkat kesulitan per soal
+- Kategori khusus per topik
+- Timer per soal
+
+### Best Practices:
+- Backup file `soal.json` sebelum edit besar
+- Test perubahan di environment development
+- Validasi JSON sebelum deploy
+- Dokumentasikan perubahan format
