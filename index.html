@@ -436,13 +436,17 @@
               >
                 <option value="">Memuat paket soal...</option>
               </select>
-            </div>            <div
+            </div>
+            <div
               class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
             >
               Mata Pelajaran
             </div>
-              <!-- Dynamic Sidebar Subjects Container -->
-            <div id="dynamicSidebarSubjectsContainer" class="px-2 mt-3 space-y-2">
+            <!-- Dynamic Sidebar Subjects Container -->
+            <div
+              id="dynamicSidebarSubjectsContainer"
+              class="px-2 mt-3 space-y-2"
+            >
               <!-- Subjects will be dynamically populated here -->
             </div>
           </div>
@@ -708,13 +712,17 @@
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
               >
-                <div class="flex items-center justify-between">                  <div>
+                <div class="flex items-center justify-between">
+                  <div>
                     <p
                       class="text-sm font-medium text-gray-600 dark:text-gray-400"
                     >
                       Mata Pelajaran
                     </p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white" id="totalSubjectsCount">
+                    <p
+                      class="text-3xl font-bold text-gray-900 dark:text-white"
+                      id="totalSubjectsCount"
+                    >
                       0
                     </p>
                   </div>
@@ -741,7 +749,8 @@
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
                   Pilih mata pelajaran dan mulai berlatih soal
-                </p>                <div id="dashboardQuizSubjectsContainer" class="space-y-3">
+                </p>
+                <div id="dashboardQuizSubjectsContainer" class="space-y-3">
                   <!-- Dynamic dashboard subject buttons will be generated here -->
                 </div>
               </div>
@@ -772,8 +781,12 @@
               <p class="text-gray-600 dark:text-gray-400">
                 Pilih mata pelajaran yang ingin Anda pelajari
               </p>
-            </div>            <!-- Dynamic Subject Cards Container -->
-            <div id="dynamicSubjectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+            <!-- Dynamic Subject Cards Container -->
+            <div
+              id="dynamicSubjectsContainer"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
               <!-- Subject cards will be dynamically generated here -->
             </div>
           </div>
@@ -793,8 +806,12 @@
                 <p class="text-gray-600 dark:text-gray-400">
                   Pilih mata pelajaran dan topik untuk memulai quiz
                 </p>
-              </div>              <!-- Dynamic Subject Buttons Container -->
-              <div id="dynamicQuizSubjectsContainer" class="flex flex-wrap gap-4 mb-8">
+              </div>
+              <!-- Dynamic Subject Buttons Container -->
+              <div
+                id="dynamicQuizSubjectsContainer"
+                class="flex flex-wrap gap-4 mb-8"
+              >
                 <!-- Subject buttons will be dynamically generated here -->
               </div>
 
@@ -853,7 +870,8 @@
                     style="width: 0%"
                   ></div>
                 </div>
-              </div>              <!-- Quiz Stats -->
+              </div>
+              <!-- Quiz Stats -->
               <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
                 <div
                   class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
@@ -996,7 +1014,8 @@
                 <p class="text-gray-600 dark:text-gray-400" id="resultMessage">
                   Selamat! Anda telah menyelesaikan quiz.
                 </p>
-              </div>              <!-- Final Stats -->
+              </div>
+              <!-- Final Stats -->
               <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div
                   class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
@@ -1182,8 +1201,12 @@
                   </p>
                 </div>
               </div>
-            </div>            <!-- Subject Progress -->
-            <div id="subjectProgressContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            </div>
+            <!-- Subject Progress -->
+            <div
+              id="subjectProgressContainer"
+              class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            >
               <!-- Dynamic progress cards will be generated here -->
             </div>
 
@@ -1571,17 +1594,20 @@
       let isQuizActive = false; // Track if quiz is currently active      let quizStartTime = 0; // Track quiz start time for analytics
       let completedProblems = JSON.parse(
         localStorage.getItem("qlern_completed") || "{}"
-      );      // Dynamic data management
+      ); // Dynamic data management
       let availableSubjects = [];
       let currentPackageName = "";
-      let packagesList = [];      // Helper function to get package-specific progress data
+      let packagesList = []; // Helper function to get package-specific progress data
       function getPackageProgress(packageName = currentPackageName) {
         if (!packageName) return {};
         return completedProblems[packageName] || {};
       }
 
       // Helper function to set package-specific progress data
-      function setPackageProgress(packageName = currentPackageName, progressData) {
+      function setPackageProgress(
+        packageName = currentPackageName,
+        progressData
+      ) {
         if (!packageName) return;
         if (!completedProblems[packageName]) {
           completedProblems[packageName] = {};
@@ -1592,30 +1618,39 @@
       // Migration function to convert old format to new package-specific format
       function migrateProgressData() {
         // Check if data needs migration (has direct subject keys instead of package keys)
-        const hasOldFormat = Object.keys(completedProblems).some(key => 
-          key !== currentPackageName && 
-          typeof completedProblems[key] === 'object' && 
-          !completedProblems[key].hasOwnProperty('info') &&
-          !completedProblems[key].hasOwnProperty('metadata') &&
-          Object.keys(completedProblems[key]).every(subKey => 
-            typeof completedProblems[key][subKey] === 'object'
-          )
+        const hasOldFormat = Object.keys(completedProblems).some(
+          (key) =>
+            key !== currentPackageName &&
+            typeof completedProblems[key] === "object" &&
+            !completedProblems[key].hasOwnProperty("info") &&
+            !completedProblems[key].hasOwnProperty("metadata") &&
+            Object.keys(completedProblems[key]).every(
+              (subKey) => typeof completedProblems[key][subKey] === "object"
+            )
         );
 
         if (hasOldFormat && currentPackageName) {
-          console.log("Migrating progress data to new package-specific format...");
-          
+          console.log(
+            "Migrating progress data to new package-specific format..."
+          );
+
           // Create backup of current data
           const oldData = JSON.parse(JSON.stringify(completedProblems));
-          
+
           // Clear and create new package-specific structure
           completedProblems = {};
           completedProblems[currentPackageName] = oldData;
-          
+
           // Save migrated data
-          localStorage.setItem("qlern_completed", JSON.stringify(completedProblems));
-          
-          console.log("Progress data migrated successfully to package:", currentPackageName);
+          localStorage.setItem(
+            "qlern_completed",
+            JSON.stringify(completedProblems)
+          );
+
+          console.log(
+            "Progress data migrated successfully to package:",
+            currentPackageName
+          );
         }
       }
 
@@ -1832,9 +1867,10 @@
               "Tidak ada paket soal yang ditemukan dalam folder paket-soal/. Pastikan ada file JSON yang valid di folder tersebut.",
               "Paket Soal Tidak Ditemukan"
             );
-          } else {          console.log(
-            `✅ ${packagesList.length} paket soal berhasil dideteksi`
-          );
+          } else {
+            console.log(
+              `✅ ${packagesList.length} paket soal berhasil dideteksi`
+            );
           }
 
           return packagesList;
@@ -1904,7 +1940,8 @@
         }
 
         if (packageStats && questionData) {
-          const stats = getPackageStats(questionData);          packageStats.textContent = `${stats.subjects} mata pelajaran • ${stats.topics} topik • ${stats.questions} soal`;
+          const stats = getPackageStats(questionData);
+          packageStats.textContent = `${stats.subjects} mata pelajaran • ${stats.topics} topik • ${stats.questions} soal`;
         }
       }
       function showCurrentPackageInfo() {
@@ -2014,11 +2051,11 @@
 
           // Update global data
           questionData = packageData;
-          currentPackageName = packageName;          // Initialize completed problems for new package if needed
+          currentPackageName = packageName; // Initialize completed problems for new package if needed
           if (!completedProblems[currentPackageName]) {
             completedProblems[currentPackageName] = {};
           }
-          
+
           const packageProgress = getPackageProgress();
           Object.keys(questionData).forEach((subject) => {
             if (
@@ -2029,7 +2066,7 @@
               packageProgress[subject] = {};
             }
           });
-          
+
           // Save the initialized package progress
           setPackageProgress(currentPackageName, packageProgress);
 
@@ -2044,11 +2081,11 @@
           // Reset quiz state and clear progress for new package
           isQuizActive = false;
           selectedTopics = [];
-          currentSubject = "";          // Update dashboard and UI
+          currentSubject = ""; // Update dashboard and UI
           updateDashboardStats();
           updateSubjectsStats();
           updateCurrentPackageDisplay();
-          
+
           // Update progress section to show new subjects
           updateProgressSection();
 
@@ -2064,7 +2101,8 @@
           const stats = getPackageStats(packageData);
           alertToast.toastSuccess(
             `✅ ${packageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
-          );          console.log(
+          );
+          console.log(
             "Package loaded successfully:",
             packageName,
             questionData
@@ -2101,11 +2139,11 @@
             }
 
             questionData = defaultPackage.data;
-            currentPackageName = defaultPackage.name;            // Initialize completed problems for current package if needed
+            currentPackageName = defaultPackage.name; // Initialize completed problems for current package if needed
             if (!completedProblems[currentPackageName]) {
               completedProblems[currentPackageName] = {};
             }
-            
+
             const packageProgress = getPackageProgress();
             Object.keys(questionData).forEach((subject) => {
               if (
@@ -2116,9 +2154,10 @@
                 packageProgress[subject] = {};
               }
             });
-            
+
             // Save the initialized package progress
-            setPackageProgress(currentPackageName, packageProgress);console.log("Data loaded successfully:", questionData);
+            setPackageProgress(currentPackageName, packageProgress);
+            console.log("Data loaded successfully:", questionData);
             updateDashboardStats();
             updateSubjectsStats();
             updateCurrentPackageDisplay();
@@ -2127,10 +2166,11 @@
             const stats = getPackageStats(questionData);
             alertToast.toastSuccess(
               `📚 ${currentPackageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
-            );          } else {
+            );
+          } else {
             throw new Error("Tidak ada paket soal yang tersedia");
           }
-               } catch (error) {
+        } catch (error) {
           console.error("Error loading question data:", error);
           alertToast.error(
             `Gagal memuat data soal: ${error.message}`,
@@ -2144,10 +2184,14 @@
         const totalProblems = getTotalProblems();
         const completedCount = getCompletedProblems();
         const accuracy = getAccuracy();
-        
+
         // Get total subjects count dynamically
-        const totalSubjects = Object.keys(questionData).filter(key => 
-          key !== 'info' && key !== 'metadata' && questionData[key] && typeof questionData[key] === 'object'
+        const totalSubjects = Object.keys(questionData).filter(
+          (key) =>
+            key !== "info" &&
+            key !== "metadata" &&
+            questionData[key] &&
+            typeof questionData[key] === "object"
         ).length;
 
         document.getElementById("totalProblemsCount").textContent =
@@ -2171,14 +2215,14 @@
           container.innerHTML =
             '<p class="text-gray-500 dark:text-gray-400 text-center py-4">Belum ada progress terbaru</p>';
           return;
-        }        container.innerHTML = recentTopics
-          .map(
-            (topic) => {
-              const subjectIcon = getSubjectIcon(topic.subject);
-              const subjectColor = getSubjectColor(topic.subject);
-              const subjectDisplayName = getSubjectDisplayName(topic.subject);
-              
-              return `
+        }
+        container.innerHTML = recentTopics
+          .map((topic) => {
+            const subjectIcon = getSubjectIcon(topic.subject);
+            const subjectColor = getSubjectColor(topic.subject);
+            const subjectDisplayName = getSubjectDisplayName(topic.subject);
+
+            return `
                 <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div class="flex items-center">
                         <i class="${subjectIcon} ${subjectColor.text} mr-3"></i>
@@ -2191,15 +2235,19 @@
                         <p class="text-sm font-medium text-green-600 dark:text-green-400">${topic.progress}%</p>
                     </div>
                 </div>              `;
-            }
-          )
+          })
           .join("");
       }
-        function getRecentTopics() {
+      function getRecentTopics() {
         const topics = [];
         Object.keys(questionData).forEach((subject) => {
           // Skip metadata and info objects, only count actual subjects
-          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
+          if (
+            subject !== "info" &&
+            subject !== "metadata" &&
+            questionData[subject] &&
+            typeof questionData[subject] === "object"
+          ) {
             Object.keys(questionData[subject]).forEach((topicName) => {
               const progress = getTopicProgress(subject, topicName);
               if (progress.completed > 0) {
@@ -2213,13 +2261,17 @@
           }
         });
         return topics.sort((a, b) => b.progress - a.progress).slice(0, 4);
-      }// Subjects functions
+      } // Subjects functions
       function updateSubjectsStats() {
         // Update stats for all available subjects dynamically
-        availableSubjects = Object.keys(questionData).filter(key => 
-          key !== 'info' && key !== 'metadata' && questionData[key] && typeof questionData[key] === 'object'
+        availableSubjects = Object.keys(questionData).filter(
+          (key) =>
+            key !== "info" &&
+            key !== "metadata" &&
+            questionData[key] &&
+            typeof questionData[key] === "object"
         );
-        
+
         // Update existing hardcoded elements if they exist
         const mathElement = document.getElementById("mathTopicsCount");
         const physicsElement = document.getElementById("physicsTopicsCount");
@@ -2234,47 +2286,53 @@
           physicsElement.textContent = Object.keys(questionData.fisika).length;
         } else if (physicsElement) {
           physicsElement.textContent = "0";
-        }          // Generate dynamic subject cards in subjects section
+        } // Generate dynamic subject cards in subjects section
         generateDynamicSubjectCards();
-        
+
         // Generate dynamic subject navigation in sidebar
         generateDynamicSidebarSubjects();
-        
+
         // Generate dynamic subject buttons in dashboard
         generateDashboardSubjectButtons();
-        
+
         // Generate dynamic subject buttons in quiz section
         generateDynamicQuizSubjectButtons();
       }
-      
+
       function generateDashboardSubjectButtons() {
-        const dashboardContainer = document.getElementById('dashboardQuizSubjectsContainer');
+        const dashboardContainer = document.getElementById(
+          "dashboardQuizSubjectsContainer"
+        );
         if (!dashboardContainer || !availableSubjects.length) return;
-        
+
         // Clear existing dynamic buttons
-        const existingDynamicButtons = dashboardContainer.querySelectorAll('.dynamic-dashboard-subject');
-        existingDynamicButtons.forEach(btn => btn.remove());
-        
+        const existingDynamicButtons = dashboardContainer.querySelectorAll(
+          ".dynamic-dashboard-subject"
+        );
+        existingDynamicButtons.forEach((btn) => btn.remove());
+
         // Create buttons for available subjects
-        availableSubjects.forEach(subject => {
+        availableSubjects.forEach((subject) => {
           const subjectButton = createDashboardSubjectButton(subject);
           dashboardContainer.appendChild(subjectButton);
         });
       }
-      
+
       function createDashboardSubjectButton(subject) {
         const displayName = getSubjectDisplayName(subject);
         const subjectColor = getSubjectColor(subject);
         const subjectIcon = getSubjectIcon(subject);
-        const topicsCount = questionData[subject] ? Object.keys(questionData[subject]).length : 0;
-        
-        const button = document.createElement('button');
+        const topicsCount = questionData[subject]
+          ? Object.keys(questionData[subject]).length
+          : 0;
+
+        const button = document.createElement("button");
         button.className = `dynamic-dashboard-subject w-full flex items-center justify-between p-4 rounded-lg ${subjectColor.hover} transition-colors focus-ring text-left`;
         button.onclick = () => {
           selectSubject(subject);
-          safeNavigate('quiz');
+          safeNavigate("quiz");
         };
-        
+
         button.innerHTML = `
           <div class="flex items-center">
             <div class="w-10 h-10 ${subjectColor.bg} rounded-lg flex items-center justify-center mr-3">
@@ -2287,10 +2345,10 @@
           </div>
           <i class="fas fa-arrow-right text-gray-400"></i>
         `;
-        
+
         return button;
       }
-      
+
       function selectSubject(subject) {
         currentSubject = subject;
         safeNavigate("quiz"); // Removed subject selection toasts - too much notification
@@ -2312,9 +2370,22 @@
 
         // Load topics for current subject
         loadTopicsForQuiz();
-      }      function updateSubjectButtons() {
+      }
+      function updateSubjectButtons() {
         document.querySelectorAll(".subject-btn").forEach((btn) => {
-          btn.classList.remove("bg-blue-500", "text-white", "bg-purple-500", "bg-green-500", "bg-orange-500", "bg-red-500", "bg-teal-500", "bg-yellow-500", "bg-indigo-500", "bg-pink-500", "bg-gray-500");
+          btn.classList.remove(
+            "bg-blue-500",
+            "text-white",
+            "bg-purple-500",
+            "bg-green-500",
+            "bg-orange-500",
+            "bg-red-500",
+            "bg-teal-500",
+            "bg-yellow-500",
+            "bg-indigo-500",
+            "bg-pink-500",
+            "bg-gray-500"
+          );
           btn.classList.add(
             "bg-gray-200",
             "dark:bg-gray-700",
@@ -2329,7 +2400,7 @@
               "text-gray-700",
               "dark:text-gray-300"
             );
-            
+
             // Get subject color and apply it
             const subjectColor = getSubjectColor(currentSubject);
             btn.classList.add(subjectColor.buttonBg, "text-white");
@@ -2470,12 +2541,12 @@
         // Track which questions have been answered and checked (new logic)
         answeredAndCheckedQuestions = new Array(currentQuestions.length).fill(
           false
-        );        // Reset quiz stats display
+        ); // Reset quiz stats display
         document.getElementById("correctCount").textContent = "0";
         document.getElementById("incorrectCount").textContent = "0";
         document.getElementById("scorePercentage").textContent = "0%"; // Record quiz start time for analytics
         quizStartTime = Date.now();
-        
+
         // Start quiz timer
         startQuizTimer();
 
@@ -2549,42 +2620,44 @@
       } // Store question mappings globally to avoid reference issues      let currentQuestionMappings = {};
       // Track which questions have been answered and checked
       let answeredAndCheckedQuestions = [];
-      
+
       // Timer variables
       let quizTimer = null;
       let quizStartTime = 0;
       let currentQuizDuration = 0;
-      
+
       // Timer utility functions
       function formatTime(milliseconds) {
         const totalSeconds = Math.floor(milliseconds / 1000);
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        return `${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
       }
-      
+
       function startQuizTimer() {
         if (quizTimer) {
           clearInterval(quizTimer);
         }
         quizStartTime = Date.now();
         currentQuizDuration = 0;
-        
+
         quizTimer = setInterval(() => {
           currentQuizDuration = Date.now() - quizStartTime;
           updateTimerDisplay();
         }, 1000);
-        
+
         updateTimerDisplay();
       }
-      
+
       function updateTimerDisplay() {
-        const timerElement = document.getElementById('quiz-timer');
+        const timerElement = document.getElementById("quiz-timer");
         if (timerElement) {
           timerElement.textContent = formatTime(currentQuizDuration);
         }
       }
-      
+
       function stopQuizTimer() {
         if (quizTimer) {
           clearInterval(quizTimer);
@@ -2592,7 +2665,7 @@
         }
         currentQuizDuration = Date.now() - quizStartTime;
       }
-      
+
       function displayMultipleChoice(question, container) {
         const choices = question.choices;
         const questionIndex = currentQuestionIndex;
@@ -2865,10 +2938,11 @@
 
           displayQuestion();
         }
-      }      function finishQuiz() {
+      }
+      function finishQuiz() {
         // Stop quiz timer
         stopQuizTimer();
-        
+
         showResults();
       }
       function showResults() {
@@ -2919,11 +2993,12 @@
         trackQuizCompletion(currentSubject, selectedTopics, percentage);
 
         // Calculate incorrect count properly
-        const incorrectCount = answeredCount - correctCount;        // Update results display
+        const incorrectCount = answeredCount - correctCount; // Update results display
         document.getElementById("finalScore").textContent = percentage + "%";
         document.getElementById("finalCorrect").textContent = correctCount;
         document.getElementById("finalIncorrect").textContent = incorrectCount;
-        document.getElementById("finalTime").textContent = formatTime(currentQuizDuration);
+        document.getElementById("finalTime").textContent =
+          formatTime(currentQuizDuration);
 
         // Set result message and icon
         const resultIcon = document.getElementById("resultIcon");
@@ -2954,17 +3029,18 @@
         // Show results section
         document.getElementById("quizInterface").classList.add("hidden");
         document.getElementById("resultsSection").classList.remove("hidden");
-      }      function startNewQuiz() {
+      }
+      function startNewQuiz() {
         selectedTopics = [];
         isQuizActive = false; // Reset quiz active state
-        
+
         // Reset timer
         if (quizTimer) {
           clearInterval(quizTimer);
           quizTimer = null;
         }
         currentQuizDuration = 0;
-        
+
         document.getElementById("resultsSection").classList.add("hidden");
         document.getElementById("subjectSelection").classList.remove("hidden");
         loadTopicsForQuiz(); // Removed start new quiz toast - too much notification
@@ -2974,7 +3050,8 @@
       function updateProgressSection() {
         updateOverallProgress();
         updateSubjectProgress();
-      }      function updateOverallProgress() {
+      }
+      function updateOverallProgress() {
         const totalProblems = getTotalProblems();
         const completedCount = getCompletedProblems();
         const percentage =
@@ -2996,24 +3073,29 @@
           getAverageScore() + "%";
         document.getElementById("topicsCompleted").textContent =
           getCompletedTopics();
-      }function updateSubjectProgress() {
+      }
+      function updateSubjectProgress() {
         // Update hardcoded elements if they exist (for backward compatibility)
         updateSubjectProgressTopics("matematika", "mathProgressTopics");
         updateSubjectProgressTopics("fisika", "physicsProgressTopics");
-        
+
         // Clear existing dynamic progress cards
-        const progressSection = document.getElementById('subjectProgressContainer');
+        const progressSection = document.getElementById(
+          "subjectProgressContainer"
+        );
         if (progressSection) {
-          const existingDynamicCards = progressSection.querySelectorAll('.dynamic-progress-card');
-          existingDynamicCards.forEach(card => card.remove());
+          const existingDynamicCards = progressSection.querySelectorAll(
+            ".dynamic-progress-card"
+          );
+          existingDynamicCards.forEach((card) => card.remove());
         }
-        
+
         // Update dynamic subject progress for all available subjects
-        availableSubjects.forEach(subject => {
+        availableSubjects.forEach((subject) => {
           // Create dynamic progress containers if needed
           const containerId = `${subject}ProgressTopics`;
           let container = document.getElementById(containerId);
-          
+
           if (!container) {
             // Create a new progress section for this subject
             if (progressSection) {
@@ -3022,19 +3104,20 @@
               container = document.getElementById(containerId);
             }
           }
-          
+
           if (container) {
             updateSubjectProgressTopics(subject, containerId);
           }
         });
       }
-        function createDynamicProgressCard(subject) {
+      function createDynamicProgressCard(subject) {
         const displayName = getSubjectDisplayName(subject);
         const subjectColor = getSubjectColor(subject);
         const subjectIcon = getSubjectIcon(subject);
-        
-        const card = document.createElement('div');
-        card.className = 'dynamic-progress-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700';
+
+        const card = document.createElement("div");
+        card.className =
+          "dynamic-progress-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700";
         card.innerHTML = `
           <div class="flex items-center mb-4">
             <div class="w-12 h-12 ${subjectColor.bg} rounded-lg flex items-center justify-center mr-4">
@@ -3049,7 +3132,7 @@
             <!-- Progress topics will be populated here -->
           </div>
         `;
-        
+
         return card;
       }
       function updateSubjectProgressTopics(subject, containerId) {
@@ -3189,12 +3272,17 @@
               ? Math.round((totalCorrect / totalQuestions) * 100)
               : 0,
         };
-      }      // Utility functions
+      } // Utility functions
       function getTotalProblems() {
         let total = 0;
         Object.keys(questionData).forEach((subject) => {
           // Skip metadata and info objects, only count actual subjects
-          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
+          if (
+            subject !== "info" &&
+            subject !== "metadata" &&
+            questionData[subject] &&
+            typeof questionData[subject] === "object"
+          ) {
             Object.values(questionData[subject]).forEach((problems) => {
               if (Array.isArray(problems)) {
                 total += problems.length;
@@ -3203,13 +3291,19 @@
           }
         });
         return total;
-      }      function getCompletedProblems() {
+      }
+      function getCompletedProblems() {
         let completed = 0;
         const packageProgress = getPackageProgress();
-        
+
         Object.keys(questionData).forEach((subject) => {
           // Skip metadata and info objects, only count actual subjects
-          if (subject !== 'info' && subject !== 'metadata' && packageProgress[subject] && typeof questionData[subject] === 'object') {
+          if (
+            subject !== "info" &&
+            subject !== "metadata" &&
+            packageProgress[subject] &&
+            typeof questionData[subject] === "object"
+          ) {
             Object.values(packageProgress[subject]).forEach((topics) => {
               completed += Object.keys(topics).length;
             });
@@ -3243,11 +3337,17 @@
           0
         );
         return Math.round(totalScore / sessions.length);
-      }      function getCompletedTopics() {
+      }
+      function getCompletedTopics() {
         let completed = 0;
         Object.keys(questionData).forEach((subject) => {
           // Skip metadata and info objects, only count actual subjects
-          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
+          if (
+            subject !== "info" &&
+            subject !== "metadata" &&
+            questionData[subject] &&
+            typeof questionData[subject] === "object"
+          ) {
             Object.keys(questionData[subject]).forEach((topic) => {
               const progress = getTopicProgress(subject, topic);
               if (progress.percentage === 100) {
@@ -3279,7 +3379,8 @@
         return totalQuestions > 0
           ? Math.round((totalCorrect / totalQuestions) * 100)
           : 0;
-      }      function getTopicProgress(subject, topic) {
+      }
+      function getTopicProgress(subject, topic) {
         const total =
           questionData[subject] && questionData[subject][topic]
             ? questionData[subject][topic].length
@@ -3287,7 +3388,7 @@
 
         // Get package-specific progress data
         const packageProgress = getPackageProgress();
-        
+
         // Count completed problems for this specific topic only
         let completed = 0;
         if (packageProgress[subject] && packageProgress[subject][topic]) {
@@ -3301,11 +3402,13 @@
 
             // Only check completedProblems for this specific topic, not all topics
             if (packageProgress[subject][topic]) {
-              Object.values(packageProgress[subject][topic]).forEach((answer) => {
-                if (answer.problemId === problemId) {
-                  answeredProblems.add(problemId);
+              Object.values(packageProgress[subject][topic]).forEach(
+                (answer) => {
+                  if (answer.problemId === problemId) {
+                    answeredProblems.add(problemId);
+                  }
                 }
-              });
+              );
             }
           });
           completed = answeredProblems.size;
@@ -3313,15 +3416,16 @@
 
         const percentage =
           total > 0 ? Math.round((completed / total) * 100) : 0;
-        
+
         // Ensure percentage never exceeds 100%
         const clampedPercentage = Math.min(percentage, 100);
-        
+
         return { completed, total, percentage: clampedPercentage };
-      }      function saveProgress() {
+      }
+      function saveProgress() {
         // Get package-specific progress data
         const packageProgress = getPackageProgress();
-        
+
         // Save completed problems to package-specific storage
         selectedTopics.forEach((topic) => {
           if (!packageProgress[currentSubject]) {
@@ -3350,10 +3454,10 @@
             }
           });
         });
-        
+
         // Update the package-specific progress data
         setPackageProgress(currentPackageName, packageProgress);
-        
+
         localStorage.setItem(
           "qlern_completed",
           JSON.stringify(completedProblems)
@@ -3366,7 +3470,8 @@
           "Apakah Anda yakin ingin mereset semua progress? Tindakan ini tidak dapat dibatalkan.",
           "Reset Progress"
         );
-        if (confirmed) {        // Clear all progress data
+        if (confirmed) {
+          // Clear all progress data
           completedProblems = {};
           localStorage.setItem(
             "qlern_completed",
@@ -3604,61 +3709,76 @@
         });
 
         alertToast.info(infoMessage, "Informasi Paket Soal");
-      }      // Dynamic subject management functions
+      } // Dynamic subject management functions
       function generateDynamicSubjectCards() {
-        const subjectsContainer = document.getElementById('dynamicSubjectsContainer');
+        const subjectsContainer = document.getElementById(
+          "dynamicSubjectsContainer"
+        );
         if (!subjectsContainer || !availableSubjects.length) return;
-        
+
         // Clear existing dynamic cards (keep hardcoded math and physics if they exist)
-        const existingDynamicCards = subjectsContainer.querySelectorAll('.dynamic-subject-card');
-        existingDynamicCards.forEach(card => card.remove());
-        
+        const existingDynamicCards = subjectsContainer.querySelectorAll(
+          ".dynamic-subject-card"
+        );
+        existingDynamicCards.forEach((card) => card.remove());
+
         // Create cards for subjects that don't have hardcoded cards
-        availableSubjects.forEach(subject => {
+        availableSubjects.forEach((subject) => {
           const subjectCard = createSubjectCard(subject);
           subjectsContainer.appendChild(subjectCard);
         });
-      }      function generateDynamicSidebarSubjects() {
-        const sidebarContainer = document.getElementById('dynamicSidebarSubjectsContainer');
-        
+      }
+      function generateDynamicSidebarSubjects() {
+        const sidebarContainer = document.getElementById(
+          "dynamicSidebarSubjectsContainer"
+        );
+
         if (!sidebarContainer || !availableSubjects.length) {
           return;
         }
-        
+
         // Clear existing dynamic items
-        const existingDynamicItems = sidebarContainer.querySelectorAll('.dynamic-sidebar-subject');
-        existingDynamicItems.forEach(item => item.remove());
-        
+        const existingDynamicItems = sidebarContainer.querySelectorAll(
+          ".dynamic-sidebar-subject"
+        );
+        existingDynamicItems.forEach((item) => item.remove());
+
         // Create sidebar items for subjects that don't have hardcoded items
-        availableSubjects.forEach(subject => {
+        availableSubjects.forEach((subject) => {
           const sidebarItem = createSidebarSubjectItem(subject);
           sidebarContainer.appendChild(sidebarItem);
         });
       }
-      
+
       function generateDynamicQuizSubjectButtons() {
-        const buttonsContainer = document.getElementById('dynamicQuizSubjectsContainer');
+        const buttonsContainer = document.getElementById(
+          "dynamicQuizSubjectsContainer"
+        );
         if (!buttonsContainer || !availableSubjects.length) return;
-        
+
         // Clear existing dynamic buttons
-        const existingDynamicButtons = buttonsContainer.querySelectorAll('.dynamic-subject-btn');
-        existingDynamicButtons.forEach(btn => btn.remove());
-          // Create buttons for subjects that don't have hardcoded buttons
-        availableSubjects.forEach(subject => {
+        const existingDynamicButtons = buttonsContainer.querySelectorAll(
+          ".dynamic-subject-btn"
+        );
+        existingDynamicButtons.forEach((btn) => btn.remove());
+        // Create buttons for subjects that don't have hardcoded buttons
+        availableSubjects.forEach((subject) => {
           const subjectButton = createQuizSubjectButton(subject);
           buttonsContainer.appendChild(subjectButton);
         });
       }
-      
+
       function createSubjectCard(subject) {
-        const topicsCount = questionData[subject] ? Object.keys(questionData[subject]).length : 0;
+        const topicsCount = questionData[subject]
+          ? Object.keys(questionData[subject]).length
+          : 0;
         const displayName = getSubjectDisplayName(subject);
         const subjectColor = getSubjectColor(subject);
-        
-        const card = document.createElement('div');
+
+        const card = document.createElement("div");
         card.className = `dynamic-subject-card bg-gradient-to-br ${subjectColor.gradient} rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300`;
         card.onclick = () => selectSubject(subject);
-        
+
         card.innerHTML = `
           <div class="flex items-center justify-between mb-6">
             <div class="text-left">
@@ -3682,19 +3802,19 @@
             <span>${topicsCount} topik tersedia</span>
           </div>
         `;
-        
+
         return card;
       }
-      
+
       function createSidebarSubjectItem(subject) {
         const displayName = getSubjectDisplayName(subject);
         const subjectColor = getSubjectColor(subject);
         const subjectIcon = getSubjectIcon(subject);
-        
-        const item = document.createElement('button');
+
+        const item = document.createElement("button");
         item.className = `dynamic-sidebar-subject w-full flex items-center justify-between p-4 ${subjectColor.bg} rounded-lg ${subjectColor.hover} transition-colors focus-ring`;
         item.onclick = () => selectSubjectFromSidebar(subject);
-        
+
         item.innerHTML = `
           <div class="flex items-center">
             <i class="${subjectIcon} ${subjectColor.text} mr-3"></i>
@@ -3702,148 +3822,152 @@
           </div>
           <i class="fas fa-arrow-right ${subjectColor.text}"></i>
         `;
-        
+
         return item;
       }
-      
+
       function createQuizSubjectButton(subject) {
         const displayName = getSubjectDisplayName(subject);
         const subjectIcon = getSubjectIcon(subject);
-        
-        const button = document.createElement('button');
-        button.className = 'dynamic-subject-btn subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring';
-        button.setAttribute('data-subject', subject);
+
+        const button = document.createElement("button");
+        button.className =
+          "dynamic-subject-btn subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring";
+        button.setAttribute("data-subject", subject);
         button.onclick = () => switchSubject(subject);
-        
+
         button.innerHTML = `
           <i class="${subjectIcon} mr-2"></i>
           ${displayName}
         `;
-        
+
         return button;
       }
-      
+
       function getSubjectDisplayName(subject) {
         const displayNames = {
-          'matematika': 'Matematika',
-          'fisika': 'Fisika',
-          'bahasa_inggris': 'Bahasa Inggris',
-          'ipa': 'IPA',
-          'kimia': 'Kimia',
-          'biologi': 'Biologi',
-          'sejarah': 'Sejarah',
-          'geografi': 'Geografi',
-          'ekonomi': 'Ekonomi',
-          'sosiologi': 'Sosiologi',
-          'bahasa_indonesia': 'Bahasa Indonesia'
+          matematika: "Matematika",
+          fisika: "Fisika",
+          bahasa_inggris: "Bahasa Inggris",
+          ipa: "IPA",
+          kimia: "Kimia",
+          biologi: "Biologi",
+          sejarah: "Sejarah",
+          geografi: "Geografi",
+          ekonomi: "Ekonomi",
+          sosiologi: "Sosiologi",
+          bahasa_indonesia: "Bahasa Indonesia",
         };
-        
-        return displayNames[subject] || subject.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        return (
+          displayNames[subject] ||
+          subject.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+        );
       }
-        function getSubjectColor(subject) {
+      function getSubjectColor(subject) {
         // Fixed random color system - each subject gets a consistent color based on hash
         const colorPalettes = [
           {
-            gradient: 'from-blue-500 to-blue-600',
-            bg: 'bg-blue-50 dark:bg-blue-900/20',
-            hover: 'hover:bg-blue-100 dark:hover:bg-blue-900/30',
-            text: 'text-blue-600 dark:text-blue-400',
-            buttonBg: 'bg-blue-500'
+            gradient: "from-blue-500 to-blue-600",
+            bg: "bg-blue-50 dark:bg-blue-900/20",
+            hover: "hover:bg-blue-100 dark:hover:bg-blue-900/30",
+            text: "text-blue-600 dark:text-blue-400",
+            buttonBg: "bg-blue-500",
           },
           {
-            gradient: 'from-purple-500 to-purple-600',
-            bg: 'bg-purple-50 dark:bg-purple-900/20',
-            hover: 'hover:bg-purple-100 dark:hover:bg-purple-900/30',
-            text: 'text-purple-600 dark:text-purple-400',
-            buttonBg: 'bg-purple-500'
+            gradient: "from-purple-500 to-purple-600",
+            bg: "bg-purple-50 dark:bg-purple-900/20",
+            hover: "hover:bg-purple-100 dark:hover:bg-purple-900/30",
+            text: "text-purple-600 dark:text-purple-400",
+            buttonBg: "bg-purple-500",
           },
           {
-            gradient: 'from-green-500 to-green-600',
-            bg: 'bg-green-50 dark:bg-green-900/20',
-            hover: 'hover:bg-green-100 dark:hover:bg-green-900/30',
-            text: 'text-green-600 dark:text-green-400',
-            buttonBg: 'bg-green-500'
+            gradient: "from-green-500 to-green-600",
+            bg: "bg-green-50 dark:bg-green-900/20",
+            hover: "hover:bg-green-100 dark:hover:bg-green-900/30",
+            text: "text-green-600 dark:text-green-400",
+            buttonBg: "bg-green-500",
           },
           {
-            gradient: 'from-orange-500 to-orange-600',
-            bg: 'bg-orange-50 dark:bg-orange-900/20',
-            hover: 'hover:bg-orange-100 dark:hover:bg-orange-900/30',
-            text: 'text-orange-600 dark:text-orange-400',
-            buttonBg: 'bg-orange-500'
+            gradient: "from-orange-500 to-orange-600",
+            bg: "bg-orange-50 dark:bg-orange-900/20",
+            hover: "hover:bg-orange-100 dark:hover:bg-orange-900/30",
+            text: "text-orange-600 dark:text-orange-400",
+            buttonBg: "bg-orange-500",
           },
           {
-            gradient: 'from-red-500 to-red-600',
-            bg: 'bg-red-50 dark:bg-red-900/20',
-            hover: 'hover:bg-red-100 dark:hover:bg-red-900/30',
-            text: 'text-red-600 dark:text-red-400',
-            buttonBg: 'bg-red-500'
+            gradient: "from-red-500 to-red-600",
+            bg: "bg-red-50 dark:bg-red-900/20",
+            hover: "hover:bg-red-100 dark:hover:bg-red-900/30",
+            text: "text-red-600 dark:text-red-400",
+            buttonBg: "bg-red-500",
           },
           {
-            gradient: 'from-teal-500 to-teal-600',
-            bg: 'bg-teal-50 dark:bg-teal-900/20',
-            hover: 'hover:bg-teal-100 dark:hover:bg-teal-900/30',
-            text: 'text-teal-600 dark:text-teal-400',
-            buttonBg: 'bg-teal-500'
+            gradient: "from-teal-500 to-teal-600",
+            bg: "bg-teal-50 dark:bg-teal-900/20",
+            hover: "hover:bg-teal-100 dark:hover:bg-teal-900/30",
+            text: "text-teal-600 dark:text-teal-400",
+            buttonBg: "bg-teal-500",
           },
           {
-            gradient: 'from-indigo-500 to-indigo-600',
-            bg: 'bg-indigo-50 dark:bg-indigo-900/20',
-            hover: 'hover:bg-indigo-100 dark:hover:bg-indigo-900/30',
-            text: 'text-indigo-600 dark:text-indigo-400',
-            buttonBg: 'bg-indigo-500'
+            gradient: "from-indigo-500 to-indigo-600",
+            bg: "bg-indigo-50 dark:bg-indigo-900/20",
+            hover: "hover:bg-indigo-100 dark:hover:bg-indigo-900/30",
+            text: "text-indigo-600 dark:text-indigo-400",
+            buttonBg: "bg-indigo-500",
           },
           {
-            gradient: 'from-pink-500 to-pink-600',
-            bg: 'bg-pink-50 dark:bg-pink-900/20',
-            hover: 'hover:bg-pink-100 dark:hover:bg-pink-900/30',
-            text: 'text-pink-600 dark:text-pink-400',
-            buttonBg: 'bg-pink-500'
+            gradient: "from-pink-500 to-pink-600",
+            bg: "bg-pink-50 dark:bg-pink-900/20",
+            hover: "hover:bg-pink-100 dark:hover:bg-pink-900/30",
+            text: "text-pink-600 dark:text-pink-400",
+            buttonBg: "bg-pink-500",
           },
           {
-            gradient: 'from-yellow-500 to-yellow-600',
-            bg: 'bg-yellow-50 dark:bg-yellow-900/20',
-            hover: 'hover:bg-yellow-100 dark:hover:bg-yellow-900/30',
-            text: 'text-yellow-600 dark:text-yellow-400',
-            buttonBg: 'bg-yellow-500'
+            gradient: "from-yellow-500 to-yellow-600",
+            bg: "bg-yellow-50 dark:bg-yellow-900/20",
+            hover: "hover:bg-yellow-100 dark:hover:bg-yellow-900/30",
+            text: "text-yellow-600 dark:text-yellow-400",
+            buttonBg: "bg-yellow-500",
           },
           {
-            gradient: 'from-cyan-500 to-cyan-600',
-            bg: 'bg-cyan-50 dark:bg-cyan-900/20',
-            hover: 'hover:bg-cyan-100 dark:hover:bg-cyan-900/30',
-            text: 'text-cyan-600 dark:text-cyan-400',
-            buttonBg: 'bg-cyan-500'
-          }
+            gradient: "from-cyan-500 to-cyan-600",
+            bg: "bg-cyan-50 dark:bg-cyan-900/20",
+            hover: "hover:bg-cyan-100 dark:hover:bg-cyan-900/30",
+            text: "text-cyan-600 dark:text-cyan-400",
+            buttonBg: "bg-cyan-500",
+          },
         ];
-        
+
         // Simple hash function to get consistent color index for each subject
         let hash = 0;
         for (let i = 0; i < subject.length; i++) {
           const char = subject.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
+          hash = (hash << 5) - hash + char;
           hash = hash & hash; // Convert to 32-bit integer
         }
-        
+
         // Get color index based on hash
         const colorIndex = Math.abs(hash) % colorPalettes.length;
         return colorPalettes[colorIndex];
       }
-      
+
       function getSubjectIcon(subject) {
         const icons = {
-          'matematika': 'fas fa-calculator',
-          'fisika': 'fas fa-atom',
-          'bahasa_inggris': 'fas fa-language',
-          'ipa': 'fas fa-microscope',
-          'kimia': 'fas fa-flask',
-          'biologi': 'fas fa-dna',
-          'sejarah': 'fas fa-monument',
-          'geografi': 'fas fa-globe',
-          'ekonomi': 'fas fa-chart-line',
-          'sosiologi': 'fas fa-users',
-          'bahasa_indonesia': 'fas fa-book-open'
+          matematika: "fas fa-calculator",
+          fisika: "fas fa-atom",
+          bahasa_inggris: "fas fa-language",
+          ipa: "fas fa-microscope",
+          kimia: "fas fa-flask",
+          biologi: "fas fa-dna",
+          sejarah: "fas fa-monument",
+          geografi: "fas fa-globe",
+          ekonomi: "fas fa-chart-line",
+          sosiologi: "fas fa-users",
+          bahasa_indonesia: "fas fa-book-open",
         };
-        
-        return icons[subject] || 'fas fa-book';
+
+        return icons[subject] || "fas fa-book";
       }
     </script>
   </body>
