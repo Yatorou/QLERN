@@ -853,10 +853,8 @@
                     style="width: 0%"
                   ></div>
                 </div>
-              </div>
-
-              <!-- Quiz Stats -->
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              </div>              <!-- Quiz Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
                 <div
                   class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
                 >
@@ -900,6 +898,17 @@
                     0%
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-400">Skor</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-700"
+                >
+                  <p
+                    class="text-2xl font-bold text-orange-600 dark:text-orange-400"
+                    id="quiz-timer"
+                  >
+                    00:00
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Waktu</p>
                 </div>
               </div>
 
@@ -987,10 +996,8 @@
                 <p class="text-gray-600 dark:text-gray-400" id="resultMessage">
                   Selamat! Anda telah menyelesaikan quiz.
                 </p>
-              </div>
-
-              <!-- Final Stats -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              </div>              <!-- Final Stats -->
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div
                   class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
                 >
@@ -1044,6 +1051,24 @@
                     0
                   </p>
                   <p class="text-gray-600 dark:text-gray-400">Jawaban Salah</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center"
+                >
+                  <div
+                    class="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-clock text-orange-600 dark:text-orange-400 text-2xl"
+                    ></i>
+                  </div>
+                  <p
+                    class="text-3xl font-bold text-gray-900 dark:text-white"
+                    id="finalTime"
+                  >
+                    00:00
+                  </p>
+                  <p class="text-gray-600 dark:text-gray-400">Waktu Selesai</p>
                 </div>
               </div>
 
@@ -2105,7 +2130,7 @@
             );          } else {
             throw new Error("Tidak ada paket soal yang tersedia");
           }
-        } catch (error) {
+               } catch (error) {
           console.error("Error loading question data:", error);
           alertToast.error(
             `Gagal memuat data soal: ${error.message}`,
@@ -2445,13 +2470,14 @@
         // Track which questions have been answered and checked (new logic)
         answeredAndCheckedQuestions = new Array(currentQuestions.length).fill(
           false
-        );
-
-        // Reset quiz stats display
+        );        // Reset quiz stats display
         document.getElementById("correctCount").textContent = "0";
         document.getElementById("incorrectCount").textContent = "0";
         document.getElementById("scorePercentage").textContent = "0%"; // Record quiz start time for analytics
         quizStartTime = Date.now();
+        
+        // Start quiz timer
+        startQuizTimer();
 
         // Set quiz as active for exit warning
         isQuizActive = true;
@@ -2520,10 +2546,53 @@
           }
         }
         return "Unknown";
-      } // Store question mappings globally to avoid reference issues
-      let currentQuestionMappings = {};
+      } // Store question mappings globally to avoid reference issues      let currentQuestionMappings = {};
       // Track which questions have been answered and checked
       let answeredAndCheckedQuestions = [];
+      
+      // Timer variables
+      let quizTimer = null;
+      let quizStartTime = 0;
+      let currentQuizDuration = 0;
+      
+      // Timer utility functions
+      function formatTime(milliseconds) {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      
+      function startQuizTimer() {
+        if (quizTimer) {
+          clearInterval(quizTimer);
+        }
+        quizStartTime = Date.now();
+        currentQuizDuration = 0;
+        
+        quizTimer = setInterval(() => {
+          currentQuizDuration = Date.now() - quizStartTime;
+          updateTimerDisplay();
+        }, 1000);
+        
+        updateTimerDisplay();
+      }
+      
+      function updateTimerDisplay() {
+        const timerElement = document.getElementById('quiz-timer');
+        if (timerElement) {
+          timerElement.textContent = formatTime(currentQuizDuration);
+        }
+      }
+      
+      function stopQuizTimer() {
+        if (quizTimer) {
+          clearInterval(quizTimer);
+          quizTimer = null;
+        }
+        currentQuizDuration = Date.now() - quizStartTime;
+      }
+      
       function displayMultipleChoice(question, container) {
         const choices = question.choices;
         const questionIndex = currentQuestionIndex;
@@ -2796,9 +2865,10 @@
 
           displayQuestion();
         }
-      }
-
-      function finishQuiz() {
+      }      function finishQuiz() {
+        // Stop quiz timer
+        stopQuizTimer();
+        
         showResults();
       }
       function showResults() {
@@ -2849,12 +2919,11 @@
         trackQuizCompletion(currentSubject, selectedTopics, percentage);
 
         // Calculate incorrect count properly
-        const incorrectCount = answeredCount - correctCount;
-
-        // Update results display
+        const incorrectCount = answeredCount - correctCount;        // Update results display
         document.getElementById("finalScore").textContent = percentage + "%";
         document.getElementById("finalCorrect").textContent = correctCount;
         document.getElementById("finalIncorrect").textContent = incorrectCount;
+        document.getElementById("finalTime").textContent = formatTime(currentQuizDuration);
 
         // Set result message and icon
         const resultIcon = document.getElementById("resultIcon");
@@ -2885,10 +2954,17 @@
         // Show results section
         document.getElementById("quizInterface").classList.add("hidden");
         document.getElementById("resultsSection").classList.remove("hidden");
-      }
-      function startNewQuiz() {
+      }      function startNewQuiz() {
         selectedTopics = [];
         isQuizActive = false; // Reset quiz active state
+        
+        // Reset timer
+        if (quizTimer) {
+          clearInterval(quizTimer);
+          quizTimer = null;
+        }
+        currentQuizDuration = 0;
+        
         document.getElementById("resultsSection").classList.add("hidden");
         document.getElementById("subjectSelection").classList.remove("hidden");
         loadTopicsForQuiz(); // Removed start new quiz toast - too much notification
