@@ -6,7 +6,7 @@
         "tingkat": "Kuliah",
         "deskripsi": "Kumpulan soal untuk SM-ITB"
       },
-      "matematika": {
+      "Matematika": {
         "Matematika Dasar": [
           {
             "problem": "Jika $x + y = 5$ dan $x - y = 1$, maka nilai dari $x$ adalah...",
@@ -2207,7 +2207,7 @@
           }
         ]
       },
-      "fisika": {
+      "Fisika": {
         "Kinematika Gerak": [
           {
             "problem": "Sebuah benda bergerak lurus dengan persamaan posisi $s(t) = 2t^2 - 4t + 1$ (dalam meter). Kecepatan benda pada detik ke-2 adalah...",
@@ -4908,7 +4908,7 @@
           }
         ]
       },
-      "matematika": {
+      "Matematika": {
         "Aljabar": [
           {
             "problem": "Hasil dari $3x + 2y$ jika $x = 4$ dan $y = 5$ adalah...",
@@ -4956,7 +4956,7 @@
         "tingkat": "SMA",
         "deskripsi": "Simulasi soal UTBK untuk persiapan ujian masuk perguruan tinggi"
       },
-      "matematika": {
+      "Matematika": {
         "Trigonometri": [
           {
             "problem": "Nilai dari $\\sin 30°$ adalah...",
@@ -4987,7 +4987,7 @@
         "tingkat": "SD",
         "deskripsi": "Kumpulan soal untuk tingkat Sekolah Dasar"
       },
-      "matematika": {
+      "Kimios": {
         "Penjumlahan dan Pengurangan": [
           {
             "problem": "Hasil dari 15 + 27 adalah...",

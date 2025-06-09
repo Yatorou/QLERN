@@ -436,29 +436,15 @@
               >
                 <option value="">Memuat paket soal...</option>
               </select>
-            </div>
-
-            <div
+            </div>            <div
               class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
             >
               Mata Pelajaran
             </div>
-            <a
-              href="#"
-              onclick="selectSubjectFromSidebar('matematika')"
-              class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
-            >
-              <i class="fas fa-calculator w-5 h-5 mr-3 text-blue-500"></i>
-              Matematika
-            </a>
-            <a
-              href="#"
-              onclick="selectSubjectFromSidebar('fisika')"
-              class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
-            >
-              <i class="fas fa-atom w-5 h-5 mr-3 text-purple-500"></i>
-              Fisika
-            </a>
+              <!-- Dynamic Sidebar Subjects Container -->
+            <div id="dynamicSidebarSubjectsContainer" class="px-2 mt-3 space-y-2">
+              <!-- Subjects will be dynamically populated here -->
+            </div>
           </div>
         </nav>
 
@@ -722,15 +708,14 @@
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
               >
-                <div class="flex items-center justify-between">
-                  <div>
+                <div class="flex items-center justify-between">                  <div>
                     <p
                       class="text-sm font-medium text-gray-600 dark:text-gray-400"
                     >
                       Mata Pelajaran
                     </p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white">
-                      2
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white" id="totalSubjectsCount">
+                      0
                     </p>
                   </div>
                   <div
@@ -756,40 +741,8 @@
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
                   Pilih mata pelajaran dan mulai berlatih soal
-                </p>
-                <div class="space-y-3">
-                  <button
-                    onclick="selectSubjectFromSidebar('matematika')"
-                    class="w-full flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors focus-ring"
-                  >
-                    <div class="flex items-center">
-                      <i
-                        class="fas fa-calculator text-blue-600 dark:text-blue-400 mr-3"
-                      ></i>
-                      <span class="font-medium text-gray-900 dark:text-white"
-                        >Matematika</span
-                      >
-                    </div>
-                    <i
-                      class="fas fa-arrow-right text-blue-600 dark:text-blue-400"
-                    ></i>
-                  </button>
-                  <button
-                    onclick="selectSubjectFromSidebar('fisika')"
-                    class="w-full flex items-center justify-between p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors focus-ring"
-                  >
-                    <div class="flex items-center">
-                      <i
-                        class="fas fa-atom text-purple-600 dark:text-purple-400 mr-3"
-                      ></i>
-                      <span class="font-medium text-gray-900 dark:text-white"
-                        >Fisika</span
-                      >
-                    </div>
-                    <i
-                      class="fas fa-arrow-right text-purple-600 dark:text-purple-400"
-                    ></i>
-                  </button>
+                </p>                <div id="dashboardQuizSubjectsContainer" class="space-y-3">
+                  <!-- Dynamic dashboard subject buttons will be generated here -->
                 </div>
               </div>
 
@@ -819,62 +772,9 @@
               <p class="text-gray-600 dark:text-gray-400">
                 Pilih mata pelajaran yang ingin Anda pelajari
               </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <!-- Matematika Card -->
-              <div
-                class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300"
-                onclick="selectSubject('matematika')"
-              >
-                <div class="flex items-center justify-between mb-6">
-                  <div
-                    class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center"
-                  >
-                    <i class="fas fa-calculator text-3xl"></i>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm opacity-90">Total Topik</p>
-                    <p class="text-2xl font-bold" id="mathTopicsCount">0</p>
-                  </div>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Matematika</h3>
-                <p class="opacity-90 mb-4">
-                  Pelajari konsep matematika dengan soal-soal interaktif dan
-                  pembahasan lengkap
-                </p>
-                <div class="flex items-center text-sm opacity-75">
-                  <i class="fas fa-clock mr-2"></i>
-                  <span>Update terbaru: Hari ini</span>
-                </div>
-              </div>
-
-              <!-- Fisika Card -->
-              <div
-                class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300"
-                onclick="selectSubject('fisika')"
-              >
-                <div class="flex items-center justify-between mb-6">
-                  <div
-                    class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center"
-                  >
-                    <i class="fas fa-atom text-3xl"></i>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm opacity-90">Total Topik</p>
-                    <p class="text-2xl font-bold" id="physicsTopicsCount">0</p>
-                  </div>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Fisika</h3>
-                <p class="opacity-90 mb-4">
-                  Eksplorasi fenomena fisika melalui latihan soal dan eksperimen
-                  virtual
-                </p>
-                <div class="flex items-center text-sm opacity-75">
-                  <i class="fas fa-clock mr-2"></i>
-                  <span>Update terbaru: Hari ini</span>
-                </div>
-              </div>
+            </div>            <!-- Dynamic Subject Cards Container -->
+            <div id="dynamicSubjectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Subject cards will be dynamically generated here -->
             </div>
           </div>
         </div>
@@ -893,26 +793,9 @@
                 <p class="text-gray-600 dark:text-gray-400">
                   Pilih mata pelajaran dan topik untuk memulai quiz
                 </p>
-              </div>
-
-              <!-- Subject Buttons -->
-              <div class="flex space-x-4 mb-8">
-                <button
-                  onclick="switchSubject('matematika')"
-                  class="subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring"
-                  data-subject="matematika"
-                >
-                  <i class="fas fa-calculator mr-2"></i>
-                  Matematika
-                </button>
-                <button
-                  onclick="switchSubject('fisika')"
-                  class="subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring"
-                  data-subject="fisika"
-                >
-                  <i class="fas fa-atom mr-2"></i>
-                  Fisika
-                </button>
+              </div>              <!-- Dynamic Subject Buttons Container -->
+              <div id="dynamicQuizSubjectsContainer" class="flex flex-wrap gap-4 mb-8">
+                <!-- Subject buttons will be dynamically generated here -->
               </div>
 
               <!-- Topics Grid -->
@@ -1274,53 +1157,9 @@
                   </p>
                 </div>
               </div>
-            </div>
-
-            <!-- Subject Progress -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div
-                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
-              >
-                <div class="flex items-center mb-4">
-                  <div
-                    class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3"
-                  >
-                    <i
-                      class="fas fa-calculator text-blue-600 dark:text-blue-400"
-                    ></i>
-                  </div>
-                  <h3
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                  >
-                    Matematika
-                  </h3>
-                </div>
-                <div class="space-y-4" id="mathProgressTopics">
-                  <!-- Math topics progress will be populated here -->
-                </div>
-              </div>
-
-              <div
-                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up"
-              >
-                <div class="flex items-center mb-4">
-                  <div
-                    class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3"
-                  >
-                    <i
-                      class="fas fa-atom text-purple-600 dark:text-purple-400"
-                    ></i>
-                  </div>
-                  <h3
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                  >
-                    Fisika
-                  </h3>
-                </div>
-                <div class="space-y-4" id="physicsProgressTopics">
-                  <!-- Physics topics progress will be populated here -->
-                </div>
-              </div>
+            </div>            <!-- Subject Progress -->
+            <div id="subjectProgressContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Dynamic progress cards will be generated here -->
             </div>
 
             <!-- Credit -->
@@ -1704,16 +1543,56 @@
       let userAnswers = [];
       let correctCount = 0;
       let showingSolution = false;
-      let isQuizActive = false; // Track if quiz is currently active
-      let quizStartTime = 0; // Track quiz start time for analytics
+      let isQuizActive = false; // Track if quiz is currently active      let quizStartTime = 0; // Track quiz start time for analytics
       let completedProblems = JSON.parse(
         localStorage.getItem("qlern_completed") || "{}"
-      );
-
-      // Dynamic data management
+      );      // Dynamic data management
       let availableSubjects = [];
       let currentPackageName = "";
-      let packagesList = [];
+      let packagesList = [];      // Helper function to get package-specific progress data
+      function getPackageProgress(packageName = currentPackageName) {
+        if (!packageName) return {};
+        return completedProblems[packageName] || {};
+      }
+
+      // Helper function to set package-specific progress data
+      function setPackageProgress(packageName = currentPackageName, progressData) {
+        if (!packageName) return;
+        if (!completedProblems[packageName]) {
+          completedProblems[packageName] = {};
+        }
+        completedProblems[packageName] = progressData;
+      }
+
+      // Migration function to convert old format to new package-specific format
+      function migrateProgressData() {
+        // Check if data needs migration (has direct subject keys instead of package keys)
+        const hasOldFormat = Object.keys(completedProblems).some(key => 
+          key !== currentPackageName && 
+          typeof completedProblems[key] === 'object' && 
+          !completedProblems[key].hasOwnProperty('info') &&
+          !completedProblems[key].hasOwnProperty('metadata') &&
+          Object.keys(completedProblems[key]).every(subKey => 
+            typeof completedProblems[key][subKey] === 'object'
+          )
+        );
+
+        if (hasOldFormat && currentPackageName) {
+          console.log("Migrating progress data to new package-specific format...");
+          
+          // Create backup of current data
+          const oldData = JSON.parse(JSON.stringify(completedProblems));
+          
+          // Clear and create new package-specific structure
+          completedProblems = {};
+          completedProblems[currentPackageName] = oldData;
+          
+          // Save migrated data
+          localStorage.setItem("qlern_completed", JSON.stringify(completedProblems));
+          
+          console.log("Progress data migrated successfully to package:", currentPackageName);
+        }
+      }
 
       // Theme management
       function toggleTheme() {
@@ -1928,10 +1807,9 @@
               "Tidak ada paket soal yang ditemukan dalam folder paket-soal/. Pastikan ada file JSON yang valid di folder tersebut.",
               "Paket Soal Tidak Ditemukan"
             );
-          } else {
-            console.log(
-              `✅ ${packagesList.length} paket soal berhasil dideteksi`
-            );
+          } else {          console.log(
+            `✅ ${packagesList.length} paket soal berhasil dideteksi`
+          );
           }
 
           return packagesList;
@@ -2001,11 +1879,8 @@
         }
 
         if (packageStats && questionData) {
-          const stats = getPackageStats(questionData);
-          packageStats.textContent = `${stats.subjects} mata pelajaran • ${stats.topics} topik • ${stats.questions} soal`;
+          const stats = getPackageStats(questionData);          packageStats.textContent = `${stats.subjects} mata pelajaran • ${stats.topics} topik • ${stats.questions} soal`;
         }
-
-        console.log(`Current package: ${currentPackageName}`);
       }
       function showCurrentPackageInfo() {
         if (!currentPackageName || !questionData) {
@@ -2114,18 +1989,24 @@
 
           // Update global data
           questionData = packageData;
-          currentPackageName = packageName;
-
-          // Initialize completed problems for new subjects if needed
+          currentPackageName = packageName;          // Initialize completed problems for new package if needed
+          if (!completedProblems[currentPackageName]) {
+            completedProblems[currentPackageName] = {};
+          }
+          
+          const packageProgress = getPackageProgress();
           Object.keys(questionData).forEach((subject) => {
             if (
               subject !== "info" &&
               subject !== "metadata" &&
-              !completedProblems[subject]
+              !packageProgress[subject]
             ) {
-              completedProblems[subject] = {};
+              packageProgress[subject] = {};
             }
           });
+          
+          // Save the initialized package progress
+          setPackageProgress(currentPackageName, packageProgress);
 
           // Restore selectors
           desktopSelector.innerHTML = originalDesktopHTML;
@@ -2138,12 +2019,13 @@
           // Reset quiz state and clear progress for new package
           isQuizActive = false;
           selectedTopics = [];
-          currentSubject = "";
-
-          // Update dashboard and UI
+          currentSubject = "";          // Update dashboard and UI
           updateDashboardStats();
           updateSubjectsStats();
           updateCurrentPackageDisplay();
+          
+          // Update progress section to show new subjects
+          updateProgressSection();
 
           // Reset to dashboard if currently in quiz
           const currentSection = document.querySelector(
@@ -2157,9 +2039,7 @@
           const stats = getPackageStats(packageData);
           alertToast.toastSuccess(
             `✅ ${packageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
-          );
-
-          console.log(
+          );          console.log(
             "Package loaded successfully:",
             packageName,
             questionData
@@ -2196,20 +2076,24 @@
             }
 
             questionData = defaultPackage.data;
-            currentPackageName = defaultPackage.name;
-
-            // Initialize completed problems for all subjects
+            currentPackageName = defaultPackage.name;            // Initialize completed problems for current package if needed
+            if (!completedProblems[currentPackageName]) {
+              completedProblems[currentPackageName] = {};
+            }
+            
+            const packageProgress = getPackageProgress();
             Object.keys(questionData).forEach((subject) => {
               if (
                 subject !== "info" &&
                 subject !== "metadata" &&
-                !completedProblems[subject]
+                !packageProgress[subject]
               ) {
-                completedProblems[subject] = {};
+                packageProgress[subject] = {};
               }
             });
-
-            console.log("Data loaded successfully:", questionData);
+            
+            // Save the initialized package progress
+            setPackageProgress(currentPackageName, packageProgress);console.log("Data loaded successfully:", questionData);
             updateDashboardStats();
             updateSubjectsStats();
             updateCurrentPackageDisplay();
@@ -2218,8 +2102,7 @@
             const stats = getPackageStats(questionData);
             alertToast.toastSuccess(
               `📚 ${currentPackageName} dimuat! ${stats.subjects} mata pelajaran, ${stats.questions} soal`
-            );
-          } else {
+            );          } else {
             throw new Error("Tidak ada paket soal yang tersedia");
           }
         } catch (error) {
@@ -2236,6 +2119,11 @@
         const totalProblems = getTotalProblems();
         const completedCount = getCompletedProblems();
         const accuracy = getAccuracy();
+        
+        // Get total subjects count dynamically
+        const totalSubjects = Object.keys(questionData).filter(key => 
+          key !== 'info' && key !== 'metadata' && questionData[key] && typeof questionData[key] === 'object'
+        ).length;
 
         document.getElementById("totalProblemsCount").textContent =
           totalProblems;
@@ -2243,6 +2131,8 @@
           completedCount;
         document.getElementById("accuracyPercentage").textContent =
           accuracy + "%";
+        document.getElementById("totalSubjectsCount").textContent =
+          totalSubjects;
 
         // Update recent progress
         updateRecentProgress();
@@ -2256,43 +2146,35 @@
           container.innerHTML =
             '<p class="text-gray-500 dark:text-gray-400 text-center py-4">Belum ada progress terbaru</p>';
           return;
-        }
-
-        container.innerHTML = recentTopics
+        }        container.innerHTML = recentTopics
           .map(
-            (topic) => `
+            (topic) => {
+              const subjectIcon = getSubjectIcon(topic.subject);
+              const subjectColor = getSubjectColor(topic.subject);
+              const subjectDisplayName = getSubjectDisplayName(topic.subject);
+              
+              return `
                 <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div class="flex items-center">
-                        <i class="fas ${
-                          topic.subject === "matematika"
-                            ? "fa-calculator text-blue-500"
-                            : "fa-atom text-purple-500"
-                        } mr-3"></i>
+                        <i class="${subjectIcon} ${subjectColor.text} mr-3"></i>
                         <div>
-                            <p class="font-medium text-gray-900 dark:text-white">${
-                              topic.name
-                            }</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">${
-                              topic.subject === "matematika"
-                                ? "Matematika"
-                                : "Fisika"
-                            }</p>
+                            <p class="font-medium text-gray-900 dark:text-white">${topic.name}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">${subjectDisplayName}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-sm font-medium text-green-600 dark:text-green-400">${
-                          topic.progress
-                        }%</p>
+                        <p class="text-sm font-medium text-green-600 dark:text-green-400">${topic.progress}%</p>
                     </div>
-                </div>
-            `
+                </div>              `;
+            }
           )
           .join("");
       }
-      function getRecentTopics() {
+        function getRecentTopics() {
         const topics = [];
         Object.keys(questionData).forEach((subject) => {
-          if (questionData[subject]) {
+          // Skip metadata and info objects, only count actual subjects
+          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
             Object.keys(questionData[subject]).forEach((topicName) => {
               const progress = getTopicProgress(subject, topicName);
               if (progress.completed > 0) {
@@ -2306,9 +2188,14 @@
           }
         });
         return topics.sort((a, b) => b.progress - a.progress).slice(0, 4);
-      } // Subjects functions
+      }// Subjects functions
       function updateSubjectsStats() {
         // Update stats for all available subjects dynamically
+        availableSubjects = Object.keys(questionData).filter(key => 
+          key !== 'info' && key !== 'metadata' && questionData[key] && typeof questionData[key] === 'object'
+        );
+        
+        // Update existing hardcoded elements if they exist
         const mathElement = document.getElementById("mathTopicsCount");
         const physicsElement = document.getElementById("physicsTopicsCount");
 
@@ -2322,11 +2209,63 @@
           physicsElement.textContent = Object.keys(questionData.fisika).length;
         } else if (physicsElement) {
           physicsElement.textContent = "0";
-        }
-
-        // Update available subjects list for dynamic handling
-        availableSubjects = Object.keys(questionData);
+        }          // Generate dynamic subject cards in subjects section
+        generateDynamicSubjectCards();
+        
+        // Generate dynamic subject navigation in sidebar
+        generateDynamicSidebarSubjects();
+        
+        // Generate dynamic subject buttons in dashboard
+        generateDashboardSubjectButtons();
+        
+        // Generate dynamic subject buttons in quiz section
+        generateDynamicQuizSubjectButtons();
       }
+      
+      function generateDashboardSubjectButtons() {
+        const dashboardContainer = document.getElementById('dashboardQuizSubjectsContainer');
+        if (!dashboardContainer || !availableSubjects.length) return;
+        
+        // Clear existing dynamic buttons
+        const existingDynamicButtons = dashboardContainer.querySelectorAll('.dynamic-dashboard-subject');
+        existingDynamicButtons.forEach(btn => btn.remove());
+        
+        // Create buttons for available subjects
+        availableSubjects.forEach(subject => {
+          const subjectButton = createDashboardSubjectButton(subject);
+          dashboardContainer.appendChild(subjectButton);
+        });
+      }
+      
+      function createDashboardSubjectButton(subject) {
+        const displayName = getSubjectDisplayName(subject);
+        const subjectColor = getSubjectColor(subject);
+        const subjectIcon = getSubjectIcon(subject);
+        const topicsCount = questionData[subject] ? Object.keys(questionData[subject]).length : 0;
+        
+        const button = document.createElement('button');
+        button.className = `dynamic-dashboard-subject w-full flex items-center justify-between p-4 rounded-lg ${subjectColor.hover} transition-colors focus-ring text-left`;
+        button.onclick = () => {
+          selectSubject(subject);
+          safeNavigate('quiz');
+        };
+        
+        button.innerHTML = `
+          <div class="flex items-center">
+            <div class="w-10 h-10 ${subjectColor.bg} rounded-lg flex items-center justify-center mr-3">
+              <i class="${subjectIcon} ${subjectColor.text} text-lg"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900 dark:text-white">${displayName}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">${topicsCount} topik tersedia</p>
+            </div>
+          </div>
+          <i class="fas fa-arrow-right text-gray-400"></i>
+        `;
+        
+        return button;
+      }
+      
       function selectSubject(subject) {
         currentSubject = subject;
         safeNavigate("quiz"); // Removed subject selection toasts - too much notification
@@ -2348,11 +2287,9 @@
 
         // Load topics for current subject
         loadTopicsForQuiz();
-      }
-
-      function updateSubjectButtons() {
+      }      function updateSubjectButtons() {
         document.querySelectorAll(".subject-btn").forEach((btn) => {
-          btn.classList.remove("bg-blue-500", "text-white", "bg-purple-500");
+          btn.classList.remove("bg-blue-500", "text-white", "bg-purple-500", "bg-green-500", "bg-orange-500", "bg-red-500", "bg-teal-500", "bg-yellow-500", "bg-indigo-500", "bg-pink-500", "bg-gray-500");
           btn.classList.add(
             "bg-gray-200",
             "dark:bg-gray-700",
@@ -2367,11 +2304,10 @@
               "text-gray-700",
               "dark:text-gray-300"
             );
-            if (currentSubject === "matematika") {
-              btn.classList.add("bg-blue-500", "text-white");
-            } else {
-              btn.classList.add("bg-purple-500", "text-white");
-            }
+            
+            // Get subject color and apply it
+            const subjectColor = getSubjectColor(currentSubject);
+            btn.classList.add(subjectColor.buttonBg, "text-white");
           }
         });
       }
@@ -2962,9 +2898,7 @@
       function updateProgressSection() {
         updateOverallProgress();
         updateSubjectProgress();
-      }
-
-      function updateOverallProgress() {
+      }      function updateOverallProgress() {
         const totalProblems = getTotalProblems();
         const completedCount = getCompletedProblems();
         const percentage =
@@ -2972,10 +2906,13 @@
             ? Math.round((completedCount / totalProblems) * 100)
             : 0;
 
+        // Ensure percentage never exceeds 100%
+        const clampedPercentage = Math.min(percentage, 100);
+
         document.getElementById("overallProgressBar").style.width =
-          percentage + "%";
+          clampedPercentage + "%";
         document.getElementById("overallProgressText").textContent =
-          percentage + "%";
+          clampedPercentage + "%";
         document.getElementById("totalSolved").textContent = completedCount;
         document.getElementById("totalCorrect").textContent =
           getCorrectAnswers();
@@ -2983,11 +2920,61 @@
           getAverageScore() + "%";
         document.getElementById("topicsCompleted").textContent =
           getCompletedTopics();
-      }
-
-      function updateSubjectProgress() {
+      }function updateSubjectProgress() {
+        // Update hardcoded elements if they exist (for backward compatibility)
         updateSubjectProgressTopics("matematika", "mathProgressTopics");
         updateSubjectProgressTopics("fisika", "physicsProgressTopics");
+        
+        // Clear existing dynamic progress cards
+        const progressSection = document.getElementById('subjectProgressContainer');
+        if (progressSection) {
+          const existingDynamicCards = progressSection.querySelectorAll('.dynamic-progress-card');
+          existingDynamicCards.forEach(card => card.remove());
+        }
+        
+        // Update dynamic subject progress for all available subjects
+        availableSubjects.forEach(subject => {
+          // Create dynamic progress containers if needed
+          const containerId = `${subject}ProgressTopics`;
+          let container = document.getElementById(containerId);
+          
+          if (!container) {
+            // Create a new progress section for this subject
+            if (progressSection) {
+              const subjectCard = createDynamicProgressCard(subject);
+              progressSection.appendChild(subjectCard);
+              container = document.getElementById(containerId);
+            }
+          }
+          
+          if (container) {
+            updateSubjectProgressTopics(subject, containerId);
+          }
+        });
+      }
+        function createDynamicProgressCard(subject) {
+        const displayName = getSubjectDisplayName(subject);
+        const subjectColor = getSubjectColor(subject);
+        const subjectIcon = getSubjectIcon(subject);
+        
+        const card = document.createElement('div');
+        card.className = 'dynamic-progress-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700';
+        card.innerHTML = `
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 ${subjectColor.bg} rounded-lg flex items-center justify-center mr-4">
+              <i class="${subjectIcon} ${subjectColor.text} text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${displayName}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Progress Topik</p>
+            </div>
+          </div>
+          <div class="space-y-3" id="${subject}ProgressTopics">
+            <!-- Progress topics will be populated here -->
+          </div>
+        `;
+        
+        return card;
       }
       function updateSubjectProgressTopics(subject, containerId) {
         const container = document.getElementById(containerId);
@@ -3126,26 +3113,28 @@
               ? Math.round((totalCorrect / totalQuestions) * 100)
               : 0,
         };
-      }
-
-      // Utility functions
+      }      // Utility functions
       function getTotalProblems() {
         let total = 0;
         Object.keys(questionData).forEach((subject) => {
-          if (questionData[subject]) {
+          // Skip metadata and info objects, only count actual subjects
+          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
             Object.values(questionData[subject]).forEach((problems) => {
-              total += problems.length;
+              if (Array.isArray(problems)) {
+                total += problems.length;
+              }
             });
           }
         });
         return total;
-      }
-
-      function getCompletedProblems() {
+      }      function getCompletedProblems() {
         let completed = 0;
+        const packageProgress = getPackageProgress();
+        
         Object.keys(questionData).forEach((subject) => {
-          if (completedProblems[subject]) {
-            Object.values(completedProblems[subject]).forEach((topics) => {
+          // Skip metadata and info objects, only count actual subjects
+          if (subject !== 'info' && subject !== 'metadata' && packageProgress[subject] && typeof questionData[subject] === 'object') {
+            Object.values(packageProgress[subject]).forEach((topics) => {
               completed += Object.keys(topics).length;
             });
           }
@@ -3178,11 +3167,11 @@
           0
         );
         return Math.round(totalScore / sessions.length);
-      }
-      function getCompletedTopics() {
+      }      function getCompletedTopics() {
         let completed = 0;
         Object.keys(questionData).forEach((subject) => {
-          if (questionData[subject]) {
+          // Skip metadata and info objects, only count actual subjects
+          if (subject !== 'info' && subject !== 'metadata' && questionData[subject] && typeof questionData[subject] === 'object') {
             Object.keys(questionData[subject]).forEach((topic) => {
               const progress = getTopicProgress(subject, topic);
               if (progress.percentage === 100) {
@@ -3214,44 +3203,56 @@
         return totalQuestions > 0
           ? Math.round((totalCorrect / totalQuestions) * 100)
           : 0;
-      }
-      function getTopicProgress(subject, topic) {
+      }      function getTopicProgress(subject, topic) {
         const total =
           questionData[subject] && questionData[subject][topic]
             ? questionData[subject][topic].length
             : 0;
 
-        // Count completed problems for this topic
+        // Get package-specific progress data
+        const packageProgress = getPackageProgress();
+        
+        // Count completed problems for this specific topic only
         let completed = 0;
-        if (completedProblems[subject] && completedProblems[subject][topic]) {
-          // Count unique problems that have been answered
+        if (packageProgress[subject] && packageProgress[subject][topic]) {
+          // Count unique problems that have been answered in this specific topic
           const answeredProblems = new Set();
           questionData[subject][topic].forEach((problem, index) => {
             // Check if this problem has been answered (using problem text as identifier)
             const problemId =
               problem.problem +
               (problem.choices ? JSON.stringify(problem.choices) : "");
-            Object.values(completedProblems[subject]).forEach((topicData) => {
-              Object.values(topicData).forEach((answer) => {
+
+            // Only check completedProblems for this specific topic, not all topics
+            if (packageProgress[subject][topic]) {
+              Object.values(packageProgress[subject][topic]).forEach((answer) => {
                 if (answer.problemId === problemId) {
                   answeredProblems.add(problemId);
                 }
               });
-            });
+            }
           });
           completed = answeredProblems.size;
         }
 
         const percentage =
           total > 0 ? Math.round((completed / total) * 100) : 0;
-        return { completed, total, percentage };
-      }
-
-      function saveProgress() {
-        // Save completed problems to localStorage
+        
+        // Ensure percentage never exceeds 100%
+        const clampedPercentage = Math.min(percentage, 100);
+        
+        return { completed, total, percentage: clampedPercentage };
+      }      function saveProgress() {
+        // Get package-specific progress data
+        const packageProgress = getPackageProgress();
+        
+        // Save completed problems to package-specific storage
         selectedTopics.forEach((topic) => {
-          if (!completedProblems[currentSubject][topic]) {
-            completedProblems[currentSubject][topic] = {};
+          if (!packageProgress[currentSubject]) {
+            packageProgress[currentSubject] = {};
+          }
+          if (!packageProgress[currentSubject][topic]) {
+            packageProgress[currentSubject][topic] = {};
           }
           currentQuestions.forEach((question, index) => {
             if (userAnswers[index] !== undefined) {
@@ -3261,7 +3262,7 @@
                 (question.choices ? JSON.stringify(question.choices) : "");
               const answerId = `${currentSubject}-${topic}-${Date.now()}-${index}`;
 
-              completedProblems[currentSubject][topic][answerId] = {
+              packageProgress[currentSubject][topic][answerId] = {
                 problemId: problemId,
                 answer: userAnswers[index],
                 correct:
@@ -3273,6 +3274,10 @@
             }
           });
         });
+        
+        // Update the package-specific progress data
+        setPackageProgress(currentPackageName, packageProgress);
+        
         localStorage.setItem(
           "qlern_completed",
           JSON.stringify(completedProblems)
@@ -3285,9 +3290,8 @@
           "Apakah Anda yakin ingin mereset semua progress? Tindakan ini tidak dapat dibatalkan.",
           "Reset Progress"
         );
-        if (confirmed) {
-          // Clear all progress data
-          completedProblems = { matematika: {}, fisika: {} };
+        if (confirmed) {        // Clear all progress data
+          completedProblems = {};
           localStorage.setItem(
             "qlern_completed",
             JSON.stringify(completedProblems)
@@ -3524,6 +3528,246 @@
         });
 
         alertToast.info(infoMessage, "Informasi Paket Soal");
+      }      // Dynamic subject management functions
+      function generateDynamicSubjectCards() {
+        const subjectsContainer = document.getElementById('dynamicSubjectsContainer');
+        if (!subjectsContainer || !availableSubjects.length) return;
+        
+        // Clear existing dynamic cards (keep hardcoded math and physics if they exist)
+        const existingDynamicCards = subjectsContainer.querySelectorAll('.dynamic-subject-card');
+        existingDynamicCards.forEach(card => card.remove());
+        
+        // Create cards for subjects that don't have hardcoded cards
+        availableSubjects.forEach(subject => {
+          const subjectCard = createSubjectCard(subject);
+          subjectsContainer.appendChild(subjectCard);
+        });
+      }      function generateDynamicSidebarSubjects() {
+        const sidebarContainer = document.getElementById('dynamicSidebarSubjectsContainer');
+        
+        if (!sidebarContainer || !availableSubjects.length) {
+          return;
+        }
+        
+        // Clear existing dynamic items
+        const existingDynamicItems = sidebarContainer.querySelectorAll('.dynamic-sidebar-subject');
+        existingDynamicItems.forEach(item => item.remove());
+        
+        // Create sidebar items for subjects that don't have hardcoded items
+        availableSubjects.forEach(subject => {
+          const sidebarItem = createSidebarSubjectItem(subject);
+          sidebarContainer.appendChild(sidebarItem);
+        });
+      }
+      
+      function generateDynamicQuizSubjectButtons() {
+        const buttonsContainer = document.getElementById('dynamicQuizSubjectsContainer');
+        if (!buttonsContainer || !availableSubjects.length) return;
+        
+        // Clear existing dynamic buttons
+        const existingDynamicButtons = buttonsContainer.querySelectorAll('.dynamic-subject-btn');
+        existingDynamicButtons.forEach(btn => btn.remove());
+          // Create buttons for subjects that don't have hardcoded buttons
+        availableSubjects.forEach(subject => {
+          const subjectButton = createQuizSubjectButton(subject);
+          buttonsContainer.appendChild(subjectButton);
+        });
+      }
+      
+      function createSubjectCard(subject) {
+        const topicsCount = questionData[subject] ? Object.keys(questionData[subject]).length : 0;
+        const displayName = getSubjectDisplayName(subject);
+        const subjectColor = getSubjectColor(subject);
+        
+        const card = document.createElement('div');
+        card.className = `dynamic-subject-card bg-gradient-to-br ${subjectColor.gradient} rounded-xl shadow-lg p-8 text-white animate-fade-in-up cursor-pointer hover:scale-105 transition-transform duration-300`;
+        card.onclick = () => selectSubject(subject);
+        
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-6">
+            <div class="text-left">
+              <h3 class="text-2xl font-bold mb-1">${displayName}</h3>
+              <p class="text-sm opacity-90">Mata Pelajaran</p>
+            </div>
+            <div class="text-right">
+              <div class="text-right mb-2">
+                <span class="text-sm opacity-90">Total Topik</span>
+              </div>
+              <div class="text-right">
+                <p class="text-3xl font-bold">${topicsCount}</p>
+              </div>
+            </div>
+          </div>
+          <p class="opacity-90 mb-4">
+            Pelajari konsep ${displayName.toLowerCase()} dengan soal-soal interaktif dan pembahasan lengkap
+          </p>
+          <div class="flex items-center justify-between text-sm opacity-75">
+            <span>Update terbaru: Hari ini</span>
+            <span>${topicsCount} topik tersedia</span>
+          </div>
+        `;
+        
+        return card;
+      }
+      
+      function createSidebarSubjectItem(subject) {
+        const displayName = getSubjectDisplayName(subject);
+        const subjectColor = getSubjectColor(subject);
+        const subjectIcon = getSubjectIcon(subject);
+        
+        const item = document.createElement('button');
+        item.className = `dynamic-sidebar-subject w-full flex items-center justify-between p-4 ${subjectColor.bg} rounded-lg ${subjectColor.hover} transition-colors focus-ring`;
+        item.onclick = () => selectSubjectFromSidebar(subject);
+        
+        item.innerHTML = `
+          <div class="flex items-center">
+            <i class="${subjectIcon} ${subjectColor.text} mr-3"></i>
+            <span class="font-medium text-gray-900 dark:text-white">${displayName}</span>
+          </div>
+          <i class="fas fa-arrow-right ${subjectColor.text}"></i>
+        `;
+        
+        return item;
+      }
+      
+      function createQuizSubjectButton(subject) {
+        const displayName = getSubjectDisplayName(subject);
+        const subjectIcon = getSubjectIcon(subject);
+        
+        const button = document.createElement('button');
+        button.className = 'dynamic-subject-btn subject-btn px-6 py-3 rounded-lg font-semibold transition-all focus-ring';
+        button.setAttribute('data-subject', subject);
+        button.onclick = () => switchSubject(subject);
+        
+        button.innerHTML = `
+          <i class="${subjectIcon} mr-2"></i>
+          ${displayName}
+        `;
+        
+        return button;
+      }
+      
+      function getSubjectDisplayName(subject) {
+        const displayNames = {
+          'matematika': 'Matematika',
+          'fisika': 'Fisika',
+          'bahasa_inggris': 'Bahasa Inggris',
+          'ipa': 'IPA',
+          'kimia': 'Kimia',
+          'biologi': 'Biologi',
+          'sejarah': 'Sejarah',
+          'geografi': 'Geografi',
+          'ekonomi': 'Ekonomi',
+          'sosiologi': 'Sosiologi',
+          'bahasa_indonesia': 'Bahasa Indonesia'
+        };
+        
+        return displayNames[subject] || subject.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      }
+        function getSubjectColor(subject) {
+        // Fixed random color system - each subject gets a consistent color based on hash
+        const colorPalettes = [
+          {
+            gradient: 'from-blue-500 to-blue-600',
+            bg: 'bg-blue-50 dark:bg-blue-900/20',
+            hover: 'hover:bg-blue-100 dark:hover:bg-blue-900/30',
+            text: 'text-blue-600 dark:text-blue-400',
+            buttonBg: 'bg-blue-500'
+          },
+          {
+            gradient: 'from-purple-500 to-purple-600',
+            bg: 'bg-purple-50 dark:bg-purple-900/20',
+            hover: 'hover:bg-purple-100 dark:hover:bg-purple-900/30',
+            text: 'text-purple-600 dark:text-purple-400',
+            buttonBg: 'bg-purple-500'
+          },
+          {
+            gradient: 'from-green-500 to-green-600',
+            bg: 'bg-green-50 dark:bg-green-900/20',
+            hover: 'hover:bg-green-100 dark:hover:bg-green-900/30',
+            text: 'text-green-600 dark:text-green-400',
+            buttonBg: 'bg-green-500'
+          },
+          {
+            gradient: 'from-orange-500 to-orange-600',
+            bg: 'bg-orange-50 dark:bg-orange-900/20',
+            hover: 'hover:bg-orange-100 dark:hover:bg-orange-900/30',
+            text: 'text-orange-600 dark:text-orange-400',
+            buttonBg: 'bg-orange-500'
+          },
+          {
+            gradient: 'from-red-500 to-red-600',
+            bg: 'bg-red-50 dark:bg-red-900/20',
+            hover: 'hover:bg-red-100 dark:hover:bg-red-900/30',
+            text: 'text-red-600 dark:text-red-400',
+            buttonBg: 'bg-red-500'
+          },
+          {
+            gradient: 'from-teal-500 to-teal-600',
+            bg: 'bg-teal-50 dark:bg-teal-900/20',
+            hover: 'hover:bg-teal-100 dark:hover:bg-teal-900/30',
+            text: 'text-teal-600 dark:text-teal-400',
+            buttonBg: 'bg-teal-500'
+          },
+          {
+            gradient: 'from-indigo-500 to-indigo-600',
+            bg: 'bg-indigo-50 dark:bg-indigo-900/20',
+            hover: 'hover:bg-indigo-100 dark:hover:bg-indigo-900/30',
+            text: 'text-indigo-600 dark:text-indigo-400',
+            buttonBg: 'bg-indigo-500'
+          },
+          {
+            gradient: 'from-pink-500 to-pink-600',
+            bg: 'bg-pink-50 dark:bg-pink-900/20',
+            hover: 'hover:bg-pink-100 dark:hover:bg-pink-900/30',
+            text: 'text-pink-600 dark:text-pink-400',
+            buttonBg: 'bg-pink-500'
+          },
+          {
+            gradient: 'from-yellow-500 to-yellow-600',
+            bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+            hover: 'hover:bg-yellow-100 dark:hover:bg-yellow-900/30',
+            text: 'text-yellow-600 dark:text-yellow-400',
+            buttonBg: 'bg-yellow-500'
+          },
+          {
+            gradient: 'from-cyan-500 to-cyan-600',
+            bg: 'bg-cyan-50 dark:bg-cyan-900/20',
+            hover: 'hover:bg-cyan-100 dark:hover:bg-cyan-900/30',
+            text: 'text-cyan-600 dark:text-cyan-400',
+            buttonBg: 'bg-cyan-500'
+          }
+        ];
+        
+        // Simple hash function to get consistent color index for each subject
+        let hash = 0;
+        for (let i = 0; i < subject.length; i++) {
+          const char = subject.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash; // Convert to 32-bit integer
+        }
+        
+        // Get color index based on hash
+        const colorIndex = Math.abs(hash) % colorPalettes.length;
+        return colorPalettes[colorIndex];
+      }
+      
+      function getSubjectIcon(subject) {
+        const icons = {
+          'matematika': 'fas fa-calculator',
+          'fisika': 'fas fa-atom',
+          'bahasa_inggris': 'fas fa-language',
+          'ipa': 'fas fa-microscope',
+          'kimia': 'fas fa-flask',
+          'biologi': 'fas fa-dna',
+          'sejarah': 'fas fa-monument',
+          'geografi': 'fas fa-globe',
+          'ekonomi': 'fas fa-chart-line',
+          'sosiologi': 'fas fa-users',
+          'bahasa_indonesia': 'fas fa-book-open'
+        };
+        
+        return icons[subject] || 'fas fa-book';
       }
     </script>
   </body>

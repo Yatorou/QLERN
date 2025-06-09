@@ -273,6 +273,126 @@ Jika memiliki file individual di folder `paket-soal/`, sistem akan:
 
 Format lama masih didukung untuk backward compatibility.
 
+## MENAMBAHKAN MATA PELAJARAN BARU
+
+Sistem QLERN mendukung penambahan mata pelajaran baru secara otomatis tanpa perlu mengubah kode HTML/JavaScript. 
+
+### Cara Menambahkan Mata Pelajaran Baru:
+
+1. **Tambahkan ke File soal.json**
+   Cukup tambahkan mata pelajaran baru ke dalam file `soal.json` dengan struktur:
+
+```json
+{
+  "nama_mata_pelajaran": {
+    "Topik 1": [
+      {
+        "problem": "Soal pertama...",
+        "type": "multiple-choice",
+        "choices": {
+          "A": "Pilihan A",
+          "B": "Pilihan B", 
+          "C": "Pilihan C",
+          "D": "Pilihan D"
+        },
+        "correctAnswer": "A",
+        "solution": {
+          "steps": [
+            "Langkah penyelesaian 1",
+            "Langkah penyelesaian 2"
+          ],
+          "answer": "Jawaban akhir"
+        }
+      }
+    ],
+    "Topik 2": [
+      // Soal-soal untuk topik 2...
+    ]
+  }
+}
+```
+
+2. **Sistem Akan Otomatis Mendeteksi**
+   Setelah ditambahkan ke `soal.json`, sistem akan otomatis:
+   - ✅ Mendeteksi mata pelajaran baru
+   - ✅ Menampilkan kartu mata pelajaran di dashboard  
+   - ✅ Menambahkan menu navigasi di sidebar
+   - ✅ Menambahkan tombol pemilihan di halaman quiz
+   - ✅ Mengatur warna dan ikon otomatis
+   - ✅ Melacak progress untuk mata pelajaran tersebut
+
+3. **Kustomisasi Tampilan (Opsional)**
+   Jika ingin mengkustomisasi nama tampilan, warna, atau ikon untuk mata pelajaran tertentu, bisa ditambahkan ke fungsi-fungsi berikut di `index.html`:
+
+   **Nama Tampilan:**
+   ```javascript
+   function getSubjectDisplayName(subject) {
+     const displayNames = {
+       'nama_mata_pelajaran': 'Nama yang Ditampilkan',
+       // tambahkan di sini...
+     };
+     // ...
+   }
+   ```
+
+   **Warna Tema:**
+   ```javascript  
+   function getSubjectColor(subject) {
+     const colors = {
+       'nama_mata_pelajaran': {
+         gradient: 'from-color-500 to-color-600',
+         bg: 'bg-color-50 dark:bg-color-900/20',
+         hover: 'hover:bg-color-100 dark:hover:bg-color-900/30', 
+         text: 'text-color-600 dark:text-color-400',
+         buttonBg: 'bg-color-500'
+       },
+       // tambahkan di sini...
+     };
+     // ...
+   }
+   ```
+
+   **Ikon:**
+   ```javascript
+   function getSubjectIcon(subject) {
+     const icons = {
+       'nama_mata_pelajaran': 'fas fa-icon-name',
+       // tambahkan di sini...
+     };
+     // ...
+   }
+   ```
+
+### Mata Pelajaran dengan Styling Siap Pakai:
+
+Saat ini sistem sudah memiliki styling siap pakai untuk:
+- ✅ **matematika** - Matematika (biru)
+- ✅ **fisika** - Fisika (ungu) 
+- ✅ **bahasa_inggris** - Bahasa Inggris (hijau)
+- ✅ **ipa** - IPA (orange)
+- ✅ **kimia** - Kimia (merah)
+- ✅ **biologi** - Biologi (teal)
+- ✅ **sejarah** - Sejarah (kuning)
+- ✅ **geografi** - Geografi (indigo)
+- ✅ **ekonomi** - Ekonomi (pink)
+- ✅ **sosiologi** - Sosiologi (abu-abu)
+- ✅ **bahasa_indonesia** - Bahasa Indonesia (hijau tua)
+
+### Catatan Penting:
+
+1. **Konsistensi Nama**: Gunakan nama mata pelajaran yang konsisten di seluruh file `soal.json`
+2. **Format Underscore**: Gunakan underscore (_) untuk nama yang terdiri dari beberapa kata (contoh: `bahasa_inggris`)
+3. **Tidak Perlu Restart**: Perubahan akan langsung terdeteksi saat halaman dimuat ulang
+4. **Backward Compatibility**: Mata pelajaran Matematika dan Fisika tetap menggunakan elemen hardcoded untuk kompatibilitas
+
+### Troubleshooting:
+
+Jika mata pelajaran baru tidak muncul:
+1. Pastikan struktur JSON valid
+2. Pastikan nama mata pelajaran tidak menggunakan key `info` atau `metadata` 
+3. Refresh halaman browser
+4. Periksa console browser untuk error JavaScript
+
 ## PENGEMBANGAN LEBIH LANJUT
 
 ### Menambahkan Fitur Baru:
@@ -287,3 +407,4 @@ Format lama masih didukung untuk backward compatibility.
 - Test perubahan di environment development
 - Validasi JSON sebelum deploy
 - Dokumentasikan perubahan format
+- Gunakan sistem mata pelajaran dinamis untuk skalabilitas
