@@ -385,7 +385,7 @@
         <nav class="flex-1 px-4 py-6 space-y-2">
           <a
             href="#"
-            onclick="showSection('dashboard')"
+            onclick="safeNavigate('dashboard')"
             class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
             data-section="dashboard"
           >
@@ -394,7 +394,7 @@
           </a>
           <a
             href="#"
-            onclick="showSection('subjects')"
+            onclick="safeNavigate('subjects')"
             class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
             data-section="subjects"
           >
@@ -403,7 +403,7 @@
           </a>
           <a
             href="#"
-            onclick="showSection('quiz')"
+            onclick="safeNavigate('quiz')"
             class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
             data-section="quiz"
           >
@@ -412,7 +412,7 @@
           </a>
           <a
             href="#"
-            onclick="showSection('progress')"
+            onclick="safeNavigate('progress')"
             class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus-ring"
             data-section="progress"
           >
@@ -457,7 +457,6 @@
         </div>
       </div>
     </div>
-
     <!-- Mobile Header -->
     <div
       class="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between"
@@ -482,34 +481,53 @@
         <i class="fas fa-moon hidden dark:inline text-blue-400"></i>
       </button>
     </div>
+
+    <!-- Mobile Question Package Selector -->
+    <div
+      class="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3"
+    >
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
+        <i class="fas fa-book-open mr-2 text-blue-500"></i>
+        Paket Soal
+      </label>
+      <select
+        id="mobileQuestionPackageSelector"
+        onchange="changeQuestionPackage(this.value)"
+        class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+      >
+        <option value="">Memuat paket soal...</option>
+      </select>
+    </div>
     <!-- Mobile Bubble Navigation -->
     <div class="lg:hidden bubble-nav">
       <div
         class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 px-4 py-2"
       >
         <button
-          onclick="showSection('dashboard')"
+          onclick="safeNavigate('dashboard')"
           class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
           data-section="dashboard"
         >
           <i class="fas fa-chart-line w-5 h-5"></i>
         </button>
         <button
-          onclick="showSection('subjects')"
+          onclick="safeNavigate('subjects')"
           class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
           data-section="subjects"
         >
           <i class="fas fa-book w-5 h-5"></i>
         </button>
         <button
-          onclick="showSection('quiz')"
+          onclick="safeNavigate('quiz')"
           class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
           data-section="quiz"
         >
           <i class="fas fa-play-circle w-5 h-5"></i>
         </button>
         <button
-          onclick="showSection('progress')"
+          onclick="safeNavigate('progress')"
           class="bubble-nav-btn p-3 rounded-full transition-colors focus-ring"
           data-section="progress"
         >
@@ -1107,7 +1125,7 @@
                   Quiz Baru
                 </button>
                 <button
-                  onclick="showSection('dashboard')"
+                  onclick="safeNavigate('dashboard')"
                   class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors focus-ring"
                 >
                   <i class="fas fa-home mr-2"></i>
@@ -1589,18 +1607,47 @@
         toastInfo(message) {
           this.showToast(message, "info");
         }
-      }
-
-      // Initialize the system
+      } // Initialize the system
       const alertToast = new AlertToastSystem();
 
       // Override default alert and confirm
       window.alert = (message) => alertToast.showAlert(message);
       window.confirm = (message) => alertToast.showConfirm(message);
 
-      // Global variables
+      // Quiz exit warning system
+      function setupQuizExitWarning() {
+        // Add beforeunload event listener for browser close/refresh
+        window.addEventListener("beforeunload", function (e) {
+          if (isQuizActive) {
+            e.preventDefault();
+            e.returnValue =
+              "Anda sedang mengerjakan quiz. Jika keluar sekarang, jawaban dan progress Anda tidak akan tersimpan. Yakin ingin keluar?";
+            return e.returnValue;
+          }
+        });
+      } // Function to warn user before navigation during active quiz
+      async function checkQuizExitWarning() {
+        if (isQuizActive) {
+          const confirmed = await alertToast.confirm(
+            "⚠️ Anda sedang mengerjakan quiz. Jika berpindah halaman sekarang, jawaban dan progress Anda tidak akan tersimpan. Yakin ingin melanjutkan?",
+            "Keluar dari Quiz"
+          );
+          return confirmed;
+        }
+        return true;
+      } // Safe navigation wrapper that checks for active quiz
+      async function safeNavigate(sectionId) {
+        const canNavigate = await checkQuizExitWarning();
+        if (canNavigate) {
+          // If user confirmed to leave quiz, reset quiz state immediately
+          if (isQuizActive) {
+            isQuizActive = false;
+          }
+          showSection(sectionId);
+        }
+      } // Global variables
       let questionData = {};
-      let currentSubject = "matematika";
+      let currentSubject = "";
       let currentTopic = "";
       let selectedTopics = [];
       let currentQuestions = [];
@@ -1608,11 +1655,16 @@
       let userAnswers = [];
       let correctCount = 0;
       let showingSolution = false;
+      let isQuizActive = false; // Track if quiz is currently active
       let quizStartTime = 0; // Track quiz start time for analytics
       let completedProblems = JSON.parse(
-        localStorage.getItem("qlern_completed") ||
-          '{"matematika": {}, "fisika": {}}'
+        localStorage.getItem("qlern_completed") || "{}"
       );
+
+      // Dynamic data management
+      let availableSubjects = [];
+      let currentPackageName = "";
+      let packagesList = [];
 
       // Theme management
       function toggleTheme() {
@@ -1642,9 +1694,7 @@
           menu.classList.remove("opacity-0", "scale-95", "pointer-events-none");
           menu.classList.add("opacity-100", "scale-100");
         }
-      }
-
-      // Section management
+      } // Section management
       function showSection(sectionId) {
         // Hide all sections
         document.querySelectorAll(".section").forEach((section) => {
@@ -1823,20 +1873,11 @@
       }
       function selectSubject(subject) {
         currentSubject = subject;
-        showSection("quiz");
-
-        // Show toast for subject selection
-        const subjectName = subject === "matematika" ? "Matematika" : "Fisika";
-        alertToast.toastSuccess(`📖 ${subjectName} dipilih! Siap belajar!`);
+        safeNavigate("quiz"); // Removed subject selection toasts - too much notification
       }
-
       function selectSubjectFromSidebar(subject) {
         currentSubject = subject;
-        showSection("quiz");
-
-        // Show toast for subject selection
-        const subjectName = subject === "matematika" ? "Matematika" : "Fisika";
-        alertToast.toastInfo(`📚 Beralih ke ${subjectName}`);
+        safeNavigate("quiz"); // Removed subject selection toast - too much notification
       }
 
       // Quiz functions
@@ -1959,14 +2000,13 @@
           );
           return;
         }
-
         const index = selectedTopics.indexOf(topic);
         if (index === -1) {
           selectedTopics.push(topic);
-          alertToast.toastSuccess(`✅ ${topic} telah dipilih!`);
+          // Removed toast message for topic selection
         } else {
           selectedTopics.splice(index, 1);
-          alertToast.toastInfo(`➖ ${topic} telah dihapus dari pilihan`);
+          // Removed toast message for topic removal
         }
         loadTopicsForQuiz();
       }
@@ -2001,19 +2041,7 @@
         });
 
         // Shuffle questions
-        shuffleArray(currentQuestions);
-
-        // Show detailed quiz start information
-        const topicCount = selectedTopics.length;
-        const questionCount = currentQuestions.length;
-        alertToast.toastSuccess(
-          `🚀 Quiz dimulai! ${questionCount} soal dari ${topicCount} topik siap!`
-        );
-
-        // Show encouraging message
-        setTimeout(() => {
-          alertToast.showEncouragement("start");
-        }, 1000); // Reset quiz state
+        shuffleArray(currentQuestions); // Removed quiz start toasts - too much notification// Reset quiz state
         currentQuestionIndex = 0;
         userAnswers = new Array(currentQuestions.length).fill(undefined);
         correctCount = 0;
@@ -2022,13 +2050,19 @@
         // Reset question mappings for answer shuffling
         currentQuestionMappings = {};
 
+        // Track which questions have been answered and checked (new logic)
+        answeredAndCheckedQuestions = new Array(currentQuestions.length).fill(
+          false
+        );
+
         // Reset quiz stats display
         document.getElementById("correctCount").textContent = "0";
         document.getElementById("incorrectCount").textContent = "0";
-        document.getElementById("scorePercentage").textContent = "0%";
-
-        // Record quiz start time for analytics
+        document.getElementById("scorePercentage").textContent = "0%"; // Record quiz start time for analytics
         quizStartTime = Date.now();
+
+        // Set quiz as active for exit warning
+        isQuizActive = true;
 
         // Show quiz interface
         document.getElementById("subjectSelection").classList.add("hidden");
@@ -2096,6 +2130,8 @@
         return "Unknown";
       } // Store question mappings globally to avoid reference issues
       let currentQuestionMappings = {};
+      // Track which questions have been answered and checked
+      let answeredAndCheckedQuestions = [];
       function displayMultipleChoice(question, container) {
         const choices = question.choices;
         const questionIndex = currentQuestionIndex;
@@ -2240,14 +2276,11 @@
 
             choice.classList.add("pointer-events-none");
           });
-
           if (isCorrect) {
             correctCount++;
-            // Show encouraging toast for correct answer
-            alertToast.showEncouragement("correct");
+            // Removed encouraging toast for correct answer
           } else {
-            // Show encouraging toast for wrong answer
-            alertToast.showEncouragement("wrong");
+            // Removed encouraging toast for wrong answer
           }
         } else if (question.type === "essay") {
           userAnswer = document.getElementById("essayAnswer").value.trim();
@@ -2260,10 +2293,11 @@
           }
           userAnswers[currentQuestionIndex] = userAnswer;
           // For essay questions, we'll count them as correct for now
-          correctCount++;
-          // Show encouraging toast for essay completion
-          alertToast.showEncouragement("essay");
+          correctCount++; // Removed essay encouragement toast - too much notification
         }
+
+        // Mark this question as answered and checked
+        answeredAndCheckedQuestions[currentQuestionIndex] = true;
 
         // Show solution
         displaySolution(question);
@@ -2328,10 +2362,9 @@
         const nextBtn = document.getElementById("nextBtn");
         const finishBtn = document.getElementById("finishBtn");
 
-        // Always allow going to previous questions
-        prevBtn.disabled = currentQuestionIndex === 0;
-
         if (showingSolution) {
+          // After checking answer, disable previous button - only allow forward navigation
+          prevBtn.disabled = true;
           checkBtn.classList.add("hidden");
           if (currentQuestionIndex < currentQuestions.length - 1) {
             nextBtn.classList.remove("hidden");
@@ -2341,6 +2374,17 @@
             finishBtn.classList.remove("hidden");
           }
         } else {
+          // Before checking answer, check if we can go back to previous questions
+          // Only allow going back if ALL previous questions haven't been answered yet
+          let canGoBack = currentQuestionIndex > 0;
+          for (let i = 0; i < currentQuestionIndex; i++) {
+            if (answeredAndCheckedQuestions[i]) {
+              canGoBack = false;
+              break;
+            }
+          }
+          prevBtn.disabled = !canGoBack;
+
           checkBtn.classList.remove("hidden");
           nextBtn.classList.add("hidden");
           finishBtn.classList.add("hidden");
@@ -2356,31 +2400,7 @@
       function nextQuestion() {
         if (currentQuestionIndex < currentQuestions.length - 1) {
           currentQuestionIndex++;
-          showingSolution = false;
-
-          // Show progress milestone toasts
-          const progress = currentQuestionIndex + 1;
-          const total = currentQuestions.length;
-          const percentage = Math.round((progress / total) * 100);
-
-          if (progress === Math.floor(total * 0.25) && total >= 4) {
-            alertToast.info(
-              "🚀 25% perjalanan selesai! Terus semangat!",
-              "Progres"
-            );
-          } else if (progress === Math.floor(total * 0.5) && total >= 4) {
-            alertToast.info(
-              "⭐ Setengah perjalanan terlewati! Luar biasa!",
-              "Progres"
-            );
-          } else if (progress === Math.floor(total * 0.75) && total >= 4) {
-            alertToast.info("🔥 75% selesai! Hampir sampai finish!", "Progres");
-          } else if (progress === total - 1 && total > 1) {
-            alertToast.info(
-              "🏁 Soal terakhir! Berikan yang terbaik!",
-              "Progres"
-            );
-          }
+          showingSolution = false; // Removed progress milestone toasts - too much notification
 
           displayQuestion();
         }
@@ -2464,10 +2484,11 @@
           resultIcon.textContent = "💪";
           resultMessage.textContent =
             "Jangan menyerah! Pelajari lagi materinya dan coba sekali lagi.";
-        }
-
-        // Save progress
+        } // Save progress
         saveProgress();
+
+        // Quiz is no longer active
+        isQuizActive = false;
 
         // Show results section
         document.getElementById("quizInterface").classList.add("hidden");
@@ -2475,14 +2496,10 @@
       }
       function startNewQuiz() {
         selectedTopics = [];
+        isQuizActive = false; // Reset quiz active state
         document.getElementById("resultsSection").classList.add("hidden");
         document.getElementById("subjectSelection").classList.remove("hidden");
-        loadTopicsForQuiz();
-
-        // Show encouraging toast for starting new quiz
-        alertToast.toastInfo(
-          "🎯 Siap untuk tantangan baru? Pilih topik dan mulai!"
-        );
+        loadTopicsForQuiz(); // Removed start new quiz toast - too much notification
       }
 
       // Progress functions
@@ -2613,17 +2630,7 @@
           }
 
           streakData.lastDate = today;
-          localStorage.setItem("qlern_streak", JSON.stringify(streakData));
-
-          // Show streak achievement
-          if (streakData.current > 1) {
-            setTimeout(() => {
-              alertToast.toastSuccess(
-                `🔥 Streak ${streakData.current} hari! Konsistensi yang luar biasa!`,
-                "Learning Streak"
-              );
-            }, 2000);
-          }
+          localStorage.setItem("qlern_streak", JSON.stringify(streakData)); // Removed streak toast - too much notification
         }
       }
 
@@ -2839,13 +2846,12 @@
 
           // Update all UI components
           updateDashboardStats();
-          updateProgressSection();
-
-          // If currently in quiz, return to dashboard
+          updateProgressSection(); // If currently in quiz, return to dashboard
           const currentSection = document.querySelector(
             ".section:not(.hidden)"
           );
           if (currentSection && currentSection.id === "quiz") {
+            isQuizActive = false; // Reset quiz state
             showSection("dashboard");
           }
 
@@ -2922,6 +2928,7 @@
           preloadResources();
           loadQuestionData();
           showSection("dashboard");
+          setupQuizExitWarning(); // Initialize quiz exit warning system
 
           // Add touch feedback to interactive elements after DOM is ready
           setTimeout(() => {
@@ -2944,14 +2951,7 @@
             ) {
               toggleMobileSettings();
             }
-          });
-
-          // Show welcome toast with delay
-          setTimeout(() => {
-            alertToast.toastInfo(
-              "🎓 Selamat datang di QLERN! Siap untuk belajar? 📚"
-            );
-          }, 1000);
+          }); // Removed welcome toast - too much notification
         } catch (error) {
           handleError(error, "App Initialization");
         }
